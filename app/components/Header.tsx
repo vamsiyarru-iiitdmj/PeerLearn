@@ -62,6 +62,7 @@ export default function Header() {
               <button
                 key={m}
                 onClick={() => setMode(m)}
+                aria-pressed={mode === m}
                 className="min-w-[108px] px-5 py-2 rounded-full transition-all text-sm font-semibold capitalize"
                 style={{
                   backgroundColor: mode === m ? "var(--color-primary-container)" : "transparent",

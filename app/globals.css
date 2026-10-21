@@ -100,9 +100,22 @@ html, body {
   overscroll-behavior: none;
 }
 
-/* Hide scrollbars globally (academic quietude aesthetic) */
-::-webkit-scrollbar { display: none; }
-* { scrollbar-width: none; }
+/* Subtle low-contrast scrollbars for clear usability without visual clutter */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-outline-variant);
+  border-radius: 9999px;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-outline-variant) transparent;
+}
 
 /* ── Typography scale helpers ───────────────────────────────────── */
 .font-display-lg   { font-family: var(--font-newsreader); font-size: 48px; font-weight: 400; line-height: 56px; }

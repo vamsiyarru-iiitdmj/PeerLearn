@@ -20,7 +20,7 @@ export default function Sidebar({ activePath = "student-home" }: SidebarProps) {
 
   return (
     <aside
-      className="fixed left-0 top-16 bottom-0 w-64 z-40 flex flex-col justify-between py-4"
+      className="fixed left-0 top-16 bottom-0 w-64 z-40 hidden lg:flex flex-col justify-between py-4"
       style={{
         backgroundColor: "var(--color-surface-container-low)",
         boxShadow: "1px 0 8px rgba(0,0,0,0.02)",

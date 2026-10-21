@@ -14,8 +14,8 @@ export default function DashboardPage() {
       {/* Left sidebar (fixed) */}
       <Sidebar />
 
-      {/* Main content area — offset by sidebar (256px) and header (64px) */}
-      <div style={{ paddingLeft: 256 }}>
+      {/* Main content area — offset by sidebar on large screens (256px) and header (64px) */}
+      <div className="lg:pl-64">
         <main
           style={{
             paddingTop: 64,
