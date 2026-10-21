@@ -13,7 +13,8 @@ async function bootstrap() {
   app.use(helmet());
 
   // Cookie parsing for auth tokens
-  app.use(cookieParser());
+  const cp = (typeof cookieParser === 'function' ? cookieParser : (cookieParser as any)?.default) || cookieParser;
+  app.use(typeof cp === 'function' ? cp() : (cookieParser as any)());
 
   // CORS configuration
   const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';

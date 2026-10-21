@@ -171,25 +171,34 @@ export class AuthService {
         name: pending.full_name,
       });
 
-      if (signUpRes.error) {
-        // If user already exists in auth system, attempt sign-in
-        if (signUpRes.error.message?.includes('already registered')) {
-          const signInRes = await admin.auth.signInWithPassword({
-            email: instituteEmail,
-            password: dto.password,
-          });
-          if (signInRes.data?.user) {
-            authUserId = signInRes.data.user.id;
-            sessionData = signInRes.data;
-          } else {
-            throw new ConflictException('An account with this email already exists in auth provider');
-          }
-        } else {
-          throw new BadRequestException(signUpRes.error.message);
-        }
-      } else {
-        authUserId = signUpRes.data.user.id;
-        sessionData = signUpRes.data;
+      if (
+        signUpRes.error &&
+        !signUpRes.error.message?.toLowerCase().includes('already') &&
+        !signUpRes.error.message?.toLowerCase().includes('exists')
+      ) {
+        throw new BadRequestException(signUpRes.error.message);
+      }
+
+      // Confirm student email and retrieve the authoritative auth user ID via RPC
+      const { data: confirmedId, error: confirmErr } = await admin.database.rpc('confirm_auth_user', {
+        target_email: instituteEmail,
+      });
+
+      if (confirmErr || !confirmedId) {
+        this.logger.error(`RPC confirm_auth_user error: ${confirmErr?.message}`);
+        throw new BadRequestException('Failed to confirm and link student auth credentials');
+      }
+
+      authUserId = confirmedId;
+
+      // Sign in to retrieve active session tokens
+      const signInRes = await admin.auth.signInWithPassword({
+        email: instituteEmail,
+        password: dto.password,
+      });
+
+      if (signInRes.data) {
+        sessionData = signInRes.data;
       }
     } catch (authErr: any) {
       if (authErr instanceof ConflictException || authErr instanceof BadRequestException) {

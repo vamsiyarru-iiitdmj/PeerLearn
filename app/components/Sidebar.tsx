@@ -1,22 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useAuth } from "../../lib/auth-context";
 
 const navItems = [
-  { label: "Home",              icon: "home",         path: "student-home",       badge: null },
-  { label: "Doubts",           icon: "help_center",  path: "doubts-feed",        badge: "2"  },
-  { label: "Planner & To-Do",  icon: "checklist",    path: "planner-tasks",      badge: "3"  },
-  { label: "Resources",        icon: "folder_open",  path: "academic-resources", badge: null },
-  { label: "Analytics & Ranks",icon: "insights",     path: "analytics-ranks",    badge: null },
-  { label: "My Profile",       icon: "account_circle",path: "student-profile",   badge: null },
+  { label: "Home",               icon: "home",           href: "/",                  badge: null },
+  { label: "Doubts",             icon: "help_center",    href: "/doubts",            badge: null },
+  { label: "Planner & To-Do",   icon: "checklist",      href: "/planner",           badge: null },
+  { label: "Resources",          icon: "folder_open",    href: "/resources",         badge: null },
+  { label: "Analytics & Ranks", icon: "insights",        href: "/analytics",         badge: null },
+  { label: "My Profile",         icon: "account_circle", href: "/profile",           badge: null },
 ];
 
-interface SidebarProps {
-  activePath?: string;
-}
-
-export default function Sidebar({ activePath = "student-home" }: SidebarProps) {
-  const [active, setActive] = useState(activePath);
+export default function Sidebar() {
+  const pathname = usePathname();
+  const { student, logout } = useAuth();
 
   return (
     <aside
@@ -44,13 +43,16 @@ export default function Sidebar({ activePath = "student-home" }: SidebarProps) {
           </div>
 
           {/* Nav links */}
-          <nav className="flex flex-col gap-0.5">
+          <nav className="flex flex-col gap-0.5" aria-label="Main navigation">
             {navItems.map((item) => {
-              const isActive = active === item.path;
+              const isActive =
+                item.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(item.href);
               return (
-                <button
-                  key={item.path}
-                  onClick={() => setActive(item.path)}
+                <Link
+                  key={item.href}
+                  href={item.href}
                   className="w-full flex items-center justify-between px-4 py-2.5 rounded-[10px] transition-all text-left"
                   style={{
                     backgroundColor: isActive
@@ -63,22 +65,7 @@ export default function Sidebar({ activePath = "student-home" }: SidebarProps) {
                     boxShadow: isActive ? "0 1px 2px rgba(0,0,0,0.03)" : "none",
                     fontFamily: "var(--font-jakarta)",
                     fontSize: 14,
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isActive) {
-                      (e.currentTarget as HTMLElement).style.backgroundColor =
-                        "var(--color-surface-container-high)";
-                      (e.currentTarget as HTMLElement).style.color =
-                        "var(--color-on-surface)";
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isActive) {
-                      (e.currentTarget as HTMLElement).style.backgroundColor =
-                        "transparent";
-                      (e.currentTarget as HTMLElement).style.color =
-                        "var(--color-on-surface-variant)";
-                    }
+                    textDecoration: "none",
                   }}
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -103,7 +90,7 @@ export default function Sidebar({ activePath = "student-home" }: SidebarProps) {
                       {item.badge}
                     </span>
                   )}
-                </button>
+                </Link>
               );
             })}
           </nav>
@@ -123,33 +110,37 @@ export default function Sidebar({ activePath = "student-home" }: SidebarProps) {
           >
             verified
           </span>
-          <div className="flex flex-col">
+          <div className="flex flex-col min-w-0">
             <span
-              className="font-title-sm text-[13px] leading-snug"
+              className="font-title-sm text-[13px] leading-snug truncate"
               style={{ color: "var(--color-on-surface)" }}
             >
-              Verified Student
+              {student?.full_name ?? "Verified Student"}
             </span>
             <span
               className="font-body-sm text-[10px]"
               style={{ color: "var(--color-on-surface-variant)" }}
             >
-              Batch 2025 · CSE
+              {student?.roll_number ?? ""} · {student?.department ?? "CSE"}
             </span>
           </div>
         </div>
 
-        {/* Help & Rules link */}
+        {/* Logout */}
         <button
+          onClick={() => logout()}
           className="flex items-center justify-between px-2 py-1.5 rounded-lg transition-colors w-full"
           style={{
             color: "var(--color-on-surface-variant)",
             fontFamily: "var(--font-jakarta)",
             fontSize: 12,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
           }}
           onMouseEnter={(e) =>
             ((e.currentTarget as HTMLElement).style.color =
-              "var(--color-on-surface)")
+              "var(--color-error)")
           }
           onMouseLeave={(e) =>
             ((e.currentTarget as HTMLElement).style.color =
@@ -157,10 +148,9 @@ export default function Sidebar({ activePath = "student-home" }: SidebarProps) {
           }
         >
           <span className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[16px]">menu_book</span>
-            Help &amp; Peer Rules
+            <span className="material-symbols-outlined text-[16px]">logout</span>
+            Sign Out
           </span>
-          <span className="material-symbols-outlined text-[14px]">arrow_outward</span>
         </button>
       </div>
     </aside>

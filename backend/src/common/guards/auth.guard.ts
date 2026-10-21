@@ -37,9 +37,10 @@ export class AuthGuard implements CanActivate {
 
     try {
       const userClient = this.insforgeService.getUserClient(token);
-      const { data: user, error: authError } = await userClient.auth.getCurrentUser();
+      const { data, error: authError } = await userClient.auth.getCurrentUser();
+      const user = data?.user || (data as any);
 
-      if (authError || !user) {
+      if (authError || !user || !user.id) {
         throw new UnauthorizedException(authError?.message || 'Invalid or expired session');
       }
 

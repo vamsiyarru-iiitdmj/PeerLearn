@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Newsreader, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import type { ReactNode } from "react";
+import { AuthProvider } from "../lib/auth-context";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         />
       </head>
       <body className="min-h-screen" style={{ fontFamily: "var(--font-jakarta)" }}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

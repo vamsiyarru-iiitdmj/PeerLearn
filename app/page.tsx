@@ -1,11 +1,86 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import LiveQueueBadge from "./components/LiveQueueBadge";
 import PendingDoubts from "./components/PendingDoubts";
 import TodaysPlans from "./components/TodaysPlans";
 import ResourcesCard from "./components/ResourcesCard";
+import { useAuth } from "../lib/auth-context";
+
+function getGreeting(): string {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning";
+  if (h < 17) return "Good afternoon";
+  return "Good evening";
+}
 
 export default function DashboardPage() {
+  const { token, student, loading } = useAuth();
+  const router = useRouter();
+  const [redirecting, setRedirecting] = useState(false);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (!loading && !token) {
+      setRedirecting(true);
+      router.replace("/login");
+    }
+  }, [loading, token, router]);
+
+  // Show blank while checking auth or redirecting
+  if (loading || redirecting || !student) {
+    return (
+      <div
+        style={{
+          minHeight: "100vh",
+          backgroundColor: "var(--color-surface)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+          gap: 16,
+        }}
+      >
+        <div
+          style={{
+            width: 44,
+            height: 44,
+            borderRadius: 12,
+            backgroundColor: "var(--color-primary-container)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "var(--font-newsreader)",
+              fontSize: 18,
+              fontWeight: 700,
+              color: "var(--color-on-primary)",
+            }}
+          >
+            PL
+          </span>
+        </div>
+        <span
+          style={{
+            fontFamily: "var(--font-jakarta)",
+            fontSize: 13,
+            color: "var(--color-on-surface-variant)",
+          }}
+        >
+          Loading…
+        </span>
+      </div>
+    );
+  }
+
+  const firstName = student.full_name?.split(" ")[0] ?? "there";
+
   return (
     <div style={{ backgroundColor: "var(--color-surface)", minHeight: "100vh" }}>
       {/* Sticky top nav */}
@@ -75,7 +150,7 @@ export default function DashboardPage() {
                         display: "inline-block",
                       }}
                     />
-                    Semester VI · Computer Science &amp; Engineering
+                    Semester {student.current_semester} · {student.department}
                   </div>
 
                   {/* Main heading */}
@@ -90,7 +165,7 @@ export default function DashboardPage() {
                       letterSpacing: "-0.01em",
                     }}
                   >
-                    Good evening, Vamsi
+                    {getGreeting()}, {firstName}
                   </h1>
 
                   {/* Sub-line */}
@@ -102,7 +177,10 @@ export default function DashboardPage() {
                       margin: 0,
                     }}
                   >
-                    2 pending doubts need attention · 3 study plans scheduled for today
+                    Welcome back to your PeerLearn dashboard
+                    {student.current_cpi
+                      ? ` · CPI ${student.current_cpi.toFixed(2)}`
+                      : ""}
                   </p>
                 </div>
 
