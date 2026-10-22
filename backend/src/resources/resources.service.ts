@@ -168,7 +168,7 @@ export class ResourcesService {
       .from('resource_proposals')
       .select(`
         *,
-        contributor:contributor_id (id, full_name, roll_number, photo_url),
+        proposer:proposer_id (id, full_name, roll_number),
         resource_votes (id, voter_id, vote)
       `)
       .eq('status', 'OPEN')
@@ -179,8 +179,8 @@ export class ResourcesService {
 
     return (proposals || []).map((p: any) => {
       const votes = p.resource_votes || [];
-      const approveCount = votes.filter((v: any) => v.vote === true).length;
-      const rejectCount = votes.filter((v: any) => v.vote === false).length;
+      const approveCount = votes.filter((v: any) => v.vote === 'APPROVE' || v.vote === true).length;
+      const rejectCount = votes.filter((v: any) => v.vote === 'REJECT' || v.vote === false).length;
       return {
         ...p,
         stats: {
@@ -202,16 +202,15 @@ export class ResourcesService {
       .from('resource_proposals')
       .insert([
         {
-          contributor_id: studentId,
-          proposal_type: dto.proposalType,
+          proposer_id: studentId,
+          type: (dto as any).type || dto.resourceType || 'PDF',
           title: dto.title.trim(),
           description: dto.description?.trim() || null,
-          target_bucket_id: dto.targetBucketId || null,
-          resource_type: dto.resourceType || 'PDF',
+          bucket_id: (dto as any).targetBucketId || (dto as any).bucketId || null,
           storage_key: dto.storageKey || null,
-          external_url: dto.externalUrl || null,
+          external_url: dto.externalUrl || (dto as any).url || null,
           department: dto.department || 'CSE',
-          batch: dto.batch || '2022',
+          batch: dto.batch || '2025',
           status: 'OPEN',
           expires_at: expiresAt,
         },
@@ -244,7 +243,7 @@ export class ResourcesService {
     }
 
     // 2. HARD RULE: Contributor cannot vote on their own proposal
-    if (proposal.contributor_id === voterStudentId) {
+    if (proposal.proposer_id === voterStudentId) {
       throw new ForbiddenException('Contributors cannot vote on their own proposals');
     }
 

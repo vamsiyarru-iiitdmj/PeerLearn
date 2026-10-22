@@ -355,36 +355,6 @@ export class AuthService {
     authSession = signInRes.data;
     authError = signInRes.error;
 
-    // Support auto-repair for existing students if password desynced or test credentials used
-    if (authError || !authSession?.user) {
-      const derivedRoll = instituteEmail.split('@')[0].toUpperCase();
-      const { data: existingStudents } = await admin.database
-        .from('students')
-        .select('*')
-        .or(`institute_email.eq.${instituteEmail},roll_number.eq.${derivedRoll}`)
-        .limit(1);
-
-      if (existingStudents && existingStudents.length > 0) {
-        try {
-          const targetEmail = existingStudents[0].institute_email || instituteEmail;
-          await admin.database.rpc('confirm_auth_user', {
-            target_email: targetEmail,
-            new_password: dto.password,
-          });
-          const retrySignIn = await admin.auth.signInWithPassword({
-            email: targetEmail,
-            password: dto.password,
-          });
-          if (retrySignIn.data?.user) {
-            authSession = retrySignIn.data;
-            authError = null;
-          }
-        } catch (e: any) {
-          this.logger.warn(`Auto-sync auth password attempt: ${e?.message}`);
-        }
-      }
-    }
-
     if (authError || !authSession?.user) {
       throw new UnauthorizedException(authError?.message || 'Invalid institute email or password');
     }

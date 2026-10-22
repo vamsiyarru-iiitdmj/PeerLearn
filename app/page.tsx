@@ -8,6 +8,7 @@ import LiveQueueBadge from "./components/LiveQueueBadge";
 import PendingDoubts from "./components/PendingDoubts";
 import TodaysPlans from "./components/TodaysPlans";
 import ResourcesCard from "./components/ResourcesCard";
+import TutorDashboard from "./components/TutorDashboard";
 import { useAuth } from "../lib/auth-context";
 
 function getGreeting(): string {
@@ -18,7 +19,7 @@ function getGreeting(): string {
 }
 
 export default function DashboardPage() {
-  const { token, student, loading } = useAuth();
+  const { token, student, loading, mode } = useAuth();
   const router = useRouter();
   const [redirecting, setRedirecting] = useState(false);
 
@@ -146,11 +147,11 @@ export default function DashboardPage() {
                         width: 8,
                         height: 8,
                         borderRadius: "50%",
-                        backgroundColor: "var(--color-secondary)",
+                        backgroundColor: mode === "tutor" ? "var(--color-tertiary)" : "var(--color-secondary)",
                         display: "inline-block",
                       }}
                     />
-                    Semester {student.current_semester} · {student.department}
+                    Semester {student.current_semester} · {student.department} · {mode === "tutor" ? "Tutor Active" : "Student View"}
                   </div>
 
                   {/* Main heading */}
@@ -177,10 +178,9 @@ export default function DashboardPage() {
                       margin: 0,
                     }}
                   >
-                    Welcome back to your PeerLearn dashboard
-                    {student.current_cpi
-                      ? ` · CPI ${student.current_cpi.toFixed(2)}`
-                      : ""}
+                    {mode === "tutor"
+                      ? "You are in Tutor Mode. Mentor fellow students and manage your tutoring sessions."
+                      : `Welcome back to your PeerLearn dashboard${student.current_cpi ? ` · CPI ${student.current_cpi.toFixed(2)}` : ""}`}
                   </p>
                 </div>
 
@@ -189,28 +189,34 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            {/* ── Card stack ─────────────────────────────────────────── */}
-            <div
-              style={{
-                maxWidth: 800,
-                margin: "0 auto",
-                display: "flex",
-                flexDirection: "column",
-                gap: "2.25rem",
-              }}
-            >
+            {/* ── Conditional Dashboard Content ────────────────────── */}
+            {mode === "tutor" ? (
               <div className="animate-in" style={{ animationDelay: "60ms" }}>
-                <PendingDoubts />
+                <TutorDashboard />
               </div>
+            ) : (
+              <div
+                style={{
+                  maxWidth: 800,
+                  margin: "0 auto",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "2.25rem",
+                }}
+              >
+                <div className="animate-in" style={{ animationDelay: "60ms" }}>
+                  <PendingDoubts />
+                </div>
 
-              <div className="animate-in" style={{ animationDelay: "120ms" }}>
-                <TodaysPlans />
-              </div>
+                <div className="animate-in" style={{ animationDelay: "120ms" }}>
+                  <TodaysPlans />
+                </div>
 
-              <div className="animate-in" style={{ animationDelay: "180ms" }}>
-                <ResourcesCard />
+                <div className="animate-in" style={{ animationDelay: "180ms" }}>
+                  <ResourcesCard />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </main>
       </div>

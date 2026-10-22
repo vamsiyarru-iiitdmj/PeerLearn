@@ -15,7 +15,7 @@ const navItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { student, logout } = useAuth();
+  const { student, logout, mode } = useAuth();
 
   return (
     <aside
@@ -31,14 +31,17 @@ export default function Sidebar() {
           {/* Mode eyebrow */}
           <div className="px-2 py-1 mb-2 flex items-center justify-between">
             <span
-              className="font-label-eyebrow uppercase tracking-wider"
+              className="font-label-eyebrow uppercase tracking-wider text-xs font-bold"
               style={{ color: "var(--color-on-surface-variant)" }}
             >
-              Student Mode
+              {mode === "tutor" ? "Tutor Mode" : "Student Mode"}
             </span>
             <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ backgroundColor: "var(--color-secondary)" }}
+              className="w-2 h-2 rounded-full"
+              style={{
+                backgroundColor:
+                  mode === "tutor" ? "var(--color-tertiary)" : "var(--color-secondary)",
+              }}
             />
           </div>
 

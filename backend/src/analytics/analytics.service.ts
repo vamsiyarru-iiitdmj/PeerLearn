@@ -35,14 +35,14 @@ export class AnalyticsService {
 
     const total = totalDoubts || 0;
     const solved = solvedDoubts || 0;
-    const solveRate = total > 0 ? Number(((solved / total) * 100).toFixed(1)) : 88.5;
+    const solveRate = total > 0 ? Number(((solved / total) * 100).toFixed(1)) : 0;
 
     return {
-      totalDoubts: total || 142,
-      solvedDoubts: solved || 126,
+      totalDoubts: total,
+      solvedDoubts: solved,
       solvedPercentage: solveRate,
-      activeTutors: uniqueTutors || 28,
-      sharedResourcesCount: totalResources || 64,
+      activeTutors: uniqueTutors || 0,
+      sharedResourcesCount: totalResources || 0,
     };
   }
 
@@ -69,11 +69,9 @@ export class AnalyticsService {
     }
 
     if (monthsMap.size === 0) {
-      // Default academic trends baseline
+      const currentMonth = monthsOrder[new Date().getMonth()];
       return [
-        { month: 'Aug', asked: 24, solved: 22 },
-        { month: 'Sep', asked: 48, solved: 44 },
-        { month: 'Oct', asked: 70, solved: 60 },
+        { month: currentMonth, asked: 0, solved: 0 },
       ];
     }
 
@@ -119,13 +117,17 @@ export class AnalyticsService {
     const result = Array.from(skillMap.values()).sort((a, b) => b.count - a.count);
 
     if (result.length === 0) {
-      return [
-        { name: 'Data Structures & Algorithms', category: 'Computer Science', count: 42, solved: 38 },
-        { name: 'Operating Systems', category: 'Computer Science', count: 31, solved: 27 },
-        { name: 'Database Management Systems', category: 'Computer Science', count: 25, solved: 23 },
-        { name: 'Machine Learning', category: 'Artificial Intelligence', count: 22, solved: 19 },
-        { name: 'Digital Logic Design', category: 'Electronics', count: 18, solved: 15 },
-      ];
+      const { data: defaultSkills } = await admin.database
+        .from('skills')
+        .select('name, category')
+        .limit(5);
+
+      return (defaultSkills || []).map((s: any) => ({
+        name: s.name,
+        category: s.category || 'General',
+        count: 0,
+        solved: 0,
+      }));
     }
 
     return result;
@@ -171,7 +173,7 @@ export class AnalyticsService {
       return {
         year: yr,
         label: yearLabels[yr],
-        count: count === 0 ? 15 : count,
+        count: count,
         isSuppressedForPrivacy: false,
       };
     });
@@ -220,12 +222,17 @@ export class AnalyticsService {
     comparison.sort((a, b) => b.demand - a.demand);
 
     if (comparison.length === 0) {
-      return [
-        { skillName: 'Data Structures & Algorithms', demand: 42, supply: 12, ratio: 3.5 },
-        { skillName: 'Operating Systems', demand: 31, supply: 8, ratio: 3.88 },
-        { skillName: 'Machine Learning', demand: 22, supply: 5, ratio: 4.4 },
-        { skillName: 'Digital Logic Design', demand: 18, supply: 4, ratio: 4.5 },
-      ];
+      const { data: defaultSkills } = await admin.database
+        .from('skills')
+        .select('name')
+        .limit(4);
+
+      return (defaultSkills || []).map((s: any) => ({
+        skillName: s.name,
+        demand: 0,
+        supply: 0,
+        ratio: 0,
+      }));
     }
 
     return comparison;

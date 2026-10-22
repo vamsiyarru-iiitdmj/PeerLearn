@@ -24,6 +24,7 @@ interface AuthState {
   student: StudentProfile | null;
   loading: boolean;
   error: string | null;
+  mode: "student" | "tutor";
 }
 
 interface AuthContextValue extends AuthState {
@@ -31,11 +32,13 @@ interface AuthContextValue extends AuthState {
   logout: () => Promise<void>;
   setSession: (session: AuthSession) => void;
   clearError: () => void;
+  setMode: (mode: "student" | "tutor") => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 const TOKEN_KEY = "pl_access_token";
+const MODE_KEY = "pl_user_mode";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
@@ -44,26 +47,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     student: null,
     loading: true,
     error: null,
+    mode: "student",
   });
 
-  // Restore session from localStorage on mount
+  // Restore session and mode from localStorage on mount
   useEffect(() => {
+    const savedMode = (localStorage.getItem(MODE_KEY) as "student" | "tutor") || "student";
     const stored = localStorage.getItem(TOKEN_KEY);
     if (!stored) {
-      setState((s) => ({ ...s, loading: false }));
+      setState((s) => ({ ...s, mode: savedMode, loading: false }));
       return;
     }
     // Validate token by fetching the student profile
     apiGetProfile(stored)
       .then((student) => {
-        setState({ token: stored, student, loading: false, error: null });
+        setState({ token: stored, student, loading: false, error: null, mode: savedMode });
       })
       .catch(() => {
         // Token expired or invalid — clear it
         localStorage.removeItem(TOKEN_KEY);
-        setState({ token: null, student: null, loading: false, error: null });
+        setState({ token: null, student: null, loading: false, error: null, mode: "student" });
       });
   }, []);
+
+  const setMode = useCallback((newMode: "student" | "tutor") => {
+    localStorage.setItem(MODE_KEY, newMode);
+    setState((s) => ({ ...s, mode: newMode }));
+
 
   const login = useCallback(async (payload: LoginPayload) => {
     setState((s) => ({ ...s, loading: true, error: null }));
@@ -124,7 +134,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout, setSession, clearError }}>
+    <AuthContext.Provider value={{ ...state, login, logout, setSession, clearError, setMode }}>
       {children}
     </AuthContext.Provider>
   );

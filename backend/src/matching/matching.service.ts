@@ -18,7 +18,7 @@ export class MatchingService {
     // 2. Call the PostgreSQL RPC enforcing strict ALL-tags matching rule
     const { data: matchedRows, error } = await admin.database.rpc(
       'get_matching_doubts_for_tutor',
-      { tutor_id_param: tutorStudentId },
+      { p_tutor_id: tutorStudentId },
     );
 
     if (error) {
@@ -29,7 +29,7 @@ export class MatchingService {
       return [];
     }
 
-    const doubtIds = matchedRows.map((r: any) => r.doubt_id);
+    const doubtIds = matchedRows.map((r: any) => r.id || r.doubt_id);
 
     // 3. Fetch full doubt details with tags and student profile
     const { data: fullDoubts } = await admin.database

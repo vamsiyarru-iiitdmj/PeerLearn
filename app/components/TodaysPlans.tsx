@@ -207,18 +207,24 @@ export default function TodaysPlans() {
                     check_circle
                   </span>
                 ) : item.is_tough ? (
-                  <button className="btn-teal self-start sm:self-auto flex-shrink-0">
+                  <Link
+                    href="/planner"
+                    className="btn-teal self-start sm:self-auto flex-shrink-0 flex items-center gap-1.5"
+                    style={{ textDecoration: "none" }}
+                  >
                     <span className="material-symbols-outlined text-[16px]">psychology</span>
                     Ask Suggestion
-                  </button>
+                  </Link>
                 ) : (
-                  <button
-                    className="flex-shrink-0"
-                    style={{ color: "var(--color-outline)", background: "none", border: "none", cursor: "pointer" }}
-                    aria-label="More options"
+                  <Link
+                    href="/planner"
+                    className="flex-shrink-0 p-1 rounded hover:bg-black/5"
+                    style={{ color: "var(--color-outline)", textDecoration: "none" }}
+                    aria-label="Manage in planner"
+                    title="Manage in planner"
                   >
-                    <span className="material-symbols-outlined text-[18px]">more_vert</span>
-                  </button>
+                    <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                  </Link>
                 )}
               </div>
             ))}

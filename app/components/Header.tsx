@@ -1,12 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useAuth } from "../../lib/auth-context";
+import {
+  apiGetNotifications,
+  apiMarkNotificationRead,
+  apiMarkAllNotificationsRead,
+  type Notification,
+} from "../../lib/api";
 
 export default function Header() {
-  const [mode, setMode] = useState<"student" | "tutor">("student");
-  const { student, logout, loading } = useAuth();
+  const { mode, setMode, student, logout, loading, token } = useAuth();
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const notifRef = useRef<HTMLDivElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const initials = student?.full_name
     ? student.full_name
@@ -16,6 +26,59 @@ export default function Header() {
         .join("")
         .toUpperCase()
     : "PL";
+
+  // Load notifications
+  const loadNotifs = async () => {
+    if (!token) return;
+    try {
+      const data = await apiGetNotifications(token);
+      setNotifications(data || []);
+    } catch {
+      // Ignore
+    }
+  };
+
+  useEffect(() => {
+    loadNotifs();
+  }, [token]);
+
+  // Close menus on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (notifRef.current && !notifRef.current.contains(e.target as Node)) {
+        setShowNotifications(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const unreadCount = notifications.filter((n) => !n.is_read).length;
+
+  const handleMarkAllRead = async () => {
+    if (!token) return;
+    try {
+      await apiMarkAllNotificationsRead(token);
+      setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+    } catch {
+      // Ignore
+    }
+  };
+
+  const handleMarkSingleRead = async (id: string) => {
+    if (!token) return;
+    try {
+      await apiMarkNotificationRead(id, token);
+      setNotifications((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)),
+      );
+    } catch {
+      // Ignore
+    }
+  };
 
   return (
     <header
@@ -76,16 +139,16 @@ export default function Header() {
           {(["student", "tutor"] as const).map((m) => (
             <button
               key={m}
+              id={`mode-toggle-${m}`}
               onClick={() => setMode(m)}
               aria-pressed={mode === m}
-              className="min-w-[108px] px-5 py-2 rounded-full transition-all text-sm font-semibold capitalize"
+              className="min-w-[108px] px-5 py-2 rounded-full transition-all text-sm font-semibold capitalize cursor-pointer"
               style={{
                 backgroundColor: mode === m ? "var(--color-primary-container)" : "transparent",
                 color: mode === m ? "var(--color-on-primary)" : "var(--color-on-surface-variant)",
                 boxShadow: mode === m ? "0 1px 3px rgba(0,0,0,0.06)" : "none",
                 fontFamily: "var(--font-jakarta)",
                 border: "none",
-                cursor: "pointer",
               }}
             >
               {m.charAt(0).toUpperCase() + m.slice(1)}
@@ -94,53 +157,159 @@ export default function Header() {
         </div>
 
         {/* Notifications bell */}
-        <button
-          className="relative p-2 rounded-lg transition-colors"
-          style={{ color: "var(--color-on-surface-variant)", background: "none", border: "none", cursor: "pointer" }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = "var(--color-surface-container-high)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
-          }}
-          aria-label="Notifications"
-        >
-          <span className="material-symbols-outlined text-[20px]">notifications</span>
-          <span
-            className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full"
-            style={{ backgroundColor: "var(--color-secondary)" }}
-          />
-        </button>
-
-        {/* User avatar + logout */}
-        {!loading && student ? (
-          <div className="flex items-center gap-3 pl-1">
-            <div className="hidden sm:flex flex-col text-right">
+        <div className="relative" ref={notifRef}>
+          <button
+            id="notifications-bell-btn"
+            onClick={() => {
+              setShowNotifications((prev) => !prev);
+              loadNotifs();
+            }}
+            className="relative p-2 rounded-lg transition-colors cursor-pointer"
+            style={{
+              color: "var(--color-on-surface-variant)",
+              background: showNotifications ? "var(--color-surface-container-high)" : "none",
+              border: "none",
+            }}
+            aria-label="Notifications"
+          >
+            <span className="material-symbols-outlined text-[20px]">notifications</span>
+            {unreadCount > 0 && (
               <span
-                style={{ color: "var(--color-on-surface)", fontSize: 13, fontFamily: "var(--font-jakarta)", fontWeight: 600 }}
-              >
-                {student.full_name}
-              </span>
-              <span style={{ color: "var(--color-on-surface-variant)", fontSize: 11 }}>
-                {student.roll_number}
-              </span>
-            </div>
-            <button
-              onClick={() => logout()}
-              title="Sign out"
-              style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full"
+                style={{ backgroundColor: "var(--color-secondary)" }}
+              />
+            )}
+          </button>
+
+          {/* Notifications dropdown panel */}
+          {showNotifications && (
+            <div
+              className="absolute right-0 mt-2 w-80 rounded-2xl p-4 shadow-xl z-50 border"
+              style={{
+                backgroundColor: "var(--color-surface)",
+                borderColor: "var(--color-outline-variant)",
+              }}
             >
+              <div className="flex items-center justify-between pb-3 mb-2 border-b border-gray-200/60">
+                <span className="font-semibold text-sm" style={{ color: "var(--color-primary)" }}>
+                  Notifications ({unreadCount} unread)
+                </span>
+                {unreadCount > 0 && (
+                  <button
+                    onClick={handleMarkAllRead}
+                    className="text-xs font-semibold cursor-pointer"
+                    style={{ color: "var(--color-secondary)", background: "none", border: "none" }}
+                  >
+                    Mark all read
+                  </button>
+                )}
+              </div>
+
+              {notifications.length === 0 ? (
+                <div className="py-6 text-center text-xs text-gray-500">
+                  No notifications yet. You're all caught up!
+                </div>
+              ) : (
+                <div className="flex flex-col gap-2 max-h-72 overflow-y-auto">
+                  {notifications.map((n) => (
+                    <div
+                      key={n.id}
+                      onClick={() => !n.is_read && handleMarkSingleRead(n.id)}
+                      className="p-2.5 rounded-xl transition-colors cursor-pointer text-left"
+                      style={{
+                        backgroundColor: n.is_read
+                          ? "transparent"
+                          : "var(--color-surface-container-high)",
+                      }}
+                    >
+                      <p className="text-xs text-gray-800 m-0 leading-relaxed font-medium">
+                        {n.message}
+                      </p>
+                      <span className="text-[10px] text-gray-400 mt-1 block">
+                        {new Date(n.created_at).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* User avatar + menu */}
+        {!loading && student ? (
+          <div className="relative" ref={userMenuRef}>
+            <div className="flex items-center gap-3 pl-1">
+              <div className="hidden sm:flex flex-col text-right">
+                <span
+                  style={{
+                    color: "var(--color-on-surface)",
+                    fontSize: 13,
+                    fontFamily: "var(--font-jakarta)",
+                    fontWeight: 600,
+                  }}
+                >
+                  {student.full_name}
+                </span>
+                <span style={{ color: "var(--color-on-surface-variant)", fontSize: 11 }}>
+                  {student.roll_number}
+                </span>
+              </div>
+              <button
+                id="header-user-avatar-btn"
+                onClick={() => setShowUserMenu((prev) => !prev)}
+                title="Account Menu"
+                className="cursor-pointer"
+                style={{ background: "none", border: "none", padding: 0 }}
+              >
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                  style={{
+                    backgroundColor: "var(--color-primary-container)",
+                    color: "var(--color-on-primary)",
+                    fontFamily: "var(--font-jakarta)",
+                  }}
+                >
+                  {initials}
+                </div>
+              </button>
+            </div>
+
+            {/* Profile Menu Dropdown */}
+            {showUserMenu && (
               <div
-                className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                className="absolute right-0 mt-2 w-48 rounded-2xl p-2 shadow-xl z-50 border flex flex-col gap-1"
                 style={{
-                  backgroundColor: "var(--color-primary-container)",
-                  color: "var(--color-on-primary)",
-                  fontFamily: "var(--font-jakarta)",
+                  backgroundColor: "var(--color-surface)",
+                  borderColor: "var(--color-outline-variant)",
                 }}
               >
-                {initials}
+                <Link
+                  href="/profile"
+                  onClick={() => setShowUserMenu(false)}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-gray-100 transition-colors"
+                  style={{ color: "var(--color-on-surface)", textDecoration: "none" }}
+                >
+                  <span className="material-symbols-outlined text-[18px]">account_circle</span>
+                  My Profile
+                </Link>
+                <button
+                  id="sign-out-menu-btn"
+                  onClick={() => {
+                    setShowUserMenu(false);
+                    logout();
+                  }}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-red-50 text-red-700 transition-colors w-full text-left cursor-pointer"
+                  style={{ background: "none", border: "none" }}
+                >
+                  <span className="material-symbols-outlined text-[18px]">logout</span>
+                  Sign Out
+                </button>
               </div>
-            </button>
+            )}
           </div>
         ) : (
           <Link

@@ -205,17 +205,25 @@ export async function apiGetMyDoubts(token: string): Promise<Doubt[]> {
 }
 
 export interface PostDoubtPayload {
-  title: string;
+  title?: string;
   description: string;
   expectedOutcome: string;
-  skillIds: string[];
+  tagIds?: string[];
+  skillIds?: string[];
+  expiryHours?: number;
   expiresInHours?: number;
 }
 
 export async function apiPostDoubt(payload: PostDoubtPayload, token: string) {
+  const body = {
+    description: payload.description || payload.title,
+    expectedOutcome: payload.expectedOutcome || "Clear conceptual doubt with peer tutor",
+    tagIds: payload.tagIds || payload.skillIds || [],
+    expiryHours: payload.expiryHours || payload.expiresInHours || 24,
+  };
   return request<Doubt>("/api/v1/doubts", {
     method: "POST",
-    body: JSON.stringify(payload),
+    body: JSON.stringify(body),
   }, token);
 }
 
@@ -240,24 +248,56 @@ export async function apiGetSkills() {
 
 // ─── Tasks / Planner ───────────────────────────────────────────────────────
 
+export interface TaskSubtask {
+  id: string;
+  title: string;
+  is_completed: boolean;
+  step_order: number;
+}
+
+export interface SuggestionRequestSummary {
+  id: string;
+  query: string;
+  time_available?: string;
+  status: string;
+}
+
 export interface Task {
   id: string;
   title: string;
-  priority: "Low" | "Medium" | "High";
+  context?: string;
+  priority: "Low" | "Medium" | "High" | "LOW" | "MEDIUM" | "HIGH";
   is_tough: boolean;
   completed: boolean;
+  status?: string;
   due_date?: string;
+  due_at?: string;
+  task_subtasks?: TaskSubtask[];
+  suggestion_requests?: SuggestionRequestSummary[];
 }
 
-export async function apiGetTasks(token: string) {
+export async function apiGetTasks(token: string): Promise<Task[]> {
   const res = await request<any>("/api/v1/tasks", { method: "GET" }, token);
-  return Array.isArray(res) ? res : res.tasks || [];
+  const tasks = Array.isArray(res) ? res : res.tasks || res.data || [];
+  return tasks.map((t: any) => ({
+    ...t,
+    completed: t.status === "COMPLETED" || t.completed === true,
+    due_date: t.due_at || t.due_date,
+    priority: t.priority
+      ? (t.priority.charAt(0).toUpperCase() + t.priority.slice(1).toLowerCase() as any)
+      : "Medium",
+  }));
 }
 
-export async function apiCreateTask(
-  payload: { title: string; priority?: string; isTough?: boolean; dueDate?: string },
-  token: string,
-) {
+export interface CreateTaskPayload {
+  title: string;
+  context?: string;
+  dueAt?: string;
+  priority?: "LOW" | "MEDIUM" | "HIGH";
+  isTough?: boolean;
+}
+
+export async function apiCreateTask(payload: CreateTaskPayload, token: string) {
   return request<Task>("/api/v1/tasks", {
     method: "POST",
     body: JSON.stringify(payload),
@@ -276,6 +316,49 @@ export async function apiToggleTaskTough(id: string, token: string) {
   }, token);
 }
 
+export async function apiDeleteTask(id: string, token: string) {
+  return request<{ message: string }>(`/api/v1/tasks/${id}`, {
+    method: "DELETE",
+  }, token);
+}
+
+export async function apiAskSuggestion(
+  taskId: string,
+  payload: { query: string; timeAvailable?: string; skillIds?: string[] },
+  token: string,
+) {
+  return request<{ message: string; requestId: string }>(`/api/v1/tasks/${taskId}/ask-suggestion`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }, token);
+}
+
+export async function apiGetSuggestions(token: string) {
+  return request<any[]>("/api/v1/suggestions", { method: "GET" }, token);
+}
+
+export async function apiGetSuggestionDetails(id: string, token: string) {
+  return request<any>(`/api/v1/suggestions/${id}`, { method: "GET" }, token);
+}
+
+export async function apiRespondSuggestion(
+  id: string,
+  payload: { title: string; description?: string; steps: string[] },
+  token: string,
+) {
+  return request<any>(`/api/v1/suggestions/${id}/respond`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }, token);
+}
+
+export async function apiUsePlan(id: string, responseId: string, token: string) {
+  return request<any>(`/api/v1/suggestions/${id}/use-plan`, {
+    method: "POST",
+    body: JSON.stringify({ responseId }),
+  }, token);
+}
+
 // ─── Notifications ─────────────────────────────────────────────────────────
 
 export interface Notification {
@@ -287,6 +370,120 @@ export interface Notification {
 
 export async function apiGetNotifications(token: string) {
   return request<Notification[]>("/api/v1/notifications", { method: "GET" }, token);
+}
+
+export async function apiMarkNotificationRead(id: string, token: string) {
+  return request<{ message: string }>(`/api/v1/notifications/${id}/read`, { method: "PATCH" }, token);
+}
+
+export async function apiMarkAllNotificationsRead(token: string) {
+  return request<{ message: string }>("/api/v1/notifications/read-all", { method: "POST" }, token);
+}
+
+// ─── Tutor Operations ──────────────────────────────────────────────────────
+
+export interface TutorProfileData {
+  tutor: {
+    id: string;
+    fullName: string;
+    rollNumber: string;
+    department: string;
+    yearOfStudy: number;
+    phone?: string;
+    photoUrl?: string;
+  };
+  proficiencyScore: number;
+  doubtsSolved: number;
+  experience: string;
+  rank: number | null;
+  masteredSkills: Array<{ id: string; name: string; slug: string; category?: string }>;
+}
+
+export interface TutorSession {
+  id: string;
+  doubt_id: string;
+  student_id: string;
+  tutor_id: string;
+  scheduled_start: string;
+  scheduled_end: string;
+  mode: "ONLINE" | "OFFLINE";
+  venue?: string;
+  meeting_url?: string;
+  status: string;
+  student?: {
+    id: string;
+    full_name: string;
+    roll_number: string;
+    department: string;
+  };
+  doubts?: {
+    id: string;
+    description: string;
+    expected_outcome: string;
+  };
+}
+
+export async function apiGetTutorProfile(token: string): Promise<TutorProfileData> {
+  return request<TutorProfileData>("/api/v1/tutor/profile", { method: "GET" }, token);
+}
+
+export async function apiGetTutorDoubts(token: string): Promise<Doubt[]> {
+  const res = await request<any>("/api/v1/tutor/doubts", { method: "GET" }, token);
+  return (Array.isArray(res) ? res : res?.doubts || res?.data || []) as Doubt[];
+}
+
+export async function apiGetTutorSessions(token: string): Promise<TutorSession[]> {
+  const res = await request<any>("/api/v1/tutor/sessions", { method: "GET" }, token);
+  return (Array.isArray(res) ? res : res?.sessions || res?.data || []) as TutorSession[];
+}
+
+export async function apiGetStudentSessions(token: string): Promise<TutorSession[]> {
+  const res = await request<any>("/api/v1/sessions?mode=student", { method: "GET" }, token);
+  return (Array.isArray(res) ? res : res?.sessions || res?.data || []) as TutorSession[];
+}
+
+export async function apiGetTutorLeaderboard(token: string) {
+  return request<{ leaderboard: any[]; currentTutorPosition: any }>("/api/v1/tutor/leaderboard", { method: "GET" }, token);
+}
+
+export async function apiGetTutorProSkills(token: string): Promise<Skill[]> {
+  return request<Skill[]>("/api/v1/tutor/pro-skills", { method: "GET" }, token);
+}
+
+export async function apiSetTutorProSkills(skillIds: string[], token: string): Promise<Skill[]> {
+  return request<Skill[]>("/api/v1/tutor/pro-skills", {
+    method: "PUT",
+    body: JSON.stringify({ skillIds }),
+  }, token);
+}
+
+export async function apiBookDoubt(
+  doubtId: string,
+  payload: {
+    scheduledStart: string;
+    scheduledEnd: string;
+    mode: "ONLINE" | "OFFLINE";
+    venue?: string;
+    meetingUrl?: string;
+  },
+  token: string,
+) {
+  return request<TutorSession>(`/api/v1/doubts/${doubtId}/book`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }, token);
+}
+
+export async function apiCompleteSession(sessionId: string, token: string) {
+  return request<{ message: string }>(`/api/v1/sessions/${sessionId}/complete`, {
+    method: "POST",
+  }, token);
+}
+
+export async function apiConfirmSession(sessionId: string, token: string) {
+  return request<{ message: string }>(`/api/v1/sessions/${sessionId}/confirm`, {
+    method: "POST",
+  }, token);
 }
 
 // ─── Analytics ─────────────────────────────────────────────────────────────
@@ -303,8 +500,121 @@ export async function apiGetCampusStats(token?: string) {
   return request<CampusStats>("/api/v1/analytics/overview", { method: "GET" }, token);
 }
 
+// ─── Resources ─────────────────────────────────────────────────────────────
+
+export interface ResourceItem {
+  id: string;
+  bucket_id: string;
+  title: string;
+  type: "PDF" | "LINK" | "NOTE" | "PHOTO";
+  url?: string;
+  content?: string;
+  created_at: string;
+}
+
+export interface ResourceBucket {
+  id: string;
+  name: string;
+  description?: string;
+  created_at: string;
+  resources: {
+    pdfs: ResourceItem[];
+    links: ResourceItem[];
+    photos: ResourceItem[];
+    notes: ResourceItem[];
+  };
+}
+
+export async function apiGetResources(token: string): Promise<ResourceBucket[]> {
+  const res = await request<any>("/api/v1/resources", { method: "GET" }, token);
+  return (Array.isArray(res) ? res : res?.buckets || res?.data || []) as ResourceBucket[];
+}
+
+export async function apiCreateBucket(payload: { name: string; description?: string }, token: string) {
+  return request<any>("/api/v1/resources/buckets", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }, token);
+}
+
+export async function apiAddResource(
+  payload: { bucketId: string; title: string; type: "PDF" | "LINK" | "NOTE" | "PHOTO"; url?: string; content?: string },
+  token: string,
+) {
+  return request<ResourceItem>("/api/v1/resources", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }, token);
+}
+
+export async function apiDeleteResource(id: string, token: string) {
+  return request<{ message: string }>(`/api/v1/resources/${id}`, {
+    method: "DELETE",
+  }, token);
+}
+
+export interface SharedResourceProposal {
+  id: string;
+  title: string;
+  description?: string;
+  type: string;
+  url?: string;
+  content?: string;
+  target_bucket_name?: string;
+  department?: string;
+  batch?: string;
+  status: "PENDING_VOTES" | "APPROVED" | "REJECTED";
+  upvotes_count: number;
+  downvotes_count: number;
+  expires_at: string;
+  created_at: string;
+  contributor_id: string;
+}
+
+export async function apiGetSharedBuckets(token: string) {
+  return request<any[]>("/api/v1/shared-resources", { method: "GET" }, token);
+}
+
+export async function apiGetProposals(token: string): Promise<SharedResourceProposal[]> {
+  const res = await request<any>("/api/v1/shared-resources/proposals", { method: "GET" }, token);
+  return (Array.isArray(res) ? res : res?.proposals || res?.data || []) as SharedResourceProposal[];
+}
+
+export async function apiProposeSharedResource(payload: any, token: string) {
+  return request<any>("/api/v1/shared-resources/proposals", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  }, token);
+}
+
+export async function apiVoteProposal(proposalId: string, vote: "UP" | "DOWN", token: string) {
+  return request<{ message: string }>(`/api/v1/shared-resources/proposals/${proposalId}/vote`, {
+    method: "POST",
+    body: JSON.stringify({ vote }),
+  }, token);
+}
+
+// ─── Profile Target & Academics ──────────────────────────────────────────
+
+export async function apiUpdateTarget(targetCgpa: number, token: string) {
+  return request<DetailedProfileResponse>("/api/v1/me/target", {
+    method: "PATCH",
+    body: JSON.stringify({ targetCgpa }),
+  }, token);
+}
+
+export async function apiGetDetailedProfile(token: string): Promise<DetailedProfileResponse> {
+  return request<DetailedProfileResponse>("/api/v1/me/profile", { method: "GET" }, token);
+}
+
+export async function apiGetAcademics(token: string) {
+  return request<any[]>("/api/v1/me/academics", { method: "GET" }, token);
+}
+
 // ─── Health ────────────────────────────────────────────────────────────────
 
 export async function apiHealth() {
   return request<{ status: string }>("/api/v1/health", { method: "GET" });
 }
+
+

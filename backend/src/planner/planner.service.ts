@@ -232,6 +232,7 @@ export class PlannerService {
           tutor_id: tutorStudentId,
           title: dto.title.trim(),
           description: dto.description?.trim() || null,
+          suggested_workflow: dto.steps,
           steps: dto.steps,
         },
       ])

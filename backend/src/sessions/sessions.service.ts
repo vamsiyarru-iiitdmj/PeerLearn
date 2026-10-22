@@ -25,13 +25,13 @@ export class SessionsService {
 
     // Call PostgreSQL atomic booking RPC function with row-level lock
     const { data: rpcRes, error: rpcErr } = await admin.database.rpc('book_doubt_atomic', {
-      doubt_id_param: doubtId,
-      tutor_id_param: tutorStudentId,
-      start_time_param: dto.scheduledStart,
-      end_time_param: dto.scheduledEnd,
-      mode_param: dto.mode,
-      venue_param: dto.venue || null,
-      meeting_url_param: dto.meetingUrl || null,
+      p_doubt_id: doubtId,
+      p_tutor_id: tutorStudentId,
+      p_scheduled_start: dto.scheduledStart,
+      p_scheduled_end: dto.scheduledEnd,
+      p_mode: dto.mode,
+      p_venue: dto.venue || null,
+      p_meeting_url: dto.meetingUrl || null,
     });
 
     if (rpcErr) {
@@ -46,7 +46,8 @@ export class SessionsService {
     }
 
     // Retrieve created session with student and doubt details
-    const session = await this.getSessionById(rpcRes.session_id, tutorStudentId);
+    const sessionId = rpcRes.sessionId || rpcRes.session_id;
+    const session = await this.getSessionById(sessionId, tutorStudentId);
 
     // Create system notification for the student
     await admin.database.from('notifications').insert([
@@ -73,7 +74,7 @@ export class SessionsService {
       .from('sessions')
       .select(`
         *,
-        doubts (id, description, expected_outcome),
+        doubts!doubt_id (id, description, expected_outcome),
         student:student_id (id, full_name, roll_number, photo_url, department),
         tutor:tutor_id (id, full_name, roll_number, photo_url, department)
       `)
@@ -102,7 +103,7 @@ export class SessionsService {
       .from('sessions')
       .select(`
         *,
-        doubts (id, description, expected_outcome),
+        doubts!doubt_id (id, description, expected_outcome),
         student:student_id (id, full_name, roll_number, photo_url, department),
         tutor:tutor_id (id, full_name, roll_number, photo_url, department),
         session_ratings (id, rating, is_released)
