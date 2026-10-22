@@ -34,6 +34,10 @@ export class PlannerService {
   async createTask(studentId: string, dto: CreateTaskDto) {
     const admin = this.insforgeService.getAdminClient();
 
+    if (!dto.title || !dto.title.trim()) {
+      throw new BadRequestException('Task title cannot be blank');
+    }
+
     const { data: task, error } = await admin.database
       .from('tasks')
       .insert([
@@ -165,6 +169,8 @@ export class PlannerService {
     if (error) throw new BadRequestException(`Failed to create suggestion request: ${error.message}`);
 
     return {
+      id: request.id,
+      ...request,
       message: 'Suggestion request dispatched to expert peer tutors',
       request,
     };

@@ -4,18 +4,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../../lib/auth-context";
 
-const navItems = [
-  { label: "Home",               icon: "home",           href: "/",                  badge: null },
-  { label: "Doubts",             icon: "help_center",    href: "/doubts",            badge: null },
-  { label: "Planner & To-Do",   icon: "checklist",      href: "/planner",           badge: null },
-  { label: "Resources",          icon: "folder_open",    href: "/resources",         badge: null },
-  { label: "Analytics & Ranks", icon: "insights",        href: "/analytics",         badge: null },
-  { label: "My Profile",         icon: "account_circle", href: "/profile",           badge: null },
+const studentNavItems = [
+  { label: "Home", icon: "home", href: "/", badge: null },
+  { label: "Doubts", icon: "help_center", href: "/doubts", badge: null },
+  { label: "Planner & To-Do", icon: "checklist", href: "/planner", badge: null },
+  { label: "Resources", icon: "folder_open", href: "/resources", badge: null },
+  { label: "Analytics & Ranks", icon: "insights", href: "/analytics", badge: null },
+  { label: "My Profile", icon: "account_circle", href: "/profile?view=student", badge: null },
+];
+
+const tutorNavItems = [
+  { label: "Tutor Home", icon: "home", href: "/", badge: null },
+  { label: "Matched Inbox", icon: "inbox", href: "/doubts?tab=matched", badge: "3 ready" },
+  { label: "Booked Sessions", icon: "calendar_month", href: "/sessions", badge: null },
+  { label: "Leaderboard", icon: "military_tech", href: "/analytics?tab=leaderboard", badge: "#7" },
+  { label: "Campus Analytics", icon: "insights", href: "/analytics", badge: null },
+  { label: "Tutor Profile", icon: "account_circle", href: "/profile?view=tutor", badge: null },
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
   const { student, logout, mode } = useAuth();
+  const navItems = mode === "tutor" ? tutorNavItems : studentNavItems;
 
   return (
     <aside
@@ -36,25 +46,35 @@ export default function Sidebar() {
             >
               {mode === "tutor" ? "Tutor Mode" : "Student Mode"}
             </span>
-            <span
-              className="w-2 h-2 rounded-full"
-              style={{
-                backgroundColor:
-                  mode === "tutor" ? "var(--color-tertiary)" : "var(--color-secondary)",
-              }}
-            />
+            {mode === "tutor" ? (
+              <span
+                className="inline-flex items-center gap-1 font-label-sm text-[11px] font-bold"
+                style={{ color: "var(--color-secondary)" }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "var(--color-secondary)" }} />
+                Rank #7
+              </span>
+            ) : (
+              <span
+                className="w-2 h-2 rounded-full"
+                style={{ backgroundColor: "var(--color-secondary)" }}
+              />
+            )}
           </div>
 
           {/* Nav links */}
           <nav className="flex flex-col gap-0.5" aria-label="Main navigation">
             {navItems.map((item) => {
+              const baseHref = item.href.split("?")[0];
               const isActive =
                 item.href === "/"
                   ? pathname === "/"
-                  : pathname.startsWith(item.href);
+                  : baseHref === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(baseHref);
               return (
                 <Link
-                  key={item.href}
+                  key={item.label}
                   href={item.href}
                   className="w-full flex items-center justify-between px-4 py-2.5 rounded-[10px] transition-all text-left"
                   style={{
@@ -107,12 +127,20 @@ export default function Sidebar() {
           className="p-3 rounded-[10px] flex items-center gap-3"
           style={{ backgroundColor: "var(--color-surface-container)" }}
         >
-          <span
-            className="material-symbols-outlined text-[18px]"
-            style={{ color: "var(--color-primary-container)" }}
-          >
-            verified
-          </span>
+          {student?.photo_url ? (
+            <img
+              src={student.photo_url}
+              alt={student.full_name || "Profile"}
+              className="w-8 h-8 rounded-full object-cover shrink-0"
+            />
+          ) : (
+            <span
+              className="material-symbols-outlined text-[18px]"
+              style={{ color: "var(--color-primary-container)" }}
+            >
+              verified
+            </span>
+          )}
           <div className="flex flex-col min-w-0">
             <span
               className="font-title-sm text-[13px] leading-snug truncate"

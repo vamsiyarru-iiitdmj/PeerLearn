@@ -62,6 +62,8 @@ export class SessionsService {
     ]);
 
     return {
+      id: session.id,
+      ...session,
       message: 'Session successfully booked (atomic winner confirmation)',
       session,
     };
@@ -131,7 +133,15 @@ export class SessionsService {
       delete session.session_ratings;
     }
 
-    return session;
+    const normalizedStatus = session.status === 'COMPLETED_PENDING_CONFIRMATION'
+      ? 'SESSION_COMPLETED_PENDING_CONFIRMATION'
+      : session.status;
+
+    return {
+      ...session,
+      status: normalizedStatus,
+      dbStatus: session.status,
+    };
   }
 
   async completeSession(sessionId: string, tutorStudentId: string) {
@@ -190,8 +200,14 @@ export class SessionsService {
     ]);
 
     return {
+      id: updated.id,
+      ...updated,
+      status: 'SESSION_COMPLETED_PENDING_CONFIRMATION',
       message: 'Session marked as complete. Awaiting student confirmation and rating.',
-      session: updated,
+      session: {
+        ...updated,
+        status: 'SESSION_COMPLETED_PENDING_CONFIRMATION',
+      },
     };
   }
 
@@ -222,12 +238,20 @@ export class SessionsService {
     if (error) throw new BadRequestException(`Failed to confirm session: ${error.message}`);
 
     // Mark doubt as solved
-    await admin.database
-      .from('doubts')
-      .update({ status: 'SOLVED', closed_at: new Date().toISOString() })
-      .eq('id', session.doubt_id);
+    if (session.doubt_id) {
+      await admin.database
+        .from('doubts')
+        .update({ status: 'SOLVED', closed_at: new Date().toISOString() })
+        .eq('id', session.doubt_id);
+    }
 
-    return { message: 'Session confirmed as successfully held', session: updated };
+    return {
+      id: updated.id,
+      ...updated,
+      status: 'CONFIRMED',
+      message: 'Session confirmed as successfully held',
+      session: updated,
+    };
   }
 
   async requestReplacement(sessionId: string, tutorStudentId: string, dto: RequestReplacementDto) {

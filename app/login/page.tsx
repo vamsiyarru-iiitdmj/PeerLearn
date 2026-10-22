@@ -3,10 +3,17 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth-context";
-import { apiRegisterStart, apiRegisterVerify, ApiError } from "../../lib/api";
+import {
+  apiRegisterStart,
+  apiRegisterVerify,
+  apiForgotPassword,
+  apiResetPassword,
+  ApiError,
+} from "../../lib/api";
 
-type Tab = "login" | "register";
+type Tab = "login" | "register" | "forgot";
 type RegStep = "start" | "verify";
+type ForgotStep = "request" | "verify";
 
 export default function LoginPage() {
   const { login, loading, error, clearError, token, setSession } = useAuth();
@@ -28,6 +35,75 @@ export default function LoginPage() {
     e.preventDefault();
     clearError();
     await login({ instituteEmail: loginEmail.trim(), password: loginPassword });
+  };
+
+  // ── Forgot Password form ────────────────────────────────────────────────
+  const [forgotStep, setForgotStep] = useState<ForgotStep>("request");
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotOtp, setForgotOtp] = useState("");
+  const [forgotNewPassword, setForgotNewPassword] = useState("");
+  const [forgotConfirmPassword, setForgotConfirmPassword] = useState("");
+  const [showForgotPw, setShowForgotPw] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotError, setForgotError] = useState<string | null>(null);
+  const [forgotSuccess, setForgotSuccess] = useState<string | null>(null);
+
+  const handleForgotRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotError(null);
+    setForgotSuccess(null);
+    setForgotLoading(true);
+    try {
+      const res = await apiForgotPassword({ instituteEmail: forgotEmail.trim() });
+      const msg = res.devOtpCode
+        ? `${res.message} (Dev OTP: ${res.devOtpCode})`
+        : res.message || "OTP sent to your institute email!";
+      setForgotSuccess(msg);
+      if (res.devOtpCode) {
+        setForgotOtp(res.devOtpCode);
+      }
+      setForgotStep("verify");
+    } catch (err) {
+      setForgotError(err instanceof ApiError ? err.message : "Failed to send reset OTP. Check your institute email.");
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
+  const handleForgotReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotError(null);
+    if (forgotNewPassword.length < 6) {
+      setForgotError("Password must be at least 6 characters.");
+      return;
+    }
+    if (forgotNewPassword !== forgotConfirmPassword) {
+      setForgotError("Passwords do not match.");
+      return;
+    }
+    setForgotLoading(true);
+    try {
+      await apiResetPassword({
+        instituteEmail: forgotEmail.trim(),
+        otp: forgotOtp.trim(),
+        newPassword: forgotNewPassword,
+      });
+      setForgotSuccess("Password reset successfully! Redirecting to sign in…");
+      setLoginEmail(forgotEmail.trim());
+      setLoginPassword(forgotNewPassword);
+      setTimeout(() => {
+        setTab("login");
+        setForgotStep("request");
+        setForgotOtp("");
+        setForgotNewPassword("");
+        setForgotConfirmPassword("");
+        setForgotSuccess(null);
+      }, 1500);
+    } catch (err) {
+      setForgotError(err instanceof ApiError ? err.message : "Password reset failed. Check your OTP.");
+    } finally {
+      setForgotLoading(false);
+    }
   };
 
   // ── Register form ───────────────────────────────────────────────────────
@@ -97,6 +173,9 @@ export default function LoginPage() {
     setRegError(null);
     setRegSuccess(null);
     setRegStep("start");
+    setForgotError(null);
+    setForgotSuccess(null);
+    setForgotStep("request");
   };
 
   return (
@@ -193,46 +272,246 @@ export default function LoginPage() {
 
         {/* Card */}
         <div className="card" style={{ padding: "2rem" }}>
-          {/* Tab switcher */}
-          <div
-            style={{
-              display: "flex",
-              backgroundColor: "var(--color-surface-container)",
-              borderRadius: "var(--radius-md)",
-              padding: 4,
-              marginBottom: "1.75rem",
-            }}
-          >
-            {(["login", "register"] as Tab[]).map((t) => (
+          {/* Tab switcher / Back button */}
+          {tab === "forgot" ? (
+            <div style={{ marginBottom: "1.5rem" }}>
               <button
-                key={t}
-                onClick={() => switchTab(t)}
+                type="button"
+                onClick={() => switchTab("login")}
                 style={{
-                  flex: 1,
-                  padding: "0.5rem",
-                  borderRadius: "var(--radius)",
+                  background: "none",
                   border: "none",
-                  cursor: "pointer",
-                  fontFamily: "var(--font-jakarta)",
-                  fontSize: 14,
+                  color: "var(--color-primary)",
+                  fontSize: 13,
                   fontWeight: 600,
-                  transition: "all 0.15s ease",
-                  backgroundColor:
-                    tab === t
-                      ? "var(--color-surface-container-lowest)"
-                      : "transparent",
-                  color:
-                    tab === t
-                      ? "var(--color-primary)"
-                      : "var(--color-on-surface-variant)",
-                  boxShadow:
-                    tab === t ? "0 1px 3px rgba(0,0,0,0.07)" : "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  padding: "4px 0",
+                  marginBottom: "1rem",
                 }}
               >
-                {t === "login" ? "Sign In" : "Register"}
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_back</span>
+                Back to Sign In
               </button>
-            ))}
-          </div>
+              <h2
+                style={{
+                  fontFamily: "var(--font-newsreader)",
+                  fontSize: 22,
+                  fontWeight: 600,
+                  color: "var(--color-primary)",
+                  margin: 0,
+                }}
+              >
+                Reset Password
+              </h2>
+              <p style={{ fontSize: 13, color: "var(--color-on-surface-variant)", marginTop: 4, marginBottom: 0 }}>
+                {forgotStep === "request"
+                  ? "Enter your verified IIITDMJ institute email to receive a 6-digit OTP."
+                  : `Enter the OTP sent to ${forgotEmail} and set your new password.`}
+              </p>
+            </div>
+          ) : (
+            <div
+              style={{
+                display: "flex",
+                backgroundColor: "var(--color-surface-container)",
+                borderRadius: "var(--radius-md)",
+                padding: 4,
+                marginBottom: "1.75rem",
+              }}
+            >
+              {(["login", "register"] as Tab[]).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => switchTab(t)}
+                  style={{
+                    flex: 1,
+                    padding: "0.5rem",
+                    borderRadius: "var(--radius)",
+                    border: "none",
+                    cursor: "pointer",
+                    fontFamily: "var(--font-jakarta)",
+                    fontSize: 14,
+                    fontWeight: 600,
+                    transition: "all 0.15s ease",
+                    backgroundColor:
+                      tab === t
+                        ? "var(--color-surface-container-lowest)"
+                        : "transparent",
+                    color:
+                      tab === t
+                        ? "var(--color-primary)"
+                        : "var(--color-on-surface-variant)",
+                    boxShadow:
+                      tab === t ? "0 1px 3px rgba(0,0,0,0.07)" : "none",
+                  }}
+                >
+                  {t === "login" ? "Sign In" : "Register"}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* ── FORGOT PASSWORD FLOW ────────────────────────────────────── */}
+          {tab === "forgot" && forgotStep === "request" && (
+            <form onSubmit={handleForgotRequest} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              <InfoBox message="A 6-digit verification code will be sent to your official @iiitdmj.ac.in inbox." />
+
+              <div>
+                <label htmlFor="forgot-email" style={labelStyle}>Institute Email</label>
+                <input
+                  id="forgot-email"
+                  name="instituteEmail"
+                  type="email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  placeholder="rollno@iiitdmj.ac.in"
+                  required
+                  style={inputStyle}
+                  autoComplete="email"
+                />
+              </div>
+
+              {forgotError && <ErrorBox message={forgotError} />}
+              {forgotSuccess && <SuccessBox message={forgotSuccess} />}
+
+              <button
+                type="submit"
+                disabled={forgotLoading}
+                className="btn-primary"
+                style={{ width: "100%", justifyContent: "center", marginTop: 4, opacity: forgotLoading ? 0.7 : 1 }}
+              >
+                {forgotLoading ? (
+                  <>
+                    <span className="material-symbols-outlined" style={{ fontSize: 16, animation: "spin 1s linear infinite" }}>
+                      progress_activity
+                    </span>
+                    Sending OTP…
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined" style={{ fontSize: 16 }}>send</span>
+                    Send Reset OTP
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
+          {tab === "forgot" && forgotStep === "verify" && (
+            <form onSubmit={handleForgotReset} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {forgotSuccess && <SuccessBox message={forgotSuccess} />}
+
+              <div>
+                <label htmlFor="forgot-otp" style={labelStyle}>6-Digit OTP</label>
+                <input
+                  id="forgot-otp"
+                  name="otp"
+                  type="text"
+                  value={forgotOtp}
+                  onChange={(e) => setForgotOtp(e.target.value)}
+                  placeholder="123456"
+                  maxLength={6}
+                  required
+                  style={{
+                    ...inputStyle,
+                    letterSpacing: "0.25em",
+                    fontWeight: 700,
+                    fontSize: 16,
+                    textAlign: "center",
+                  }}
+                  autoComplete="one-time-code"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="forgot-new-password" style={labelStyle}>New Password</label>
+                <div style={{ position: "relative" }}>
+                  <input
+                    id="forgot-new-password"
+                    name="newPassword"
+                    type={showForgotPw ? "text" : "password"}
+                    value={forgotNewPassword}
+                    onChange={(e) => setForgotNewPassword(e.target.value)}
+                    placeholder="At least 6 characters"
+                    required
+                    minLength={6}
+                    style={{ ...inputStyle, paddingRight: 44 }}
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowForgotPw((v) => !v)}
+                    style={pwToggleStyle}
+                    tabIndex={-1}
+                    aria-label={showForgotPw ? "Hide password" : "Show password"}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
+                      {showForgotPw ? "visibility_off" : "visibility"}
+                    </span>
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="forgot-confirm-password" style={labelStyle}>Confirm New Password</label>
+                <input
+                  id="forgot-confirm-password"
+                  name="confirmPassword"
+                  type={showForgotPw ? "text" : "password"}
+                  value={forgotConfirmPassword}
+                  onChange={(e) => setForgotConfirmPassword(e.target.value)}
+                  placeholder="Repeat new password"
+                  required
+                  minLength={6}
+                  style={inputStyle}
+                  autoComplete="new-password"
+                />
+              </div>
+
+              {forgotError && <ErrorBox message={forgotError} />}
+
+              <button
+                type="submit"
+                disabled={forgotLoading}
+                className="btn-primary"
+                style={{ width: "100%", justifyContent: "center", marginTop: 4, opacity: forgotLoading ? 0.7 : 1 }}
+              >
+                {forgotLoading ? (
+                  <>
+                    <span className="material-symbols-outlined" style={{ fontSize: 16, animation: "spin 1s linear infinite" }}>
+                      progress_activity
+                    </span>
+                    Resetting Password…
+                  </>
+                ) : (
+                  <>
+                    <span className="material-symbols-outlined" style={{ fontSize: 16 }}>lock_reset</span>
+                    Reset Password & Sign In
+                  </>
+                )}
+              </button>
+
+              <div style={{ textAlign: "center", marginTop: 4 }}>
+                <button
+                  type="button"
+                  onClick={() => setForgotStep("request")}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: "var(--color-primary)",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: "pointer",
+                  }}
+                >
+                  Didn&apos;t receive code? Resend OTP
+                </button>
+              </div>
+            </form>
+          )}
 
           {/* ── LOGIN FORM ──────────────────────────────────────────────── */}
           {tab === "login" && (
@@ -252,7 +531,27 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label htmlFor="login-password" style={labelStyle}>Password</label>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                  <label htmlFor="login-password" style={{ ...labelStyle, marginBottom: 0 }}>Password</label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setForgotEmail(loginEmail);
+                      switchTab("forgot");
+                    }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      color: "var(--color-primary)",
+                      fontSize: 12,
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      padding: 0,
+                    }}
+                  >
+                    Forgot password?
+                  </button>
+                </div>
                 <div style={{ position: "relative" }}>
                   <input
                     id="login-password"

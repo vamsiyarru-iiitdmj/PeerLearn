@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate {
       const { data: students } = await admin.database
         .from('students')
         .select('id, roll_number, full_name, institute_email')
-        .eq('auth_user_id', user.id)
+        .or(`auth_user_id.eq.${user.id},id.eq.${user.id}`)
         .limit(1);
 
       const student = students && students.length > 0 ? students[0] : null;

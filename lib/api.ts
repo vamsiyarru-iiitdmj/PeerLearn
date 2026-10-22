@@ -94,6 +94,7 @@ export interface StudentProfile {
   current_cgpa?: number;
   target_cgpa?: number;
   photo_url?: string;
+  phone?: string;
   onboarding_completed?: boolean;
 }
 
@@ -166,6 +167,45 @@ export async function apiLogout(token: string) {
     method: "POST",
   }, token);
 }
+
+export interface ForgotPasswordPayload {
+  instituteEmail: string;
+}
+
+export interface ForgotPasswordResponse {
+  message: string;
+  instituteEmail?: string;
+  otp?: string;
+  code?: string;
+  devOtpCode?: string;
+  success?: boolean;
+}
+
+export interface ResetPasswordPayload {
+  instituteEmail: string;
+  otp: string;
+  newPassword: string;
+}
+
+export interface ResetPasswordResponse {
+  message: string;
+  success?: boolean;
+}
+
+export async function apiForgotPassword(payload: ForgotPasswordPayload) {
+  return request<ForgotPasswordResponse>("/api/v1/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function apiResetPassword(payload: ResetPasswordPayload) {
+  return request<ResetPasswordResponse>("/api/v1/auth/reset-password", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}
+
 
 // ─── Students / Profile ───────────────────────────────────────────────────
 
@@ -609,6 +649,31 @@ export async function apiUpdateTarget(targetCgpa: number, token: string) {
     method: "PATCH",
     body: JSON.stringify({ targetCgpa }),
   }, token);
+}
+
+export interface UpdateProfilePayload {
+  phone?: string;
+  photoUrl?: string;
+  targetCgpa?: number;
+}
+
+export async function apiUpdateProfile(payload: UpdateProfilePayload, token: string) {
+  return request<any>("/api/v1/me/profile", {
+    method: "PATCH",
+    body: JSON.stringify(payload),
+  }, token);
+}
+
+export function formatDate(val?: string | null): string {
+  if (!val) return "—";
+  const d = new Date(val);
+  return isNaN(d.getTime()) ? "—" : d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+export function formatDateTime(val?: string | null): string {
+  if (!val) return "—";
+  const d = new Date(val);
+  return isNaN(d.getTime()) ? "—" : d.toLocaleString("en-US", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
 export async function apiGetDetailedProfile(token: string): Promise<DetailedProfileResponse> {

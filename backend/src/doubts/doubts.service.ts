@@ -26,6 +26,13 @@ export class DoubtsService {
   async createDoubt(studentId: string, dto: CreateDoubtDto) {
     const admin = this.insforgeService.getAdminClient();
 
+    if (!dto.description || !dto.description.trim()) {
+      throw new BadRequestException('Description cannot be blank');
+    }
+    if (!dto.expectedOutcome || !dto.expectedOutcome.trim()) {
+      throw new BadRequestException('Expected outcome cannot be blank');
+    }
+
     if (!dto.tagIds || dto.tagIds.length === 0) {
       throw new BadRequestException('At least one skill tag is required to post a doubt');
     }
@@ -74,9 +81,16 @@ export class DoubtsService {
     await admin.database.from('doubt_tags').insert(tagInserts);
 
     return {
+      id: doubt.id,
+      ...doubt,
+      createdAt: doubt.created_at,
+      expiresAt: doubt.expires_at,
+      tags: validSkills,
       message: 'Doubt published successfully to matching tutors',
       doubt: {
         ...doubt,
+        createdAt: doubt.created_at,
+        expiresAt: doubt.expires_at,
         tags: validSkills,
       },
     };

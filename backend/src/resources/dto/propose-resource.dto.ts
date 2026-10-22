@@ -15,10 +15,10 @@ export enum ProposalType {
 }
 
 export class ProposeResourceDto {
-  @ApiProperty({ enum: ProposalType, example: ProposalType.NEW_RESOURCE })
+  @ApiPropertyOptional({ enum: ProposalType, example: ProposalType.NEW_RESOURCE })
+  @IsOptional()
   @IsEnum(ProposalType)
-  @IsNotEmpty()
-  proposalType: ProposalType;
+  proposalType?: ProposalType = ProposalType.NEW_RESOURCE;
 
   @ApiProperty({ example: 'Operating Systems Endsem Solved PYQs' })
   @IsString()
@@ -37,8 +37,11 @@ export class ProposeResourceDto {
 
   @ApiPropertyOptional({ enum: ResourceType, example: ResourceType.PDF })
   @IsOptional()
-  @IsEnum(ResourceType)
-  resourceType?: ResourceType;
+  resourceType?: any;
+
+  @ApiPropertyOptional({ example: 'PDF' })
+  @IsOptional()
+  type?: any;
 
   @ApiPropertyOptional({ example: 'shared/os-pyqs.pdf' })
   @IsOptional()
@@ -49,6 +52,16 @@ export class ProposeResourceDto {
   @IsOptional()
   @IsString()
   externalUrl?: string;
+
+  @ApiPropertyOptional({ example: 'https://iiitdmj.ac.in/academics/...' })
+  @IsOptional()
+  @IsString()
+  url?: string;
+
+  @ApiPropertyOptional({ example: 'CSE 2025 Shared Vault' })
+  @IsOptional()
+  @IsString()
+  targetBucketName?: string;
 
   @ApiPropertyOptional({ example: 'CSE' })
   @IsOptional()
@@ -62,8 +75,7 @@ export class ProposeResourceDto {
 }
 
 export class VoteProposalDto {
-  @ApiProperty({ example: true, description: 'True for Approve, False for Reject' })
-  @IsBoolean()
+  @ApiProperty({ example: true, description: 'True for Approve, False for Reject, or UP/DOWN' })
   @IsNotEmpty()
-  vote: boolean;
+  vote: any;
 }

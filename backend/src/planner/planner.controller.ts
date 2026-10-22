@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Delete,
   Body,
   Param,
@@ -40,6 +41,7 @@ export class PlannerController {
     return this.plannerService.createTask(user.studentId, dto);
   }
 
+  @Patch('tasks/:id/toggle')
   @Post('tasks/:id/complete')
   @ApiOperation({ summary: 'Toggle task completion status' })
   async toggleComplete(
@@ -50,6 +52,7 @@ export class PlannerController {
     return this.plannerService.toggleTaskComplete(id, user.studentId);
   }
 
+  @Patch('tasks/:id/tough')
   @Post('tasks/:id/toggle-tough')
   @ApiOperation({ summary: 'Toggle tough flag on task' })
   async toggleTough(
@@ -72,6 +75,7 @@ export class PlannerController {
 
   // --- Ask Suggestion ---
 
+  @Post('tasks/:id/suggestions')
   @Post('tasks/:id/ask-suggestion')
   @ApiOperation({ summary: 'Ask peer tutors for a recommended study plan/workflow on a tough task' })
   async askSuggestion(
@@ -83,6 +87,7 @@ export class PlannerController {
     return this.plannerService.askSuggestion(taskId, user.studentId, dto);
   }
 
+  @Get('tasks/suggestions/feed')
   @Get('suggestions')
   @ApiOperation({ summary: 'Get open suggestion requests for tutors' })
   async getSuggestions() {

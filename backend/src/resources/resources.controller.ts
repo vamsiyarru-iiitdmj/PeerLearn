@@ -8,6 +8,8 @@ import {
   Query,
   UseGuards,
   UnauthorizedException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { ResourcesService } from './resources.service';
@@ -92,6 +94,7 @@ export class ResourcesController {
   }
 
   @Post('shared-resources/proposals/:id/vote')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Cast vote on shared resource proposal (contributor cannot vote on own proposal)' })
   async voteOnProposal(
     @CurrentUser() user: AuthUser,

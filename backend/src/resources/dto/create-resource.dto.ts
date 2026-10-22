@@ -13,6 +13,7 @@ export enum ResourceType {
   LINK = 'LINK',
   PHOTO = 'PHOTO',
   TEXT = 'TEXT',
+  NOTE = 'NOTE',
 }
 
 export class CreateResourceDto {
@@ -50,4 +51,9 @@ export class CreateResourceDto {
   @IsOptional()
   @IsString()
   textContent?: string;
+
+  @ApiPropertyOptional({ example: 'Notes content' })
+  @IsOptional()
+  @IsString()
+  content?: string;
 }

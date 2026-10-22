@@ -7,6 +7,8 @@ import {
   Query,
   UseGuards,
   UnauthorizedException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { SessionsService } from './sessions.service';
@@ -62,6 +64,7 @@ export class SessionsController {
   }
 
   @Post('sessions/:id/complete')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Tutor marks session as completed' })
   async completeSession(
     @CurrentUser() user: AuthUser,
@@ -72,6 +75,7 @@ export class SessionsController {
   }
 
   @Post('sessions/:id/confirm')
+  @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Student confirms session completion' })
   async confirmSession(
     @CurrentUser() user: AuthUser,

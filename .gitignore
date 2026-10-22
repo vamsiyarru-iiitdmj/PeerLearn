@@ -56,3 +56,4 @@ next-env.d.ts
 .windsurf
 testsprite_tests/tmp/
 testsprite_tests/tmp/config.json
+scratch/

@@ -87,42 +87,51 @@ export class ResourcesService {
       throw new ForbiddenException('You can only add resources to your own buckets');
     }
 
+    const mappedType = (dto.type as any) === 'NOTE' ? 'TEXT' : dto.type;
+
     const { data: resource, error } = await admin.database
       .from('resources')
       .insert([
         {
           bucket_id: dto.bucketId,
           owner_id: studentId,
-          type: dto.type,
+          type: mappedType,
           title: dto.title.trim(),
           description: dto.description?.trim() || null,
           storage_key: dto.storageKey || null,
           external_url: dto.externalUrl || null,
-          text_content: dto.textContent || null,
+          text_content: dto.textContent || (dto as any).content || null,
         },
       ])
       .select()
       .single();
 
     if (error) throw new BadRequestException(`Failed to create resource: ${error.message}`);
-    return resource;
+    return {
+      id: resource.id,
+      ...resource,
+      type: dto.type,
+      content: resource.text_content,
+    };
   }
 
   async deleteResource(resourceId: string, studentId: string) {
     const admin = this.insforgeService.getAdminClient();
 
-    const { data: resource } = await admin.database
+    const { data: resources, error: findError } = await admin.database
       .from('resources')
       .select('id, owner_id')
-      .eq('id', resourceId)
-      .single();
+      .eq('id', resourceId);
 
+    if (findError) throw new BadRequestException(`Failed to find resource: ${findError.message}`);
+    const resource = resources && resources.length > 0 ? resources[0] : null;
     if (!resource) throw new NotFoundException('Resource not found');
     if (resource.owner_id !== studentId) {
       throw new ForbiddenException('You can only delete your own resources');
     }
 
-    await admin.database.from('resources').delete().eq('id', resourceId);
+    const { error: delError } = await admin.database.from('resources').delete().eq('id', resourceId);
+    if (delError) throw new BadRequestException(`Failed to delete resource: ${delError.message}`);
     return { message: 'Resource deleted successfully' };
   }
 
@@ -198,6 +207,39 @@ export class ResourcesService {
     // 1-day timer for voting
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
 
+    let bucketId = (dto as any).targetBucketId || (dto as any).bucketId;
+    if (!bucketId) {
+      const targetName = (dto as any).targetBucketName || 'Computer Science Core Materials';
+      const { data: existingBucket } = await admin.database
+        .from('shared_resource_buckets')
+        .select('id')
+        .ilike('name', `%${targetName}%`)
+        .limit(1);
+
+      if (existingBucket && existingBucket.length > 0) {
+        bucketId = existingBucket[0].id;
+      } else {
+        const { data: anyBucket } = await admin.database
+          .from('shared_resource_buckets')
+          .select('id')
+          .limit(1);
+        if (anyBucket && anyBucket.length > 0) {
+          bucketId = anyBucket[0].id;
+        } else {
+          const { data: newB } = await admin.database
+            .from('shared_resource_buckets')
+            .insert([{
+              name: targetName,
+              department: dto.department || 'CSE',
+              batch: dto.batch || '2025'
+            }])
+            .select()
+            .single();
+          bucketId = newB?.id;
+        }
+      }
+    }
+
     const { data: proposal, error } = await admin.database
       .from('resource_proposals')
       .insert([
@@ -206,7 +248,7 @@ export class ResourcesService {
           type: (dto as any).type || dto.resourceType || 'PDF',
           title: dto.title.trim(),
           description: dto.description?.trim() || null,
-          bucket_id: (dto as any).targetBucketId || (dto as any).bucketId || null,
+          bucket_id: bucketId,
           storage_key: dto.storageKey || null,
           external_url: dto.externalUrl || (dto as any).url || null,
           department: dto.department || 'CSE',
@@ -221,6 +263,8 @@ export class ResourcesService {
     if (error) throw new BadRequestException(`Failed to propose shared resource: ${error.message}`);
 
     return {
+      id: proposal.id,
+      ...proposal,
       message: 'Resource proposed to community! 24-hour voting has begun.',
       proposal,
     };
@@ -247,17 +291,20 @@ export class ResourcesService {
       throw new ForbiddenException('Contributors cannot vote on their own proposals');
     }
 
+    const isUpvote = dto.vote === true || dto.vote === 'UP' || dto.vote === 'APPROVE' || dto.vote === '+1';
+    const voteStr = isUpvote ? 'APPROVE' : 'REJECT';
+
     // 3. Record vote (UNIQUE(proposal_id, voter_id))
     const { error: voteErr } = await admin.database.from('resource_votes').insert([
       {
         proposal_id: proposalId,
         voter_id: voterStudentId,
-        vote: dto.vote,
+        vote: voteStr,
       },
     ]);
 
     if (voteErr) {
-      if (voteErr.message?.includes('duplicate') || voteErr.code === '23505') {
+      if (voteErr.message?.includes('duplicate') || voteErr.code === '23505' || voteErr.message?.includes('unique')) {
         throw new ConflictException('You have already cast your vote on this proposal');
       }
       throw new BadRequestException(voteErr.message);
@@ -269,8 +316,8 @@ export class ResourcesService {
       .select('vote')
       .eq('proposal_id', proposalId);
 
-    const approveCount = (allVotes || []).filter((v: any) => v.vote === true).length;
-    const rejectCount = (allVotes || []).filter((v: any) => v.vote === false).length;
+    const approveCount = (allVotes || []).filter((v: any) => v.vote === 'APPROVE' || v.vote === true).length;
+    const rejectCount = (allVotes || []).filter((v: any) => v.vote === 'REJECT' || v.vote === false).length;
 
     // Minimum 3 approve votes with majority to accept
     if (approveCount >= 3 && approveCount > rejectCount) {

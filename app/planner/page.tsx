@@ -524,10 +524,12 @@ export default function PlannerPage() {
 
             <form onSubmit={handleCreateTask} className="space-y-4">
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
+                <label htmlFor="task-form-title" className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
                   Task Title *
                 </label>
                 <input
+                  id="task-form-title"
+                  name="taskTitle"
                   type="text"
                   required
                   placeholder="e.g. Master Dynamic Programming knapsack variants"
@@ -539,10 +541,12 @@ export default function PlannerPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
+                <label htmlFor="task-form-context" className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
                   Context / Notes (Optional)
                 </label>
                 <textarea
+                  id="task-form-context"
+                  name="taskContext"
                   rows={2}
                   placeholder="e.g. Chapter 6 textbook exercises, CLRS problem set 2"
                   value={newContext}
@@ -554,10 +558,12 @@ export default function PlannerPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
+                  <label htmlFor="task-form-due-date" className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
                     Due Date &amp; Time
                   </label>
                   <input
+                    id="task-form-due-date"
+                    name="taskDueDate"
                     type="datetime-local"
                     value={newDueDate}
                     onChange={(e) => setNewDueDate(e.target.value)}
@@ -567,10 +573,12 @@ export default function PlannerPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
+                  <label htmlFor="task-form-priority" className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
                     Priority
                   </label>
                   <select
+                    id="task-form-priority"
+                    name="taskPriority"
                     value={newPriority}
                     onChange={(e) => setNewPriority(e.target.value as any)}
                     className="w-full px-3 py-2 rounded-lg border text-sm bg-white"
@@ -587,6 +595,7 @@ export default function PlannerPage() {
                 <input
                   type="checkbox"
                   id="newIsTough"
+                  name="isTough"
                   checked={newIsTough}
                   onChange={(e) => setNewIsTough(e.target.checked)}
                   className="w-4 h-4 cursor-pointer"
@@ -659,10 +668,12 @@ export default function PlannerPage() {
             ) : (
               <form onSubmit={handleAskSuggestion} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
+                  <label htmlFor="suggestion-form-query" className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
                     What specific part is blocking you? *
                   </label>
                   <textarea
+                    id="suggestion-form-query"
+                    name="suggestionQuery"
                     required
                     rows={3}
                     placeholder="e.g. Stuck on how to define the state transitions for 2D matrix DP and space optimization."
@@ -674,10 +685,12 @@ export default function PlannerPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
+                  <label htmlFor="suggestion-form-time" className="block text-xs font-bold uppercase tracking-wider mb-1" style={{ color: "var(--color-on-surface-variant)" }}>
                     Time Available for Study Plan
                   </label>
                   <input
+                    id="suggestion-form-time"
+                    name="suggestionTimeAvailable"
                     type="text"
                     placeholder="e.g. 2 hours this evening, 4 hours on Saturday"
                     value={suggestionTime}

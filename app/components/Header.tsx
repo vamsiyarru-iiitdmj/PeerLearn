@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth-context";
 import {
   apiGetNotifications,
@@ -11,6 +12,7 @@ import {
 } from "../../lib/api";
 
 export default function Header() {
+  const router = useRouter();
   const { mode, setMode, student, logout, loading, token } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -140,7 +142,10 @@ export default function Header() {
             <button
               key={m}
               id={`mode-toggle-${m}`}
-              onClick={() => setMode(m)}
+              onClick={() => {
+                setMode(m);
+                router.push("/");
+              }}
               aria-pressed={mode === m}
               className="min-w-[108px] px-5 py-2 rounded-full transition-all text-sm font-semibold capitalize cursor-pointer"
               style={{
@@ -266,14 +271,22 @@ export default function Header() {
                 style={{ background: "none", border: "none", padding: 0 }}
               >
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold overflow-hidden"
                   style={{
                     backgroundColor: "var(--color-primary-container)",
                     color: "var(--color-on-primary)",
                     fontFamily: "var(--font-jakarta)",
                   }}
                 >
-                  {initials}
+                  {student?.photo_url ? (
+                    <img
+                      src={student.photo_url}
+                      alt={student.full_name || "Profile"}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    initials
+                  )}
                 </div>
               </button>
             </div>

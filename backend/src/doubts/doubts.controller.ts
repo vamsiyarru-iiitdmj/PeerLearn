@@ -8,6 +8,8 @@ import {
   Query,
   UseGuards,
   UnauthorizedException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { DoubtsService } from './doubts.service';
@@ -51,6 +53,7 @@ export class DoubtsController {
     return this.doubtsService.getDoubtById(id);
   }
 
+  @HttpCode(HttpStatus.OK)
   @Post(':id/withdraw')
   @ApiOperation({ summary: 'Withdraw an open doubt' })
   async withdrawDoubt(

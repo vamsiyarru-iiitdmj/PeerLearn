@@ -8,6 +8,8 @@ import {
   apiPostDoubt,
   apiWithdrawDoubt,
   apiGetSkills,
+  formatDate,
+  formatDateTime,
   type Doubt,
   type Skill,
 } from "../../lib/api";
@@ -248,7 +250,7 @@ export default function DoubtsPage() {
                       {d.status}
                     </span>
                     <span className="text-xs text-gray-400">
-                      Created: {new Date(d.created_at).toLocaleDateString()}
+                      Created: {formatDate(d.created_at || (d as any).createdAt)}
                     </span>
                   </div>
 
@@ -309,7 +311,7 @@ export default function DoubtsPage() {
                 {/* Right actions */}
                 <div className="flex flex-col items-end gap-2">
                   <span className="text-xs text-gray-400">
-                    Expires: {new Date(d.expires_at).toLocaleString()}
+                    Expires: {formatDateTime(d.expires_at || (d as any).expiresAt)}
                   </span>
 
                   {d.status === "OPEN" && (
@@ -365,11 +367,12 @@ export default function DoubtsPage() {
 
             <form onSubmit={handleAskDoubt} className="flex flex-col gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                <label htmlFor="doubt-form-title" className="block text-xs font-bold text-gray-700 uppercase mb-1">
                   Topic / Summary Title
                 </label>
                 <input
                   id="doubt-form-title"
+                  name="doubtTitle"
                   type="text"
                   placeholder="e.g. Red-Black Tree Rotation in DSA"
                   value={title}
@@ -381,11 +384,12 @@ export default function DoubtsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                <label htmlFor="doubt-form-description" className="block text-xs font-bold text-gray-700 uppercase mb-1">
                   Problem Description
                 </label>
                 <textarea
                   id="doubt-form-description"
+                  name="doubtDescription"
                   rows={4}
                   placeholder="Explain what concept or problem statement you are stuck on..."
                   value={description}
@@ -397,11 +401,12 @@ export default function DoubtsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                <label htmlFor="doubt-form-expected" className="block text-xs font-bold text-gray-700 uppercase mb-1">
                   Expected Outcome
                 </label>
                 <input
                   id="doubt-form-expected"
+                  name="doubtExpectedOutcome"
                   type="text"
                   placeholder="e.g. Understand case 2 and case 3 deletion proofs"
                   value={expectedOutcome}
@@ -448,10 +453,12 @@ export default function DoubtsPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
+                <label htmlFor="doubt-form-expiry" className="block text-xs font-bold text-gray-700 uppercase mb-1">
                   Doubt Auto-Expiry
                 </label>
                 <select
+                  id="doubt-form-expiry"
+                  name="doubtExpiresInHours"
                   value={expiresInHours}
                   onChange={(e) => setExpiresInHours(Number(e.target.value))}
                   className="w-full p-2.5 rounded-lg border text-sm bg-white"

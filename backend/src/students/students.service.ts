@@ -16,7 +16,7 @@ export class StudentsService {
     const { data: students, error } = await admin.database
       .from('students')
       .select('*')
-      .eq('auth_user_id', authUserId)
+      .or(`auth_user_id.eq.${authUserId},id.eq.${authUserId}`)
       .limit(1);
 
     if (error || !students || students.length === 0) {
@@ -103,10 +103,17 @@ export class StudentsService {
       throw new BadRequestException(`Failed to update profile: ${error.message}`);
     }
 
-    return updated;
+    return {
+      ...updated,
+      student: updated,
+    };
   }
 
   async updateTarget(authUserId: string, dto: UpdateTargetDto) {
+    if (dto.targetCgpa == null || typeof dto.targetCgpa !== 'number' || dto.targetCgpa < 0 || dto.targetCgpa > 10) {
+      throw new BadRequestException('Target CGPA must be between 0.0 and 10.0');
+    }
+
     const student = await this.getStudentByAuthId(authUserId);
     const admin = this.insforgeService.getAdminClient();
 
