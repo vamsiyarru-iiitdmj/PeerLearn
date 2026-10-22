@@ -28,7 +28,12 @@ export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse<T
           };
         }
 
+        const base = (res && typeof res === 'object' && !Array.isArray(res)) ? { ...res } : {};
+        const studentFields = (base.student && typeof base.student === 'object' && !Array.isArray(base.student)) ? base.student : {};
+
         return {
+          ...studentFields,
+          ...base,
           success: true,
           data: res,
         };

@@ -238,8 +238,10 @@ export default function LoginPage() {
           {tab === "login" && (
             <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div>
-                <label style={labelStyle}>Institute Email</label>
+                <label htmlFor="login-email" style={labelStyle}>Institute Email</label>
                 <input
+                  id="login-email"
+                  name="instituteEmail"
                   type="email"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
@@ -250,9 +252,11 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label style={labelStyle}>Password</label>
+                <label htmlFor="login-password" style={labelStyle}>Password</label>
                 <div style={{ position: "relative" }}>
                   <input
+                    id="login-password"
+                    name="password"
                     type={showLoginPw ? "text" : "password"}
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}

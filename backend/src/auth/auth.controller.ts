@@ -54,7 +54,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Sign out and invalidate session' })
   async logout(@CurrentUser() user: AuthUser) {
-    return this.authService.logout(user.accessToken);
+    return this.authService.logout(user?.accessToken || '');
   }
 
   @Public()

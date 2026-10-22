@@ -1,16 +1,24 @@
-import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterVerifyDto {
-  @ApiProperty({ example: '2022CSE001' })
+  @ApiProperty({ example: '25BCS270' })
   @IsString()
-  @IsNotEmpty()
-  rollNumber: string;
+  @IsOptional()
+  rollNumber?: string;
 
-  @ApiProperty({ example: '2022cse001@iiitdmj.ac.in' })
+  @IsString()
+  @IsOptional()
+  roll_number?: string;
+
+  @ApiProperty({ example: '25bcs270@iiitdmj.ac.in', required: false })
   @IsEmail()
-  @IsNotEmpty()
-  instituteEmail: string;
+  @IsOptional()
+  instituteEmail?: string;
+
+  @IsEmail()
+  @IsOptional()
+  institute_email?: string;
 
   @ApiProperty({ example: '123456', description: '6-digit OTP received via email' })
   @IsString()

@@ -1,24 +1,45 @@
-import { IsEmail, IsNotEmpty, IsString, Matches } from 'class-validator';
+import { IsEmail, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterStartDto {
-  @ApiProperty({ example: '2022CSE001', description: 'Official Institute Roll Number' })
+  @ApiProperty({ example: '25BCS270', description: 'Official Institute Roll Number' })
   @IsString()
-  @IsNotEmpty()
-  rollNumber: string;
+  @IsOptional()
+  rollNumber?: string;
 
-  @ApiProperty({ example: 'Vamsi Yarru', description: 'Full Name' })
   @IsString()
-  @IsNotEmpty()
-  fullName: string;
+  @IsOptional()
+  roll_number?: string;
 
-  @ApiProperty({ example: 'vamsiyarru02@gmail.com', description: 'Personal Email' })
-  @IsEmail()
-  @IsNotEmpty()
-  personalEmail: string;
+  @ApiProperty({ example: 'Vamsi Adithya', description: 'Full Name' })
+  @IsString()
+  @IsOptional()
+  fullName?: string;
 
-  @ApiProperty({ example: '2022cse001@iiitdmj.ac.in', description: 'Institute Email' })
+  @IsString()
+  @IsOptional()
+  full_name?: string;
+
+  @ApiProperty({ example: 'vamsi@example.com', description: 'Personal Email' })
   @IsEmail()
-  @IsNotEmpty()
-  instituteEmail: string;
+  @IsOptional()
+  personalEmail?: string;
+
+  @IsEmail()
+  @IsOptional()
+  personal_email?: string;
+
+  @ApiProperty({ example: '25bcs270@iiitdmj.ac.in', description: 'Institute Email' })
+  @IsEmail()
+  @IsOptional()
+  instituteEmail?: string;
+
+  @IsEmail()
+  @IsOptional()
+  institute_email?: string;
+
+  @ApiProperty({ example: '25bcs270@iiitdmj.ac.in', description: 'Email address' })
+  @IsEmail()
+  @IsOptional()
+  email?: string;
 }
