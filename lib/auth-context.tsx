@@ -33,6 +33,7 @@ interface AuthContextValue extends AuthState {
   setSession: (session: AuthSession) => void;
   clearError: () => void;
   setMode: (mode: "student" | "tutor") => void;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -73,7 +74,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const setMode = useCallback((newMode: "student" | "tutor") => {
     localStorage.setItem(MODE_KEY, newMode);
     setState((s) => ({ ...s, mode: newMode }));
+  }, []);
 
+  const refreshProfile = useCallback(async () => {
+    const token = state.token || (typeof window !== "undefined" ? localStorage.getItem(TOKEN_KEY) : null);
+    if (!token) return;
+    try {
+      const student = await apiGetProfile(token);
+      setState((s) => ({ ...s, student }));
+    } catch {
+      // ignore
+    }
+  }, [state.token]);
 
   const login = useCallback(async (payload: LoginPayload) => {
     setState((s) => ({ ...s, loading: true, error: null }));
@@ -84,7 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(TOKEN_KEY, token);
       // Fetch full profile
       const student = session.student ?? (await apiGetProfile(token));
-      setState({ token, student, loading: false, error: null });
+      setState((s) => ({ ...s, token, student, loading: false, error: null }));
       router.push("/");
     } catch (err) {
       const message =
@@ -106,7 +118,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Ignore logout errors
     } finally {
       localStorage.removeItem(TOKEN_KEY);
-      setState({ token: null, student: null, loading: false, error: null });
+      setState((s) => ({ ...s, token: null, student: null, loading: false, error: null }));
       router.push("/login");
     }
   }, [state, router]);
@@ -115,15 +127,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const token = session.accessToken || (session as any).access_token;
     if (token) {
       localStorage.setItem(TOKEN_KEY, token);
-      setState({
+      setState((s) => ({
+        ...s,
         token,
         student: session.student ?? null,
         loading: false,
         error: null,
-      });
+      }));
       if (!session.student) {
         apiGetProfile(token)
-          .then((s) => setState((prev) => ({ ...prev, student: s })))
+          .then((stud) => setState((prev) => ({ ...prev, student: stud })))
           .catch(() => { });
       }
     }
@@ -134,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout, setSession, clearError, setMode }}>
+    <AuthContext.Provider value={{ ...state, login, logout, setSession, clearError, setMode, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );

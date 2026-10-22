@@ -107,6 +107,14 @@ export interface DetailedProfileResponse {
     remainingSemesters: number;
     targetCgpa: number;
     requiredAverageCpi?: number;
+    semesterRecords?: Array<{
+      semester: number;
+      spi?: number;
+      cpi?: number;
+      credits?: number;
+      course_code?: string;
+      grade?: string;
+    }>;
   };
   skills?: Array<{ id: string; name: string }>;
   proSkills?: Array<{ id: string; name: string }>;
