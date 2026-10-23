@@ -37,10 +37,23 @@ async function request<T>(
   }
 
   if (!res.ok) {
-    const msg =
-      data?.error?.message ||
-      data?.message ||
-      `Request failed with status ${res.status}`;
+    let msg = data?.error?.message || data?.message;
+    if (Array.isArray(msg)) {
+      msg = msg.join("; ");
+    }
+    if (!msg || typeof msg !== "string" || msg.trim().length === 0) {
+      if (res.status === 500) {
+        msg = "The backend server is temporarily unavailable or restarting. Please try again in a moment.";
+      } else if (res.status === 401) {
+        msg = "Invalid institute email or password. Please verify your credentials or use Forgot Password.";
+      } else if (res.status === 403) {
+        msg = "Access denied. You do not have permission to perform this action.";
+      } else if (res.status === 404) {
+        msg = "Requested resource was not found on the server.";
+      } else {
+        msg = `Request failed with status ${res.status}`;
+      }
+    }
     throw new ApiError(res.status, msg, data);
   }
 

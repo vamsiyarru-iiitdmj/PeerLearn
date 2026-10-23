@@ -51,7 +51,7 @@ export default function PageShell({ children }: PageShellProps) {
       <Sidebar />
       <div className="lg:pl-64">
         <main style={{ paddingTop: 64, minHeight: "100vh" }}>
-          <div style={{ maxWidth: 1240, margin: "0 auto", padding: "2.25rem 1.75rem" }}>
+          <div className="max-w-[1240px] mx-auto px-3.5 sm:px-6 md:px-8 py-5 sm:py-7">
             {children}
           </div>
         </main>

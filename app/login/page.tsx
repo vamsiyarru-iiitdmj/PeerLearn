@@ -367,7 +367,7 @@ export default function LoginPage() {
                   type="email"
                   value={forgotEmail}
                   onChange={(e) => setForgotEmail(e.target.value)}
-                  placeholder="rollno@iiitdmj.ac.in"
+                  placeholder="e.g. 25bcs270@iiitdmj.ac.in"
                   required
                   style={inputStyle}
                   autoComplete="email"
@@ -524,7 +524,7 @@ export default function LoginPage() {
                   type="email"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  placeholder="rollno@iiitdmj.ac.in"
+                  placeholder="e.g. 25bcs270@iiitdmj.ac.in"
                   required
                   style={inputStyle}
                   autoComplete="email"
@@ -623,12 +623,21 @@ export default function LoginPage() {
                 <input
                   type="text"
                   value={regRoll}
-                  onChange={(e) => setRegRoll(e.target.value.toUpperCase())}
-                  placeholder="e.g. 2022CSE001"
+                  onChange={(e) => {
+                    const upper = e.target.value.toUpperCase();
+                    setRegRoll(upper);
+                    if (!regInstituteEmail || regInstituteEmail.endsWith("@iiitdmj.ac.in")) {
+                      setRegInstituteEmail(`${upper.toLowerCase()}@iiitdmj.ac.in`);
+                    }
+                  }}
+                  placeholder="e.g. 25BCS270"
                   required
                   style={inputStyle}
                   autoComplete="off"
                 />
+                <p style={{ fontSize: 11, color: "var(--color-on-surface-variant)", marginTop: 4, marginBottom: 0 }}>
+                  Format: <strong>25BCS270</strong> — First 2 digits: Year (25), Middle: Branch (BCS/BME/ECE), Last 3 digits: Roll Number (270).
+                </p>
               </div>
               <div>
                 <label style={labelStyle}>Full Name</label>

@@ -24,59 +24,86 @@ const tutorNavItems = [
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const { student, logout, mode } = useAuth();
+  const { student, logout, mode, sidebarOpen, closeSidebar } = useAuth();
   const navItems = mode === "tutor" ? tutorNavItems : studentNavItems;
 
   return (
-    <aside
-      className="fixed left-0 top-16 bottom-0 w-64 z-40 hidden lg:flex flex-col justify-between py-4"
-      style={{
-        backgroundColor: "var(--color-surface-container-low)",
-        boxShadow: "1px 0 8px rgba(0,0,0,0.02)",
-      }}
-    >
-      {/* Nav section */}
-      <div className="overflow-y-auto px-4 flex-1">
-        <div className="mb-6">
-          {/* Mode eyebrow */}
-          <div className="px-2 py-1 mb-2 flex items-center justify-between">
-            <span
-              className="font-label-eyebrow uppercase tracking-wider text-xs font-bold"
-              style={{ color: "var(--color-on-surface-variant)" }}
-            >
-              {mode === "tutor" ? "Tutor Mode" : "Student Mode"}
-            </span>
-            {mode === "tutor" ? (
-              <span
-                className="inline-flex items-center gap-1 font-label-sm text-[11px] font-bold"
-                style={{ color: "var(--color-secondary)" }}
-              >
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "var(--color-secondary)" }} />
-                Rank #7
-              </span>
-            ) : (
-              <span
-                className="w-2 h-2 rounded-full"
-                style={{ backgroundColor: "var(--color-secondary)" }}
-              />
-            )}
-          </div>
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 top-16 bg-black/40 backdrop-blur-xs z-30 lg:hidden"
+          onClick={closeSidebar}
+          aria-hidden="true"
+        />
+      )}
 
-          {/* Nav links */}
-          <nav className="flex flex-col gap-0.5" aria-label="Main navigation">
-            {navItems.map((item) => {
-              const baseHref = item.href.split("?")[0];
-              const isActive =
-                item.href === "/"
-                  ? pathname === "/"
-                  : baseHref === "/"
+      <aside
+        id="app-sidebar"
+        className={`fixed left-0 top-16 bottom-0 w-64 z-40 flex flex-col justify-between py-4 transition-transform duration-200 ease-in-out ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}
+        style={{
+          backgroundColor: "var(--color-surface-container-low)",
+          boxShadow: "1px 0 8px rgba(0,0,0,0.02)",
+        }}
+      >
+        {/* Nav section */}
+        <div className="overflow-y-auto px-4 flex-1">
+          <div className="mb-6">
+            {/* Mode eyebrow */}
+            <div className="px-2 py-1 mb-2 flex items-center justify-between">
+              <span
+                className="font-label-eyebrow uppercase tracking-wider text-xs font-bold"
+                style={{ color: "var(--color-on-surface-variant)" }}
+              >
+                {mode === "tutor" ? "Tutor Mode" : "Student Mode"}
+              </span>
+              <div className="flex items-center gap-2">
+                {mode === "tutor" ? (
+                  <span
+                    className="inline-flex items-center gap-1 font-label-sm text-[11px] font-bold"
+                    style={{ color: "var(--color-secondary)" }}
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: "var(--color-secondary)" }} />
+                    Rank #7
+                  </span>
+                ) : (
+                  <span
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: "var(--color-secondary)" }}
+                  />
+                )}
+                {/* Mobile close button */}
+                <button
+                  type="button"
+                  id="sidebar-close-btn"
+                  onClick={closeSidebar}
+                  className="lg:hidden p-1 rounded-md text-gray-500 hover:text-gray-800 cursor-pointer flex items-center justify-center"
+                  aria-label="Close navigation menu"
+                  title="Close Menu"
+                >
+                  <span className="material-symbols-outlined text-[18px]">close</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Nav links */}
+            <nav className="flex flex-col gap-0.5" aria-label="Main navigation">
+              {navItems.map((item) => {
+                const baseHref = item.href.split("?")[0];
+                const isActive =
+                  item.href === "/"
                     ? pathname === "/"
-                    : pathname.startsWith(baseHref);
-              return (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="w-full flex items-center justify-between px-4 py-2.5 rounded-[10px] transition-all text-left"
+                    : baseHref === "/"
+                      ? pathname === "/"
+                      : pathname.startsWith(baseHref);
+                return (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    onClick={closeSidebar}
+                    className="w-full flex items-center justify-between px-4 py-2.5 rounded-[10px] transition-all text-left"
                   style={{
                     backgroundColor: isActive
                       ? "var(--color-surface-container-highest)"
@@ -185,5 +212,6 @@ export default function Sidebar() {
         </button>
       </div>
     </aside>
+    </>
   );
 }

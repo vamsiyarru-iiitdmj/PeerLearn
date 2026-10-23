@@ -36,10 +36,10 @@ def test_tc001_student_registration_flow():
             page.wait_for_timeout(500)
 
             # Fill in registration start fields
-            page.locator('input[placeholder="e.g. 2022CSE001"]').fill("25BCS270")
-            page.locator('input[placeholder="e.g. Vamsi Yarru"]').fill("Vamsi Adithya")
-            page.locator('input[placeholder="e.g. personal@gmail.com"]').fill("vamsi@example.com")
-            page.locator('input[placeholder="e.g. 2022cse001@iiitdmj.ac.in"]').fill("25bcs270@iiitdmj.ac.in")
+            page.locator('input[placeholder*="25BCS270"], input[placeholder*="2022CSE001"]').first.fill("25BCS270")
+            page.locator('input[placeholder*="Vamsi"]').first.fill("Vamsi Adithya")
+            page.locator('input[placeholder*="personal@gmail.com"], input[placeholder*="example.com"]').first.fill("vamsi@example.com")
+            page.locator('input[placeholder*="iiitdmj.ac.in"]').first.fill("25bcs270@iiitdmj.ac.in")
 
             # Click submit button
             submit_btn = page.locator('button[type="submit"]')
@@ -75,8 +75,8 @@ def test_tc002_student_login_flow():
                 page.wait_for_timeout(300)
 
             # Fill login credentials
-            page.locator('input[placeholder="rollno@iiitdmj.ac.in"]').fill("test.student@iiitdmj.ac.in")
-            page.locator('input[placeholder="Your password"]').fill("Password123!")
+            page.locator('input[type="email"], input[placeholder*="iiitdmj.ac.in"]').first.fill("test.student@iiitdmj.ac.in")
+            page.locator('input[type="password"], input[placeholder*="password"]').first.fill("Password123!")
 
             # Submit login form
             page.locator('button[type="submit"]').click()

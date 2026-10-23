@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import PageShell from "../components/PageShell";
 import { useAuth } from "../../lib/auth-context";
@@ -52,11 +52,13 @@ function ProfileContent() {
   ]);
   const [newInterestInput, setNewInterestInput] = useState("");
 
-  // Pro Skills modal
+  // Pro Skills modal & search filters
   const [allSkills, setAllSkills] = useState<Skill[]>([]);
   const [myProSkills, setMyProSkills] = useState<Skill[]>([]);
   const [showSkillsModal, setShowSkillsModal] = useState(false);
   const [selectedSkillIds, setSelectedSkillIds] = useState<string[]>([]);
+  const [skillSearchQuery, setSkillSearchQuery] = useState("");
+  const [skillCategoryFilter, setSkillCategoryFilter] = useState("All");
   const [isSavingSkills, setIsSavingSkills] = useState(false);
 
   // Tutor Availability toggle
@@ -174,6 +176,20 @@ function ProfileContent() {
     }
   };
 
+  // Quick remove skill chip
+  const handleQuickRemoveSkill = async (skillId: string) => {
+    if (!token) return;
+    const nextIds = selectedSkillIds.filter((id) => id !== skillId);
+    setSelectedSkillIds(nextIds);
+    try {
+      const updated = await apiSetTutorProSkills(nextIds, token);
+      setMyProSkills(updated);
+      loadData();
+    } catch (err: any) {
+      alert("Failed to update skill: " + err.message);
+    }
+  };
+
   // Add an area of interest
   const handleAddInterest = () => {
     const val = newInterestInput.trim();
@@ -189,9 +205,12 @@ function ProfileContent() {
   const currentStudent = profileData?.student || student;
   const academics = profileData?.academics;
 
-  // Real-time Target CGPA calculation
+  // Real-time Target CGPA calculation using strictly verified student transcripts
   const targetVal = parseFloat(targetInput) || 8.80;
-  const completedSemesters = academics?.completedSemesters ?? 6;
+  const rawSemesterRecords = academics?.semesterRecords || [];
+  const completedSemesters = rawSemesterRecords.length > 0
+    ? rawSemesterRecords.length
+    : (academics?.completedSemesters || 2);
   const totalSemesters = academics?.totalSemesters ?? 8;
   const remainingSemesters = Math.max(1, totalSemesters - completedSemesters);
   const currentCgpa = academics?.currentCgpa ?? currentStudent?.current_cgpa ?? 8.40;
@@ -207,6 +226,33 @@ function ProfileContent() {
         .join("")
         .toUpperCase()
     : "PL";
+
+  // Filtered skills for skills master selector modal (295 skills from skills_master.csv)
+  const skillCategories = useMemo(() => {
+    const cats = new Set<string>();
+    allSkills.forEach((s) => {
+      if (s.category) cats.add(s.category);
+    });
+    return ["All", ...Array.from(cats)];
+  }, [allSkills]);
+
+  const filteredModalSkills = useMemo(() => {
+    return allSkills.filter((sk) => {
+      const matchesCategory =
+        skillCategoryFilter === "All" || sk.category === skillCategoryFilter;
+      const q = skillSearchQuery.toLowerCase().trim();
+      const matchesQuery =
+        !q ||
+        sk.name.toLowerCase().includes(q) ||
+        (sk.slug && sk.slug.toLowerCase().includes(q)) ||
+        (sk.category && sk.category.toLowerCase().includes(q));
+      return matchesCategory && matchesQuery;
+    });
+  }, [allSkills, skillCategoryFilter, skillSearchQuery]);
+
+  const selectedSkillsObjects = useMemo(() => {
+    return allSkills.filter((sk) => selectedSkillIds.includes(sk.id));
+  }, [allSkills, selectedSkillIds]);
 
   return (
     <PageShell>
@@ -487,53 +533,72 @@ function ProfileContent() {
                   </div>
                 </div>
 
-                {/* CPI Bar Graph Grid (Matching Stitch Screen 9efca46a068742119e58a7df26256862) */}
+                {/* CPI Bar Graph Grid: Strictly Renders Actual Completed Semesters Only */}
                 <div className="p-5 rounded-xl border bg-white space-y-3" style={{ borderColor: "var(--color-outline-variant)" }}>
-                  <div className="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-wider">
-                    <span>Semester-by-Semester CPI Recorded</span>
+                  <div className="flex items-center justify-between text-xs font-bold text-gray-500 uppercase tracking-wider flex-wrap gap-2">
+                    <span id="semester-cpi-heading">
+                      Semester-by-Semester CPI Recorded{" "}
+                      <span className="text-teal-800 font-semibold lowercase">
+                        ({rawSemesterRecords.length > 0 ? `${rawSemesterRecords.length} completed semesters` : "verified records"})
+                      </span>
+                    </span>
                     <span>Grading Scale Max: 10.0</span>
                   </div>
 
-                  <div className="grid grid-cols-6 gap-3 pt-6 pb-2 items-end h-48">
-                    {[
-                      { sem: "S1", cpi: 7.8, label: "Monsoon '22", height: "78%" },
-                      { sem: "S2", cpi: 8.1, label: "Spring '23", height: "81%" },
-                      { sem: "S3", cpi: 8.4, label: "Monsoon '23", height: "84%" },
-                      { sem: "S4", cpi: 8.2, label: "Spring '24", height: "82%" },
-                      { sem: "S5", cpi: 8.7, label: "Monsoon '24", height: "87%" },
-                      { sem: "S6 (Now)", cpi: 8.9, label: "Spring '25", height: "89%", isCurrent: true },
-                    ].map((item) => (
-                      <div key={item.sem} className="flex flex-col items-center h-full justify-end group">
-                        <span
-                          className={`text-xs font-bold mb-1 transition-transform group-hover:-translate-y-1 ${
-                            item.isCurrent ? "text-amber-800" : "text-gray-600"
-                          }`}
-                        >
-                          {item.cpi.toFixed(2)}
-                        </span>
-                        <div
-                          className={`w-full max-w-[42px] rounded-t-md transition-all shadow-sm ${
-                            item.isCurrent
-                              ? "bg-amber-600 group-hover:bg-amber-700"
-                              : "bg-teal-800/80 group-hover:bg-teal-900"
-                          }`}
-                          style={{ height: item.height }}
-                        />
-                        <div className="mt-2 text-center">
-                          <span
-                            className={`text-xs block font-bold ${
-                              item.isCurrent ? "text-amber-800" : "text-gray-800"
-                            }`}
+                  {rawSemesterRecords.length === 0 ? (
+                    <div className="py-12 text-center text-xs text-gray-500">
+                      No official semester transcript records available for this roll number.
+                    </div>
+                  ) : (
+                    <div
+                      id="semester-cpi-graph-container"
+                      className="pt-6 pb-2 items-end h-48 gap-4 sm:gap-8 justify-center flex"
+                    >
+                      {rawSemesterRecords.map((r: any, idx: number) => {
+                        const semNum = r.semester || idx + 1;
+                        const cpi = Number(r.cpi || r.cgpa || 0);
+                        const isLatest = idx === rawSemesterRecords.length - 1;
+                        const heightPct = Math.min(100, Math.max(12, Math.round((cpi / 10) * 100)));
+                        const semLabel = semNum === 1 ? "Monsoon '24" : semNum === 2 ? "Spring '25" : `Sem ${semNum}`;
+
+                        return (
+                          <div
+                            key={r.id || semNum}
+                            data-testid={`semester-bar-S${semNum}`}
+                            className="flex flex-col items-center h-full justify-end group min-w-[72px] sm:min-w-[90px]"
                           >
-                            {item.sem}
-                          </span>
-                          <span className="text-[10px] text-gray-400 uppercase hidden sm:block">
-                            {item.label}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                            <span
+                              className={`text-xs font-bold mb-1 transition-transform group-hover:-translate-y-1 ${
+                                isLatest ? "text-amber-800 font-extrabold" : "text-gray-600"
+                              }`}
+                            >
+                              {cpi.toFixed(2)}
+                            </span>
+                            <div
+                              className={`w-full max-w-[48px] rounded-t-md transition-all shadow-sm ${
+                                isLatest
+                                  ? "bg-amber-600 group-hover:bg-amber-700"
+                                  : "bg-teal-800/80 group-hover:bg-teal-900"
+                              }`}
+                              style={{ height: `${heightPct}%` }}
+                            />
+                            <div className="mt-2 text-center">
+                              <span
+                                className={`text-xs block font-bold ${
+                                  isLatest ? "text-amber-800" : "text-gray-800"
+                                }`}
+                              >
+                                S{semNum}{isLatest ? " (Latest)" : ""}
+                              </span>
+                              <span className="text-[10px] text-gray-400 uppercase hidden sm:block">
+                                {semLabel}
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 {/* Degree Graduation Target Calculator */}
@@ -888,23 +953,28 @@ function ProfileContent() {
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-teal-900/10 flex items-center justify-center text-teal-900">
-                      <span className="material-symbols-outlined text-[22px]">badge</span>
+                    <div className="w-10 h-10 rounded-xl bg-teal-900/10 flex items-center justify-center text-teal-900 shadow-xs">
+                      <span className="material-symbols-outlined text-[24px]">workspace_premium</span>
                     </div>
                     <div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
-                        Academic Accreditations
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-teal-800 bg-teal-100/70 px-2 py-0.5 rounded-md">
+                          Campus Tutor Registry
+                        </span>
+                        <span className="text-[11px] font-semibold text-gray-500">
+                          {myProSkills.length} active qualification{myProSkills.length === 1 ? "" : "s"}
+                        </span>
                       </div>
                       <h4
                         style={{
                           fontFamily: "var(--font-newsreader)",
-                          fontSize: 20,
+                          fontSize: 22,
                           fontWeight: 600,
                           color: "var(--color-primary)",
-                          margin: 0,
+                          margin: "2px 0 0 0",
                         }}
                       >
-                        Mastered Pro Skills
+                        Mastered Tutor Skills
                       </h4>
                     </div>
                   </div>
@@ -912,41 +982,87 @@ function ProfileContent() {
                   <button
                     type="button"
                     id="open-skills-modal-btn"
-                    onClick={() => setShowSkillsModal(true)}
-                    className="px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+                    onClick={() => {
+                      setSkillSearchQuery("");
+                      setSkillCategoryFilter("All");
+                      setShowSkillsModal(true);
+                    }}
+                    className="px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer shadow-sm hover:shadow-md transition-all self-start sm:self-auto active:scale-95"
                     style={{
                       backgroundColor: "var(--color-primary-container)",
                       color: "var(--color-on-primary)",
                       border: "none",
                     }}
                   >
-                    <span className="material-symbols-outlined text-[16px]">add_circle</span>
-                    + Add pro skill qualification
+                    <span className="material-symbols-outlined text-[18px]">add_task</span>
+                    <span>Manage Mastered Skills</span>
+                    <span className="bg-white/20 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">
+                      {allSkills.length > 0 ? allSkills.length : 295} in Catalog
+                    </span>
                   </button>
                 </div>
 
-                <div className="space-y-2">
-                  <span className="text-xs text-gray-600 block">
-                    Verified competency tags recognized across campus peer tutoring sessions:
-                  </span>
+                <div className="space-y-3">
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Verified competency tags from the official curriculum catalog (<code className="text-teal-900 font-mono text-[11px]">skills_master.csv</code>). 
+                    Your matched doubts and peer tutoring requests are prioritized based on these selections.
+                  </p>
+
                   {myProSkills.length === 0 ? (
-                    <p className="text-xs italic text-gray-500">
-                      No tutor pro skills selected yet. Click "+ Add pro skill qualification" to unlock doubt matching!
-                    </p>
+                    <div className="p-6 rounded-xl border border-dashed border-teal-800/30 bg-teal-50/40 text-center space-y-3">
+                      <div className="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center mx-auto text-teal-800">
+                        <span className="material-symbols-outlined text-[20px]">school</span>
+                      </div>
+                      <div className="max-w-md mx-auto">
+                        <p className="text-xs font-semibold text-teal-950">No tutor qualifications listed yet</p>
+                        <p className="text-[11px] text-gray-500 mt-1">
+                          Select the subjects you feel confident teaching to start receiving 1-on-1 tutoring appointments from peers!
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSkillSearchQuery("");
+                          setSkillCategoryFilter("All");
+                          setShowSkillsModal(true);
+                        }}
+                        className="px-4 py-2 rounded-lg text-xs font-bold bg-teal-800 text-white hover:bg-teal-900 cursor-pointer shadow-xs inline-flex items-center gap-1.5"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">add_circle</span>
+                        Choose Skills from Catalog
+                      </button>
+                    </div>
                   ) : (
                     <div className="flex flex-wrap gap-2 pt-1">
                       {myProSkills.map((sk) => (
-                        <span
+                        <div
                           key={sk.id}
-                          className="px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-2xs"
+                          className="group pl-3 pr-2 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 shadow-2xs border transition-all"
                           style={{
-                            backgroundColor: "var(--color-primary-container)",
-                            color: "var(--color-on-primary)",
+                            backgroundColor: "var(--color-surface-container-high, #f4f4f0)",
+                            borderColor: "var(--color-outline-variant, #e0e0dc)",
+                            color: "var(--color-on-surface, #1e2022)",
                           }}
                         >
-                          <span className="material-symbols-outlined text-[14px]">check</span>
-                          {sk.name}
-                        </span>
+                          <span className="material-symbols-outlined text-[15px] text-teal-800">
+                            check_circle
+                          </span>
+                          <span className="font-semibold">{sk.name}</span>
+                          {sk.category && (
+                            <span className="text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-black/5 text-gray-600 font-bold">
+                              {sk.category}
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => handleQuickRemoveSkill(sk.id)}
+                            title={`Remove ${sk.name}`}
+                            className="w-5 h-5 rounded-full flex items-center justify-center hover:bg-red-100 hover:text-red-700 text-gray-400 transition-colors cursor-pointer"
+                            style={{ background: "transparent", border: "none" }}
+                          >
+                            <span className="material-symbols-outlined text-[13px]">close</span>
+                          </button>
+                        </div>
                       ))}
                     </div>
                   )}
@@ -1199,121 +1315,270 @@ function ProfileContent() {
       )}
 
       {/* ═════════════════════════════════════════════════════════════════════
-          MODAL: SELECT TUTOR PRO SKILLS
+          MODAL: SELECT TUTOR PRO SKILLS (Catalog of 295 skills)
       ══════════════════════════════════════════════════════════════════════ */}
       {showSkillsModal && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-sm"
           onClick={() => setShowSkillsModal(false)}
         >
           <div
-            className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl space-y-4"
+            className="w-full max-w-3xl rounded-3xl bg-white shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border"
             onClick={(e) => e.stopPropagation()}
             style={{
               backgroundColor: "var(--color-surface-container-lowest, #ffffff)",
-              border: "1px solid var(--color-outline-variant)",
+              borderColor: "var(--color-outline-variant, #e0e0dc)",
             }}
           >
-            <div className="flex items-center justify-between pb-2 border-b">
-              <div>
-                <h3
-                  style={{
-                    fontFamily: "var(--font-newsreader)",
-                    fontSize: 20,
-                    fontWeight: 600,
-                    color: "var(--color-primary)",
-                    margin: 0,
-                  }}
-                >
-                  Select Mastered Tutor Skills
-                </h3>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  Select the subjects you are ready to help peers solve in 1-on-1 sessions.
-                </p>
+            {/* Modal Header */}
+            <div className="px-6 py-5 border-b flex items-start justify-between gap-4 bg-teal-950/3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-teal-900/10 flex items-center justify-center text-teal-900">
+                  <span className="material-symbols-outlined text-[24px]">school</span>
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: "var(--font-newsreader)",
+                      fontSize: 22,
+                      fontWeight: 600,
+                      color: "var(--color-primary)",
+                      margin: 0,
+                    }}
+                  >
+                    Select Mastered Tutor Skills
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Choose from the official 295 curriculum skills to specify the areas you tutor peers in.
+                  </p>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowSkillsModal(false)}
-                className="text-gray-400 hover:text-gray-600 cursor-pointer p-1"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors cursor-pointer"
                 style={{ background: "none", border: "none" }}
               >
                 ✕
               </button>
             </div>
 
-            <div className="max-h-72 overflow-y-auto space-y-2 py-2">
-              {allSkills.map((sk) => {
-                const isSelected = selectedSkillIds.includes(sk.id);
-                return (
-                  <div
-                    key={sk.id}
-                    onClick={() => {
-                      if (isSelected) {
-                        setSelectedSkillIds(selectedSkillIds.filter((id) => id !== sk.id));
-                      } else {
-                        setSelectedSkillIds([...selectedSkillIds, sk.id]);
-                      }
-                    }}
-                    className="p-2.5 rounded-xl border flex items-center justify-between text-xs cursor-pointer transition-colors"
-                    style={{
-                      backgroundColor: isSelected
-                        ? "var(--color-surface-container-highest)"
-                        : "transparent",
-                      borderColor: isSelected
-                        ? "var(--color-primary-container)"
-                        : "var(--color-outline-variant)",
-                    }}
+            {/* Search & Category Filter Section */}
+            <div className="px-6 py-4 border-b space-y-3 bg-gray-50/50">
+              {/* Search input */}
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-[18px]">
+                  search
+                </span>
+                <input
+                  type="text"
+                  id="skill-search-input"
+                  value={skillSearchQuery}
+                  onChange={(e) => setSkillSearchQuery(e.target.value)}
+                  placeholder="Search 295 skills by name, acronym, or category (e.g. Python, SQL, DSA, React)..."
+                  className="w-full pl-10 pr-10 py-2.5 rounded-xl border text-xs focus:outline-none focus:ring-2 focus:ring-teal-700/30 transition-all bg-white"
+                  style={{
+                    borderColor: "var(--color-outline-variant, #d1d5db)",
+                  }}
+                />
+                {skillSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setSkillSearchQuery("")}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs p-1"
                   >
-                    <div className="flex items-center gap-2">
-                      <span
-                        className="material-symbols-outlined text-[16px]"
-                        style={{
-                          color: isSelected ? "var(--color-primary-container)" : "var(--color-outline)",
-                        }}
-                      >
-                        {isSelected ? "check_circle" : "radio_button_unchecked"}
-                      </span>
-                      <span className="font-semibold" style={{ color: "var(--color-on-surface)" }}>
-                        {sk.name}
-                      </span>
-                    </div>
-                    {sk.category && (
-                      <span className="text-[10px] uppercase font-bold text-gray-400">
-                        {sk.category}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
+                    ✕
+                  </button>
+                )}
+              </div>
+
+              {/* Category Pills */}
+              <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin text-xs">
+                {skillCategories.map((cat) => {
+                  const isActive = skillCategoryFilter === cat;
+                  return (
+                    <button
+                      key={cat}
+                      type="button"
+                      onClick={() => setSkillCategoryFilter(cat)}
+                      className={`px-3 py-1.5 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                        isActive
+                          ? "bg-teal-900 text-white shadow-xs"
+                          : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-100"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Selection Summary Banner */}
+              <div className="flex items-center justify-between text-xs pt-1 text-gray-500">
+                <span>
+                  Showing <b>{filteredModalSkills.length}</b> of <b>{allSkills.length}</b> skills
+                </span>
+                <div className="flex items-center gap-3">
+                  <span className="font-semibold text-teal-900">
+                    {selectedSkillIds.length} skill{selectedSkillIds.length === 1 ? "" : "s"} selected
+                  </span>
+                  {selectedSkillIds.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setSelectedSkillIds([])}
+                      className="text-[11px] text-red-600 hover:underline cursor-pointer font-medium"
+                    >
+                      Deselect all
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
 
-            <div className="flex justify-end gap-3 pt-3 border-t">
-              <button
-                type="button"
-                onClick={() => setShowSkillsModal(false)}
-                className="px-4 py-2 rounded-lg text-xs font-semibold cursor-pointer"
-                style={{
-                  backgroundColor: "var(--color-surface-container)",
-                  color: "var(--color-on-surface-variant)",
-                  border: "none",
-                }}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                id="save-skills-modal-btn"
-                disabled={isSavingSkills}
-                onClick={handleSaveSkills}
-                className="px-5 py-2 rounded-lg text-xs font-semibold cursor-pointer disabled:opacity-50"
-                style={{
-                  backgroundColor: "var(--color-primary-container)",
-                  color: "var(--color-on-primary)",
-                  border: "none",
-                }}
-              >
-                {isSavingSkills ? "Saving…" : "Save Pro Skills"}
-              </button>
+            {/* Selected Skills Tray (if any) */}
+            {selectedSkillIds.length > 0 && (
+              <div className="px-6 py-2.5 bg-teal-50/50 border-b flex items-center gap-2 overflow-x-auto">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-teal-900 shrink-0">
+                  Selected:
+                </span>
+                <div className="flex items-center gap-1.5 flex-nowrap overflow-x-auto py-1">
+                  {selectedSkillsObjects.slice(0, 12).map((sk) => (
+                    <span
+                      key={sk.id}
+                      className="inline-flex items-center gap-1 pl-2.5 pr-1.5 py-0.5 rounded-full text-[11px] font-semibold bg-white border border-teal-800/30 text-teal-950 shrink-0 shadow-2xs"
+                    >
+                      <span>{sk.name}</span>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedSkillIds(selectedSkillIds.filter((id) => id !== sk.id))}
+                        className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-red-100 text-gray-400 hover:text-red-600 cursor-pointer"
+                      >
+                        ✕
+                      </button>
+                    </span>
+                  ))}
+                  {selectedSkillsObjects.length > 12 && (
+                    <span className="text-[11px] text-teal-800 font-bold shrink-0">
+                      +{selectedSkillsObjects.length - 12} more
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Skills Card Grid */}
+            <div className="px-6 py-4 flex-1 overflow-y-auto min-h-[260px] max-h-[380px]">
+              {filteredModalSkills.length === 0 ? (
+                <div className="text-center py-12 space-y-2">
+                  <span className="material-symbols-outlined text-[36px] text-gray-300">
+                    search_off
+                  </span>
+                  <p className="text-sm font-semibold text-gray-700">
+                    No curriculum skills matched your search
+                  </p>
+                  <p className="text-xs text-gray-400">
+                    Try searching for another keyword or switch category filters.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSkillSearchQuery("");
+                      setSkillCategoryFilter("All");
+                    }}
+                    className="mt-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer"
+                  >
+                    Reset Filters
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                  {filteredModalSkills.map((sk) => {
+                    const isSelected = selectedSkillIds.includes(sk.id);
+                    return (
+                      <div
+                        key={sk.id}
+                        onClick={() => {
+                          if (isSelected) {
+                            setSelectedSkillIds(selectedSkillIds.filter((id) => id !== sk.id));
+                          } else {
+                            setSelectedSkillIds([...selectedSkillIds, sk.id]);
+                          }
+                        }}
+                        className={`p-3 rounded-xl border flex flex-col justify-between text-xs cursor-pointer transition-all ${
+                          isSelected
+                            ? "bg-teal-50/90 border-teal-800/60 shadow-xs"
+                            : "bg-white border-gray-200 hover:border-gray-300 hover:bg-gray-50/80"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <span
+                            className={`font-semibold text-xs leading-snug ${
+                              isSelected ? "text-teal-950 font-bold" : "text-gray-800"
+                            }`}
+                          >
+                            {sk.name}
+                          </span>
+                          <span
+                            className={`material-symbols-outlined text-[18px] shrink-0 ${
+                              isSelected ? "text-teal-800" : "text-gray-300"
+                            }`}
+                          >
+                            {isSelected ? "check_circle" : "radio_button_unchecked"}
+                          </span>
+                        </div>
+                        {sk.category && (
+                          <div className="mt-2">
+                            <span className="text-[9px] uppercase tracking-wider font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">
+                              {sk.category}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="px-6 py-4 border-t flex flex-col sm:flex-row items-center justify-between gap-3 bg-gray-50">
+              <div className="text-xs text-gray-500 text-center sm:text-left">
+                {selectedSkillIds.length === 0 ? (
+                  <span className="italic">Select at least one skill to enable tutoring requests.</span>
+                ) : (
+                  <span>
+                    Ready to save <b>{selectedSkillIds.length}</b> verified tutor competencies.
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowSkillsModal(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-200 cursor-pointer"
+                  style={{ background: "transparent", border: "none" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  id="save-skills-modal-btn"
+                  disabled={isSavingSkills}
+                  onClick={handleSaveSkills}
+                  className="px-6 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-2 cursor-pointer shadow-sm hover:shadow-md transition-all disabled:opacity-50"
+                  style={{
+                    backgroundColor: "var(--color-primary-container)",
+                    color: "var(--color-on-primary)",
+                    border: "none",
+                  }}
+                >
+                  <span className="material-symbols-outlined text-[16px]">
+                    {isSavingSkills ? "progress_activity" : "check"}
+                  </span>
+                  <span>{isSavingSkills ? "Saving Competencies…" : "Save Mastered Skills"}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>

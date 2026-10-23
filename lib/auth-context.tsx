@@ -34,6 +34,9 @@ interface AuthContextValue extends AuthState {
   clearError: () => void;
   setMode: (mode: "student" | "tutor") => void;
   refreshProfile: () => Promise<void>;
+  sidebarOpen: boolean;
+  toggleSidebar: () => void;
+  closeSidebar: () => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -43,6 +46,10 @@ const MODE_KEY = "pl_user_mode";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const toggleSidebar = useCallback(() => setSidebarOpen((prev) => !prev), []);
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
   const [state, setState] = useState<AuthState>({
     token: null,
     student: null,
@@ -147,7 +154,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ ...state, login, logout, setSession, clearError, setMode, refreshProfile }}>
+    <AuthContext.Provider
+      value={{
+        ...state,
+        login,
+        logout,
+        setSession,
+        clearError,
+        setMode,
+        refreshProfile,
+        sidebarOpen,
+        toggleSidebar,
+        closeSidebar,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

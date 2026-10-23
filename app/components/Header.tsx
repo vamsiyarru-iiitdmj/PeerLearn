@@ -13,7 +13,7 @@ import {
 
 export default function Header() {
   const router = useRouter();
-  const { mode, setMode, student, logout, loading, token } = useAuth();
+  const { mode, setMode, student, logout, loading, token, sidebarOpen, toggleSidebar } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -84,7 +84,7 @@ export default function Header() {
 
   return (
     <header
-      className="fixed top-0 left-0 right-0 h-16 z-50 flex items-center justify-between px-7"
+      className="fixed top-0 left-0 right-0 h-16 z-50 flex items-center justify-between px-3 sm:px-6 md:px-7"
       style={{
         backgroundColor: "rgba(251,249,244,0.92)",
         backdropFilter: "blur(12px)",
@@ -92,8 +92,27 @@ export default function Header() {
         boxShadow: "0 1px 8px rgba(0,0,0,0.04)",
       }}
     >
-      {/* ── Left: Logo ─────────────────────────────────────────────── */}
-      <div className="flex items-center gap-4 min-w-[260px]">
+      {/* ── Left: Menu Toggle + Logo ────────────────────────────────── */}
+      <div className="flex items-center gap-2 sm:gap-4 min-w-[200px] sm:min-w-[260px]">
+        {/* Toggle Menu Button */}
+        <button
+          type="button"
+          id="menu-toggle-btn"
+          onClick={toggleSidebar}
+          aria-label={sidebarOpen ? "Close navigation menu" : "Open navigation menu"}
+          title={sidebarOpen ? "Close Menu" : "Open Menu"}
+          className="p-2 rounded-lg flex items-center justify-center cursor-pointer transition-colors"
+          style={{
+            backgroundColor: sidebarOpen ? "var(--color-surface-container-highest)" : "transparent",
+            color: "var(--color-primary)",
+            border: "none",
+          }}
+        >
+          <span className="material-symbols-outlined text-[24px]">
+            {sidebarOpen ? "close" : "menu"}
+          </span>
+        </button>
+
         <Link href="/" className="flex items-center gap-2" style={{ textDecoration: "none" }}>
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center"

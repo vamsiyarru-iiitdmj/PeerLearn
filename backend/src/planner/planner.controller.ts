@@ -42,8 +42,7 @@ export class PlannerController {
   }
 
   @Patch('tasks/:id/toggle')
-  @Post('tasks/:id/complete')
-  @ApiOperation({ summary: 'Toggle task completion status' })
+  @ApiOperation({ summary: 'Toggle task completion status (PATCH)' })
   async toggleComplete(
     @CurrentUser() user: AuthUser,
     @Param('id') id: string,
@@ -52,10 +51,29 @@ export class PlannerController {
     return this.plannerService.toggleTaskComplete(id, user.studentId);
   }
 
+  @Post('tasks/:id/complete')
+  @ApiOperation({ summary: 'Toggle task completion status (POST)' })
+  async postComplete(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    if (!user.studentId) throw new UnauthorizedException('Student profile required');
+    return this.plannerService.toggleTaskComplete(id, user.studentId);
+  }
+
   @Patch('tasks/:id/tough')
-  @Post('tasks/:id/toggle-tough')
-  @ApiOperation({ summary: 'Toggle tough flag on task' })
+  @ApiOperation({ summary: 'Toggle tough flag on task (PATCH)' })
   async toggleTough(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    if (!user.studentId) throw new UnauthorizedException('Student profile required');
+    return this.plannerService.toggleTaskTough(id, user.studentId);
+  }
+
+  @Post('tasks/:id/toggle-tough')
+  @ApiOperation({ summary: 'Toggle tough flag on task (POST)' })
+  async postToggleTough(
     @CurrentUser() user: AuthUser,
     @Param('id') id: string,
   ) {
@@ -76,7 +94,6 @@ export class PlannerController {
   // --- Ask Suggestion ---
 
   @Post('tasks/:id/suggestions')
-  @Post('tasks/:id/ask-suggestion')
   @ApiOperation({ summary: 'Ask peer tutors for a recommended study plan/workflow on a tough task' })
   async askSuggestion(
     @CurrentUser() user: AuthUser,
@@ -87,9 +104,25 @@ export class PlannerController {
     return this.plannerService.askSuggestion(taskId, user.studentId, dto);
   }
 
+  @Post('tasks/:id/ask-suggestion')
+  @ApiOperation({ summary: 'Ask peer tutors for a recommended study plan (alias)' })
+  async postAskSuggestion(
+    @CurrentUser() user: AuthUser,
+    @Param('id') taskId: string,
+    @Body() dto: AskSuggestionDto,
+  ) {
+    if (!user.studentId) throw new UnauthorizedException('Student profile required');
+    return this.plannerService.askSuggestion(taskId, user.studentId, dto);
+  }
+
   @Get('tasks/suggestions/feed')
-  @Get('suggestions')
   @ApiOperation({ summary: 'Get open suggestion requests for tutors' })
+  async getSuggestionsFeed() {
+    return this.plannerService.getSuggestionsForTutor();
+  }
+
+  @Get('suggestions')
+  @ApiOperation({ summary: 'Get open suggestion requests for tutors (alias)' })
   async getSuggestions() {
     return this.plannerService.getSuggestionsForTutor();
   }
