@@ -106,7 +106,7 @@ cd peerlearn
 
 ### 2. Switch to your development branch
 ```bash
-git checkout praneeth
+git checkout -b your-branchname
 ```
 
 ### 3. Install dependencies
