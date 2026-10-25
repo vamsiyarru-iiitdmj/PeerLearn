@@ -1,0 +1,856 @@
+[
+  {
+    "id": "TC001",
+    "title": "Complete student registration and reach the dashboard",
+    "description": "This verifies that a new student can register with valid institute details, verify the account, and arrive in an authenticated session with access to their profile area.",
+    "category": "Authentication & Onboarding",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Start the student registration flow"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the roll number field with a valid roll number"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with a valid institute email"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration start form"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the OTP field with the valid verification code"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with a valid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the verification form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the authenticated dashboard or profile area"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the student profile content is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Log in with valid student credentials",
+    "description": "This verifies that a returning student can sign in and receive access to their authenticated session and profile area.",
+    "category": "Authentication & Onboarding",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the user lands on the authenticated dashboard or profile area"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the current student profile is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Health probe returns readiness information",
+    "description": "A monitoring consumer can check the system health endpoint and see a healthy response with uptime information.",
+    "category": "System Health",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the health probe route"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a healthy status response is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify uptime information is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "End the active student session",
+    "description": "This verifies that a signed-in student can log out and no longer has access to the authenticated session.",
+    "category": "Authentication & Onboarding",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Log out of the account"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the session is ended"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the signed-out state is shown"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Book an eligible doubt as a tutor",
+    "description": "A qualified tutor can open eligible doubts and successfully book one so the doubt becomes booked.",
+    "category": "Tutor Matching & Atomic Booking",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the tutor username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the tutor doubts view"
+      },
+      {
+        "type": "action",
+        "description": "Book an eligible doubt"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a tutoring session is created and the doubt is no longer available for booking"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Reject login with invalid credentials",
+    "description": "This verifies that incorrect credentials do not create an authenticated session.",
+    "category": "Authentication & Onboarding",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with an invalid email"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with an invalid password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an authentication failure message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the authenticated dashboard is not shown"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Prevent double booking of the same doubt",
+    "description": "If one tutor books a doubt first, another booking attempt is blocked and the doubt remains unavailable.",
+    "category": "Tutor Matching & Atomic Booking",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the tutor username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the tutor doubts view"
+      },
+      {
+        "type": "action",
+        "description": "Book an eligible doubt"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to book the same doubt again"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a conflict message is visible and the doubt remains booked"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Reject registration with an unknown roll number",
+    "description": "This verifies that registration cannot proceed when the roll number does not match an academic record.",
+    "category": "Authentication & Onboarding",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Start the student registration flow"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the roll number field with an invalid roll number"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with a valid institute email"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration start form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a validation error for the roll number is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify account verification is not available"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Update target CGPA and see the projection change",
+    "description": "This verifies that a student can set a valid target CGPA and receive an updated projection based on that target.",
+    "category": "Academic Records & Target CGPA",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the target CGPA settings"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the target CGPA field with a valid value between 0.00 and 10.00"
+      },
+      {
+        "type": "action",
+        "description": "Submit the target CGPA update"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the updated target CGPA is reflected"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the CGPA projection information is updated"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "View only doubts that match tutor skills",
+    "description": "A tutor sees only doubts that satisfy all required skills and excludes their own posted doubts.",
+    "category": "Tutor Matching & Atomic Booking",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the tutor username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the tutor doubts view"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify only eligible doubts are displayed and the tutor's own doubts are excluded"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "View academic profile and records after signing in",
+    "description": "This verifies that a returning student can see verified profile details, academic history, and current CGPA information after authentication.",
+    "category": "Academic Records & Target CGPA",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the academic records view"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the student profile summary is displayed"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the ordered academic records are displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Create a task in the study planner",
+    "description": "A student can create a task with required details and see it added to their task list.",
+    "category": "Study Planner & Tasks",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the student username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the study planner"
+      },
+      {
+        "type": "action",
+        "description": "Create a task with a title, priority, tough flag, and due date"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new task appears in the task list"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Post a doubt and see it listed as open",
+    "description": "This verifies that a student can create a new academic doubt and immediately find it in their doubts list with an open status.",
+    "category": "Peer Doubts",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the doubt posting flow"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the doubt title field with a unique title"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the doubt description field with a clear problem description"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the expected outcome field with the expected result"
+      },
+      {
+        "type": "action",
+        "description": "Select the required skill tags"
+      },
+      {
+        "type": "action",
+        "description": "Submit the doubt post form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the new doubt appears in the doubts list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the doubt is shown with an open status"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Mark a task complete",
+    "description": "A student can complete an existing task and see it reflected as finished in the planner.",
+    "category": "Study Planner & Tasks",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the student username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the study planner"
+      },
+      {
+        "type": "action",
+        "description": "Complete an incomplete task"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task is shown as completed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "Withdraw an unbooked doubt",
+    "description": "This verifies that a student can withdraw their own doubt before it has been booked and see it move to withdrawn status.",
+    "category": "Peer Doubts",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the doubting history or doubts list"
+      },
+      {
+        "type": "action",
+        "description": "Create a new doubt if none is available to withdraw"
+      },
+      {
+        "type": "action",
+        "description": "Withdraw the unbooked doubt"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the doubt remains visible in the history or list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the doubt is shown with a withdrawn status"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC016",
+    "title": "Sort tasks by priority and due date",
+    "description": "A student can view tasks ordered by priority and date to focus on the most important work first.",
+    "category": "Study Planner & Tasks",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the student username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the study planner"
+      },
+      {
+        "type": "action",
+        "description": "Request the task list sorted by priority and date"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify tasks are displayed in the expected order"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC017",
+    "title": "Review tag statistics for matching",
+    "description": "A tutor can open tag statistics for selected tags to understand matching coverage before booking.",
+    "category": "Tutor Matching & Atomic Booking",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the tutor username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the tag statistics view"
+      },
+      {
+        "type": "action",
+        "description": "Select one or more relevant tags"
+      },
+      {
+        "type": "action",
+        "description": "Request matching statistics"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify matching statistics are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC018",
+    "title": "Reject an out-of-range target CGPA",
+    "description": "This verifies that invalid CGPA values outside the allowed range are blocked and do not update the student target.",
+    "category": "Academic Records & Target CGPA",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the target CGPA settings"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the target CGPA field with an invalid value outside the allowed range"
+      },
+      {
+        "type": "action",
+        "description": "Submit the target CGPA update"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a CGPA validation error is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the target CGPA is not updated"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC019",
+    "title": "Mark a task as tough",
+    "description": "A student can toggle a task into or out of tough status and see the updated flag in the planner.",
+    "category": "Study Planner & Tasks",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the student username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the study planner"
+      },
+      {
+        "type": "action",
+        "description": "Toggle the tough status for an existing task"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the task's tough status is updated"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC020",
+    "title": "Prevent withdrawing a doubt that cannot be withdrawn",
+    "description": "This verifies that a student cannot withdraw a doubt that is already booked or not owned by them.",
+    "category": "Peer Doubts",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the institute email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the doubts list"
+      },
+      {
+        "type": "action",
+        "description": "Select a doubt that is already booked or not owned by the current student"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to withdraw the selected doubt"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a withdrawal error or permission message is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the doubt status is unchanged"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC021",
+    "title": "View campus analytics overview",
+    "description": "An authenticated user can open the analytics dashboard and see the core platform metrics.",
+    "category": "Campus Analytics",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the student username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the analytics overview"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the analytics overview metrics are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Show validation errors when creating an invalid task",
+    "description": "A student sees validation feedback when required task fields are missing or invalid.",
+    "category": "Study Planner & Tasks",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the student username field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "action",
+        "description": "Open the study planner"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to create a task with missing required fields"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a task validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  }
+]

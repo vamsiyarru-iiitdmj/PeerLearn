@@ -1,0 +1,309 @@
+{
+  "timestamp": 1792737717.7929072,
+  "total": 50,
+  "passed": 50,
+  "failed": 0,
+  "pass_rate": "100.0%",
+  "results": [
+    {
+      "number": 1,
+      "name": "API Health endpoint returns 200 OK and services ok",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 2,
+      "name": "Login with valid student credentials succeeds",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 3,
+      "name": "Login response delivers verified 3-segment JWT accessToken",
+      "status": "PASSED",
+      "details": "jwt=True"
+    },
+    {
+      "number": 4,
+      "name": "Authenticated student roll number matches IIITDMJ format '25BCS270'",
+      "status": "PASSED",
+      "details": "roll=25BCS270"
+    },
+    {
+      "number": 5,
+      "name": "Register start with invalid roll number returns 400 Bad Request, NOT 500",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 6,
+      "name": "Register start with non-institute email returns 400 Bad Request",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 7,
+      "name": "Login with wrong password returns 401 Unauthorized, NOT 500",
+      "status": "PASSED",
+      "details": "status=401"
+    },
+    {
+      "number": 8,
+      "name": "Forgot password endpoint accepts valid institute email and returns 200 OK",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 9,
+      "name": "GET /skills returns HTTP 200 OK array",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 10,
+      "name": "Skills master catalog contains exactly 295 imported curriculum skills",
+      "status": "PASSED",
+      "details": "count=295"
+    },
+    {
+      "number": 11,
+      "name": "Catalog includes flagship subjects: Python, DSA, DBMS, ML, and React",
+      "status": "PASSED",
+      "details": "has_core=True"
+    },
+    {
+      "number": 12,
+      "name": "Skills have populated id, name, and slug properties",
+      "status": "PASSED",
+      "details": "valid_schema=True"
+    },
+    {
+      "number": 13,
+      "name": "Catalog spans structured categories (Programming, DSA, AI, Web, Systems)",
+      "status": "PASSED",
+      "details": "categories_count=12"
+    },
+    {
+      "number": 14,
+      "name": "GET /tutor/pro-skills returns student's accredited competencies",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 15,
+      "name": "PUT /tutor/pro-skills updates tutor master competencies",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 16,
+      "name": "GET /tutor/pro-skills reflects newly endorsed skills",
+      "status": "PASSED",
+      "details": "count=3"
+    },
+    {
+      "number": 17,
+      "name": "GET /me/academics returns student's official semester records",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 18,
+      "name": "Transcript strictly returns 2 real completed semesters (Sem 1 and Sem 2)",
+      "status": "PASSED",
+      "details": "semesters_found=2"
+    },
+    {
+      "number": 19,
+      "name": "Semester indices correspond to Sem 1 and Sem 2",
+      "status": "PASSED",
+      "details": "semesters=[1, 2]"
+    },
+    {
+      "number": 20,
+      "name": "Semester SGPA entries are strictly calibrated between 0.0 and 10.0",
+      "status": "PASSED",
+      "details": "valid_sgpa=True"
+    },
+    {
+      "number": 21,
+      "name": "PATCH /me/target updates student graduation target CGPA",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 22,
+      "name": "Updated target CGPA is accurately saved in student record",
+      "status": "PASSED",
+      "details": "target=8.85"
+    },
+    {
+      "number": 23,
+      "name": "GET /tutor/profile returns tutor standing and rating details",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 24,
+      "name": "GET /tutor/leaderboard returns active campus leaderboard array",
+      "status": "PASSED",
+      "details": "status=200, tutors=0"
+    },
+    {
+      "number": 25,
+      "name": "GET /tutor/sessions returns tutor booked appointments",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 26,
+      "name": "Peer student POST /doubts creates active doubt with status OPEN",
+      "status": "PASSED",
+      "details": "id=c858c563-ddd0-48ee-88fb-5166b11a0730"
+    },
+    {
+      "number": 27,
+      "name": "Created doubt appears in student's active doubts query",
+      "status": "PASSED",
+      "details": "found=True"
+    },
+    {
+      "number": 28,
+      "name": "POST /doubts/:id/book books a 1-on-1 tutoring appointment",
+      "status": "PASSED",
+      "details": "status=201, sessionId=e1e78db1-2613-4924-9bc1-9fcc6fe39303"
+    },
+    {
+      "number": 29,
+      "name": "Booked session status is confirmed as BOOKED/CONFIRMED/SCHEDULED",
+      "status": "PASSED",
+      "details": "status=BOOKED"
+    },
+    {
+      "number": 30,
+      "name": "POST /sessions/:id/complete marks session completed pending student confirmation",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 31,
+      "name": "POST /sessions/:id/confirm finalizes session and triggers tutor reputation increase",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 32,
+      "name": "Associated doubt transitions to SOLVED state upon confirmation",
+      "status": "PASSED",
+      "details": "status=SOLVED"
+    },
+    {
+      "number": 33,
+      "name": "GET /tasks returns student's planner tasks list",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 34,
+      "name": "POST /tasks creates new task with status PENDING",
+      "status": "PASSED",
+      "details": "status=201, id=9573c135-00c8-4c4d-80b9-def0f7179648"
+    },
+    {
+      "number": 35,
+      "name": "POST /tasks/:id/complete transitions task status to COMPLETED",
+      "status": "PASSED",
+      "details": "status=COMPLETED"
+    },
+    {
+      "number": 36,
+      "name": "Toggling completion again returns task status to PENDING",
+      "status": "PASSED",
+      "details": "status=PENDING"
+    },
+    {
+      "number": 37,
+      "name": "POST /tasks/:id/toggle-tough marks task as is_tough = true",
+      "status": "PASSED",
+      "details": "is_tough=True"
+    },
+    {
+      "number": 38,
+      "name": "POST /tasks/:id/ask-suggestion broadcasts study plan request to tutors",
+      "status": "PASSED",
+      "details": "status=201"
+    },
+    {
+      "number": 39,
+      "name": "GET /suggestions returns open suggestion requests for tutors",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 40,
+      "name": "DELETE /tasks/:id deletes task cleanly",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 41,
+      "name": "GET /login renders Next.js authentication interface with status 200 OK",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 42,
+      "name": "Header component source includes #menu-toggle-btn with toggleSidebar interaction",
+      "status": "PASSED",
+      "details": "verified"
+    },
+    {
+      "number": 43,
+      "name": "Sidebar drawer includes #sidebar-close-btn and responsive translate drawer classes",
+      "status": "PASSED",
+      "details": "verified"
+    },
+    {
+      "number": 44,
+      "name": "PageShell container provides responsive layout padding (px-3.5 sm:px-6 md:px-8)",
+      "status": "PASSED",
+      "details": "verified"
+    },
+    {
+      "number": 45,
+      "name": "Profile page provides #open-skills-modal-btn to manage tutor competencies",
+      "status": "PASSED",
+      "details": "verified"
+    },
+    {
+      "number": 46,
+      "name": "Profile page includes 295-skill searchable catalog modal (#skill-search-input & #save-skills-modal-btn)",
+      "status": "PASSED",
+      "details": "verified"
+    },
+    {
+      "number": 47,
+      "name": "Non-existent API route returns clean HTTP 404 Not Found, NOT 500",
+      "status": "PASSED",
+      "details": "status=404"
+    },
+    {
+      "number": 48,
+      "name": "Missing required credentials returns 400 Bad Request with client guidance, NOT 500",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 49,
+      "name": "Next.js proxy rewrite (/api/v1/* -> port 3001) returns 200 OK with zero socket hangup",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 50,
+      "name": "GET /analytics/overview returns calculated campus metrics from database",
+      "status": "PASSED",
+      "details": "status=200"
+    }
+  ]
+}

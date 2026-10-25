@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function ResourcesCard() {
   return (
     <section className="card space-y-4">
@@ -73,7 +75,8 @@ export default function ResourcesCard() {
 
       {/* CTA */}
       <div className="pt-1">
-        <button
+        <Link
+          href="/resources"
           className="w-full py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors font-title-sm"
           style={{
             backgroundColor: "var(--color-primary-container)",
@@ -81,6 +84,7 @@ export default function ResourcesCard() {
             fontSize: 13,
             fontWeight: 600,
             fontFamily: "var(--font-jakarta)",
+            textDecoration: "none",
             boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
           }}
           onMouseEnter={(e) =>
@@ -94,7 +98,7 @@ export default function ResourcesCard() {
         >
           Open Resources &amp; Buckets
           <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-        </button>
+        </Link>
       </div>
     </section>
   );

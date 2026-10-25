@@ -1,0 +1,52 @@
+[
+  {
+    "id": "TC001",
+    "title": "postapiv1authregisterstartvalidrollnumber",
+    "description": "Verify that POST /api/v1/auth/register/start with a valid roll number and institute email triggers OTP generation and returns a verification challenge."
+  },
+  {
+    "id": "TC002",
+    "title": "postapiv1authregisterstartinvalidrollnumber",
+    "description": "Verify that POST /api/v1/auth/register/start with a roll number not found in academic records returns an error indicating invalid or unknown roll number."
+  },
+  {
+    "id": "TC003",
+    "title": "postapiv1authregisterverifyvalidotp",
+    "description": "Verify that POST /api/v1/auth/register/verify with a valid OTP and password returns a JWT token and establishes an authenticated session."
+  },
+  {
+    "id": "TC004",
+    "title": "postapiv1authloginvalidcredentials",
+    "description": "Verify that POST /api/v1/auth/login with valid institute credentials returns a JWT bearer token, user profile, and active session status."
+  },
+  {
+    "id": "TC005",
+    "title": "postapiv1authlogininvalidcredentials",
+    "description": "Verify that POST /api/v1/auth/login with invalid credentials returns an authentication failure response."
+  },
+  {
+    "id": "TC006",
+    "title": "postapiv1authlogoutvalidsession",
+    "description": "Verify that POST /api/v1/auth/logout with a valid session token invalidates the session and confirms logout."
+  },
+  {
+    "id": "TC007",
+    "title": "getapiv1meprofileauthenticated",
+    "description": "Verify that GET /api/v1/me/profile with an authenticated token returns student profile, completed semesters, current CPI, cumulative CGPA, and target projection."
+  },
+  {
+    "id": "TC008",
+    "title": "putapiv1metargetvalidcgpa",
+    "description": "Verify that PUT /api/v1/me/target with a valid target CGPA between 0.00 and 10.00 updates the target and returns required average CPI projection."
+  },
+  {
+    "id": "TC009",
+    "title": "putapiv1metargetinvalidcgpa",
+    "description": "Verify that PUT /api/v1/me/target with an invalid CGPA outside the allowed range returns a validation error response."
+  },
+  {
+    "id": "TC010",
+    "title": "getapiv1academicsrecordsauthenticated",
+    "description": "Verify that GET /api/v1/academics/records with an authenticated token returns ordered semester-by-semester academic results."
+  }
+]

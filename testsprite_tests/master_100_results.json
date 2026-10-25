@@ -1,0 +1,668 @@
+{
+  "total": 110,
+  "passed": 110,
+  "failed": 0,
+  "pass_rate": "100.0%",
+  "results": [
+    {
+      "number": 1,
+      "name": "API Health Endpoint returns 200 OK",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 2,
+      "name": "Login Student 1 (25BCS270) succeeds",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 3,
+      "name": "Session returns valid 3-part JWT accessToken",
+      "status": "PASSED",
+      "details": "token_prefix=eyJhbGciOiJSUzI"
+    },
+    {
+      "number": 4,
+      "name": "Login Student 2 (25BCS195) succeeds",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 5,
+      "name": "Multiple students receive isolated distinct session tokens",
+      "status": "PASSED",
+      "details": "tokens are isolated"
+    },
+    {
+      "number": 6,
+      "name": "Rejection of invalid password returns 401 Unauthorized",
+      "status": "PASSED",
+      "details": "status=401"
+    },
+    {
+      "number": 7,
+      "name": "Rejection of nonexistent email returns 401 Unauthorized",
+      "status": "PASSED",
+      "details": "status=401"
+    },
+    {
+      "number": 8,
+      "name": "Rejection of non-institute domain returns 400 or 401",
+      "status": "PASSED",
+      "details": "status=401"
+    },
+    {
+      "number": 9,
+      "name": "Protected endpoint /me/profile rejects request without token with 401",
+      "status": "PASSED",
+      "details": "status=401"
+    },
+    {
+      "number": 10,
+      "name": "Protected endpoint rejects invalid token with 401",
+      "status": "PASSED",
+      "details": "status=401"
+    },
+    {
+      "number": 11,
+      "name": "Student 1 /me/profile returns full student profile",
+      "status": "PASSED",
+      "details": "roll=25BCS270"
+    },
+    {
+      "number": 12,
+      "name": "Student 2 /me/profile returns correct roll number 25BCS195",
+      "status": "PASSED",
+      "details": "roll=25BCS195"
+    },
+    {
+      "number": 13,
+      "name": "Student institute email domain is strictly @iiitdmj.ac.in",
+      "status": "PASSED",
+      "details": "email=25bcs270@iiitdmj.ac.in"
+    },
+    {
+      "number": 14,
+      "name": "Official academic records endpoint returns semester transcripts",
+      "status": "PASSED",
+      "details": "transcripts_count=2"
+    },
+    {
+      "number": 15,
+      "name": "Semester transcript entries have valid numeric CPI and SGPA",
+      "status": "PASSED",
+      "details": "transcripts validated"
+    },
+    {
+      "number": 16,
+      "name": "PATCH /me/profile updates phone number",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 17,
+      "name": "GET /me/profile verifies persisted phone number",
+      "status": "PASSED",
+      "details": "phone=+91 98765 43210"
+    },
+    {
+      "number": 18,
+      "name": "PATCH /me/profile updates photoUrl",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 19,
+      "name": "GET /me/profile verifies persisted photo_url",
+      "status": "PASSED",
+      "details": "photo_url=https://images.unsplash.com/photo-1534528741775-53994a69daeb"
+    },
+    {
+      "number": 20,
+      "name": "PATCH /me/target updates graduation target CGPA",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 21,
+      "name": "Target update returns recalculated requiredAverageCpi",
+      "status": "PASSED",
+      "details": "requiredCpi=8.82"
+    },
+    {
+      "number": 22,
+      "name": "GET /me/profile confirms target_cgpa reflects accurately",
+      "status": "PASSED",
+      "details": "target=8.85"
+    },
+    {
+      "number": 23,
+      "name": "PATCH /me/target rejects invalid CGPA (> 10.0) with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 24,
+      "name": "PATCH /me/target rejects negative CGPA with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 25,
+      "name": "PATCH /me/profile supports atomic composite updates (phone + photo)",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 26,
+      "name": "Composite fields both verify in persistent storage",
+      "status": "PASSED",
+      "details": "phone=+91 91234 56789"
+    },
+    {
+      "number": 27,
+      "name": "Tenant isolation: Student 2 edits do not mutate Student 1 profile",
+      "status": "PASSED",
+      "details": "tenant isolation passed"
+    },
+    {
+      "number": 28,
+      "name": "Student degree programme is verified as B.Tech",
+      "status": "PASSED",
+      "details": "prog=B.Tech"
+    },
+    {
+      "number": 29,
+      "name": "Student department contains Computer Science",
+      "status": "PASSED",
+      "details": "dept=Computer Science & Engineering"
+    },
+    {
+      "number": 30,
+      "name": "Profile includes valid completed semesters count",
+      "status": "PASSED",
+      "details": "completed semesters present"
+    },
+    {
+      "number": 31,
+      "name": "GET /skills returns available academic subjects",
+      "status": "PASSED",
+      "details": "skills_count=10"
+    },
+    {
+      "number": 32,
+      "name": "Skills repository includes core curriculum subjects (DSA/Python/ML)",
+      "status": "PASSED",
+      "details": "sample_skills=['Machine Learning', 'Compiler Design', 'Computer Networks', 'Database Management Systems']"
+    },
+    {
+      "number": 33,
+      "name": "GET /tutor/profile returns tutor perspective for authenticated student",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 34,
+      "name": "Tutor profile returns proficiencyScore between 0 and 100",
+      "status": "PASSED",
+      "details": "score=78"
+    },
+    {
+      "number": 35,
+      "name": "Tutor profile returns valid campus rank integer",
+      "status": "PASSED",
+      "details": "rank=7"
+    },
+    {
+      "number": 36,
+      "name": "Tutor profile returns doubtsSolved count",
+      "status": "PASSED",
+      "details": "solved=7"
+    },
+    {
+      "number": 37,
+      "name": "GET /tutor/pro-skills returns tutor endorsed subjects",
+      "status": "PASSED",
+      "details": "pro_skills_count=2"
+    },
+    {
+      "number": 38,
+      "name": "PUT /tutor/pro-skills updates mastered skills list",
+      "status": "PASSED",
+      "details": "updated_count=2"
+    },
+    {
+      "number": 39,
+      "name": "GET /tutor/pro-skills confirms exact persisted skill IDs",
+      "status": "PASSED",
+      "details": "saved_ids=['356ee501-d552-4148-8794-fd7bba5e08a7', '353e8479-2780-4823-af48-37c560fbc455']"
+    },
+    {
+      "number": 40,
+      "name": "PUT /tutor/pro-skills rejects invalid skill UUID with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 41,
+      "name": "PUT /tutor/pro-skills is idempotent on identical inputs",
+      "status": "PASSED",
+      "details": "idempotent update successful"
+    },
+    {
+      "number": 42,
+      "name": "GET /tutor/leaderboard returns campus standings",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 43,
+      "name": "Leaderboard returns currentTutorPosition badge",
+      "status": "PASSED",
+      "details": "pos={'tutorId': '756ea7a3-e2bf-479c-af55-34fc9bdd4729', 'fullName': 'Vamsi Adithya', 'rollNumber': '25BCS270', 'department': 'Computer Science & Engineering', 'photoUrl': 'https://lh3.googleusercontent.com/aida-public/AB6AXuBAD_de1pFeIPdIvImZLsyd3x64RBvKydYO1hkBjLl16G42SJ', 'proficiencyScore': 4.8, 'doubtsSolved': 7, 'awardPoints': 446, 'rank': 1}"
+    },
+    {
+      "number": 44,
+      "name": "Leaderboard entries are strictly ordered by points descending",
+      "status": "PASSED",
+      "details": "entries_checked=1"
+    },
+    {
+      "number": 45,
+      "name": "Tutor identity reflects verified accreditation seal",
+      "status": "PASSED",
+      "details": "experience=1 month"
+    },
+    {
+      "number": 46,
+      "name": "POST /doubts creates new academic question with skill tag",
+      "status": "PASSED",
+      "details": "doubt_id=c067d94a-eaba-4614-966c-8b93159e45de"
+    },
+    {
+      "number": 47,
+      "name": "Created doubt has valid non-null createdAt timestamp",
+      "status": "PASSED",
+      "details": "created_at=2026-10-22T15:48:23.056035+00:00"
+    },
+    {
+      "number": 48,
+      "name": "Created doubt has valid non-null expiresAt timestamp",
+      "status": "PASSED",
+      "details": "expires_at=2026-10-24T15:48:24.781+00:00"
+    },
+    {
+      "number": 49,
+      "name": "POST /doubts rejects doubt with empty tagIds array with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 50,
+      "name": "POST /doubts rejects blank description with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 51,
+      "name": "GET /doubts retrieves authenticated student doubts list",
+      "status": "PASSED",
+      "details": "doubts_count=26"
+    },
+    {
+      "number": 52,
+      "name": "GET /doubts?tab=unsolved filters for OPEN doubts",
+      "status": "PASSED",
+      "details": "all returned doubts are OPEN"
+    },
+    {
+      "number": 53,
+      "name": "GET /doubts?tab=solved returns solved/booked doubts",
+      "status": "PASSED",
+      "details": "solved_count=12"
+    },
+    {
+      "number": 54,
+      "name": "Doubt created timestamp is ISO compliant and prevents 'Invalid Date'",
+      "status": "PASSED",
+      "details": "timestamp=2026-10-22T15:48:23.056035+00:00"
+    },
+    {
+      "number": 55,
+      "name": "Expiry timestamp is set strictly after creation timestamp",
+      "status": "PASSED",
+      "details": "expires=2026-10-24T15:48:24.781+00:00"
+    },
+    {
+      "number": 56,
+      "name": "Create temporary doubt for withdrawal test",
+      "status": "PASSED",
+      "details": "withdraw_id=5b368846-ad84-44cb-88e6-1f8a841c430c"
+    },
+    {
+      "number": 57,
+      "name": "POST /doubts/:id/withdraw marks doubt as WITHDRAWN",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 58,
+      "name": "Cannot re-withdraw a closed doubt (returns 400)",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 59,
+      "name": "Unauthorized student cannot withdraw peer doubt (returns 403 or 400)",
+      "status": "PASSED",
+      "details": "status=403"
+    },
+    {
+      "number": 60,
+      "name": "Primary doubt maintains active status OPEN",
+      "status": "PASSED",
+      "details": "status=OPEN"
+    },
+    {
+      "number": 61,
+      "name": "GET /tutor/doubts returns questions matching tutor's pro skills",
+      "status": "PASSED",
+      "details": "inbox_count=10"
+    },
+    {
+      "number": 62,
+      "name": "Student 2 doubt appears in Student 1's matched tutor inbox",
+      "status": "PASSED",
+      "details": "found_in_inbox=True"
+    },
+    {
+      "number": 63,
+      "name": "POST /doubts/:id/book locks doubt atomically to tutor calendar",
+      "status": "PASSED",
+      "details": "session_id=3a47b6ed-f35f-4592-adf9-93b8e5038345"
+    },
+    {
+      "number": 64,
+      "name": "Booked session status is initialized as BOOKED",
+      "status": "PASSED",
+      "details": "status=BOOKED"
+    },
+    {
+      "number": 65,
+      "name": "Conflict safety: Second booking attempt is rejected (status 400 or 409)",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 66,
+      "name": "Doubt status transitions from OPEN to BOOKED upon reservation",
+      "status": "PASSED",
+      "details": "status=BOOKED"
+    },
+    {
+      "number": 67,
+      "name": "Booked doubt is immediately evicted from open matched inbox",
+      "status": "PASSED",
+      "details": "eviction verified"
+    },
+    {
+      "number": 68,
+      "name": "Booked session preserves scheduledStart timestamp",
+      "status": "PASSED",
+      "details": "start time preserved"
+    },
+    {
+      "number": 69,
+      "name": "Booked session preserves scheduledEnd timestamp",
+      "status": "PASSED",
+      "details": "end time preserved"
+    },
+    {
+      "number": 70,
+      "name": "Booked session preserves ONLINE meeting mode",
+      "status": "PASSED",
+      "details": "mode=ONLINE"
+    },
+    {
+      "number": 71,
+      "name": "Booked session preserves Google Meet link",
+      "status": "PASSED",
+      "details": "url=https://meet.google.com/xyz-peer-learn"
+    },
+    {
+      "number": 72,
+      "name": "Booking rejects malformed dates with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 73,
+      "name": "Booking rejects payload missing mode with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 74,
+      "name": "GET /tutor/sessions returns scheduled session in tutor commitments",
+      "status": "PASSED",
+      "details": "session found in tutor list"
+    },
+    {
+      "number": 75,
+      "name": "GET /sessions?mode=student returns appointment in student calendar",
+      "status": "PASSED",
+      "details": "session found in student list"
+    },
+    {
+      "number": 76,
+      "name": "GET /sessions/:id retrieves detailed session appointment",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 77,
+      "name": "Session details include student identity payload",
+      "status": "PASSED",
+      "details": "student payload verified"
+    },
+    {
+      "number": 78,
+      "name": "Session details include associated doubt context",
+      "status": "PASSED",
+      "details": "doubt context verified"
+    },
+    {
+      "number": 79,
+      "name": "Student cannot mark session completed (only assigned tutor can complete)",
+      "status": "PASSED",
+      "details": "status=403"
+    },
+    {
+      "number": 80,
+      "name": "Tutor marks session as COMPLETED via POST /sessions/:id/complete",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 81,
+      "name": "Session transitions to SESSION_COMPLETED_PENDING_CONFIRMATION",
+      "status": "PASSED",
+      "details": "status=SESSION_COMPLETED_PENDING_CONFIRMATION"
+    },
+    {
+      "number": 82,
+      "name": "Doubt reflects SESSION_COMPLETED_PENDING_CONFIRMATION",
+      "status": "PASSED",
+      "details": "doubt_status=SESSION_COMPLETED_PENDING_CONFIRMATION"
+    },
+    {
+      "number": 83,
+      "name": "Tutor cannot self-confirm session (confidential student authority)",
+      "status": "PASSED",
+      "details": "status=403"
+    },
+    {
+      "number": 84,
+      "name": "Student confirms session via POST /sessions/:id/confirm",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 85,
+      "name": "Session status transitions to SOLVED/CONFIRMED upon confirmation",
+      "status": "PASSED",
+      "details": "status=CONFIRMED"
+    },
+    {
+      "number": 86,
+      "name": "Doubt status automatically resolves to SOLVED",
+      "status": "PASSED",
+      "details": "doubt_status=SOLVED"
+    },
+    {
+      "number": 87,
+      "name": "Solved doubt appears in student's solved questions filter tab",
+      "status": "PASSED",
+      "details": "found in solved tab"
+    },
+    {
+      "number": 88,
+      "name": "Tutor doubtsSolved counter reflects completed consultation",
+      "status": "PASSED",
+      "details": "doubtsSolved=8"
+    },
+    {
+      "number": 89,
+      "name": "GET /tasks returns active study planner milestones",
+      "status": "PASSED",
+      "details": "tasks_count=3"
+    },
+    {
+      "number": 90,
+      "name": "POST /tasks creates study milestone with priority and tough flag",
+      "status": "PASSED",
+      "details": "task_id=91819290-e72b-4d23-a702-c9ff51e0e33b"
+    },
+    {
+      "number": 91,
+      "name": "Task priority is recorded accurately as HIGH",
+      "status": "PASSED",
+      "details": "priority=HIGH"
+    },
+    {
+      "number": 92,
+      "name": "Task is_tough flag is recorded as true",
+      "status": "PASSED",
+      "details": "is_tough=True"
+    },
+    {
+      "number": 93,
+      "name": "PATCH /tasks/:id/toggle toggles task completion status",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 94,
+      "name": "GET /tasks verifies task marked as completed",
+      "status": "PASSED",
+      "details": "completed verified"
+    },
+    {
+      "number": 95,
+      "name": "PATCH /tasks/:id/tough toggles tough topic flag",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 96,
+      "name": "POST /tasks/:id/suggestions broadcasts study workflow query to tutors",
+      "status": "PASSED",
+      "details": "sugg_id=44681360-fe6a-4b1a-985d-21935363a07c"
+    },
+    {
+      "number": 97,
+      "name": "GET /tasks/suggestions/feed retrieves pending study plan requests",
+      "status": "PASSED",
+      "details": "feed_count=2"
+    },
+    {
+      "number": 98,
+      "name": "DELETE /tasks/:id cleans up completed study milestone",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 99,
+      "name": "GET /tasks confirms deleted task no longer returned",
+      "status": "PASSED",
+      "details": "task eviction verified"
+    },
+    {
+      "number": 100,
+      "name": "POST /tasks rejects blank title with 400",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 101,
+      "name": "GET /resources retrieves subject buckets",
+      "status": "PASSED",
+      "details": "buckets_count=13"
+    },
+    {
+      "number": 102,
+      "name": "POST /resources/buckets creates new course repository",
+      "status": "PASSED",
+      "details": "bucket_id=766f142f-dbb7-4cc4-897f-63182d0e03d4"
+    },
+    {
+      "number": 103,
+      "name": "POST /resources uploads notes to subject bucket",
+      "status": "PASSED",
+      "details": "resource_id=a739366d-57e6-4c4f-9563-9a970c65c28a"
+    },
+    {
+      "number": 104,
+      "name": "GET /shared-resources/proposals returns democratic governance proposals",
+      "status": "PASSED",
+      "details": "proposals_count=9"
+    },
+    {
+      "number": 105,
+      "name": "POST /shared-resources/proposals submits asset for 24h democratic voting",
+      "status": "PASSED",
+      "details": "prop_id=1b1df3af-da30-45c9-adb8-108a0532491e"
+    },
+    {
+      "number": 106,
+      "name": "POST /shared-resources/proposals/:id/vote casts upvote",
+      "status": "PASSED",
+      "details": "status=200"
+    },
+    {
+      "number": 107,
+      "name": "Anti-duplicate voting: Student cannot vote twice on same proposal",
+      "status": "PASSED",
+      "details": "status=409"
+    },
+    {
+      "number": 108,
+      "name": "GET /analytics/overview returns campus-wide activity metrics",
+      "status": "PASSED",
+      "details": "totalDoubts=39"
+    },
+    {
+      "number": 109,
+      "name": "Analytics returns non-negative active tutors count",
+      "status": "PASSED",
+      "details": "activeTutors=1"
+    },
+    {
+      "number": 110,
+      "name": "DELETE /resources/:id cleans up test resource successfully",
+      "status": "PASSED",
+      "details": "status=200"
+    }
+  ]
+}
