@@ -1,0 +1,93 @@
+{
+  "timestamp": "2026-10-25 13:53:21",
+  "targetUrl": "http://localhost:3000/api/v1",
+  "total": 14,
+  "passed": 14,
+  "failed": 0,
+  "results": [
+    {
+      "number": 1,
+      "name": "GET /health - Service Liveness & Status",
+      "status": "PASSED",
+      "details": "status=200, data={'status': 'ok', 'timestamp': '2026-10-25T08:22:56.428Z'}"
+    },
+    {
+      "number": 2,
+      "name": "POST /auth/login - Rejection of Invalid Credentials (401)",
+      "status": "PASSED",
+      "details": "status=401"
+    },
+    {
+      "number": 3,
+      "name": "POST /auth/login - Verified Login (25BCS195 / Praneeth)",
+      "status": "PASSED",
+      "details": "status=200, token=yes"
+    },
+    {
+      "number": 4,
+      "name": "POST /auth/login - Verified Login (25BCS270 / Vamsi)",
+      "status": "PASSED",
+      "details": "status=200, roll=25BCS270"
+    },
+    {
+      "number": 5,
+      "name": "GET /me/profile - Authenticated Student Profile & Academic Stats",
+      "status": "PASSED",
+      "details": "status=200, has_student=True, has_academics=True"
+    },
+    {
+      "number": 6,
+      "name": "GET /me/academics - Authoritative Semester Records Query",
+      "status": "PASSED",
+      "details": "status=200, count=2"
+    },
+    {
+      "number": 7,
+      "name": "GET /skills - Public Curated Skills Catalog",
+      "status": "PASSED",
+      "details": "status=200, count=295"
+    },
+    {
+      "number": 8,
+      "name": "GET /doubts - Campus Doubt Hub Listing",
+      "status": "PASSED",
+      "details": "status=200, count=49"
+    },
+    {
+      "number": 9,
+      "name": "POST /doubts - Validation Rejection for Blank Description",
+      "status": "PASSED",
+      "details": "status=400"
+    },
+    {
+      "number": 10,
+      "name": "POST /doubts - Create New Doubt with Tags & Expiry",
+      "status": "PASSED",
+      "details": "status=201, id=a0627384-37b5-41bf-8b6b-e55f70c24b9c"
+    },
+    {
+      "number": 11,
+      "name": "POST & GET /tasks - Study Planner Task Creation & Retrieval",
+      "status": "PASSED",
+      "details": "created=201, found=True"
+    },
+    {
+      "number": 12,
+      "name": "GET /notifications - User Notifications Query",
+      "status": "PASSED",
+      "details": "status=200, count=48"
+    },
+    {
+      "number": 13,
+      "name": "GET /analytics/overview - Campus Live Metrics & Leaderboard",
+      "status": "PASSED",
+      "details": "status=200, totalDoubts=50, tutors=2"
+    },
+    {
+      "number": 14,
+      "name": "GET /resources - Academic Resources Catalog",
+      "status": "PASSED",
+      "details": "status=200, count=0"
+    }
+  ]
+}
