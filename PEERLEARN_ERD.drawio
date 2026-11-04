@@ -1,0 +1,259 @@
+<mxfile host="Electron" agent="Antigravity AI">
+  <diagram id="peerlearn-erd-v2" name="PeerLearn Relational ERD (Spacious)">
+    <mxGraphModel dx="1684" dy="1111" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3800" pageHeight="2600" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="legend_container" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8f9fa;strokeColor=#495057;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=16;spacingTop=14;shadow=1;fontFamily=Helvetica;" value="&lt;b style=&quot;font-size:15px;&quot;&gt;PEERLEARN RELATIONAL ERD LEGEND&lt;/b&gt;&lt;hr style=&quot;margin:8px 0;&quot;/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;" vertex="1">
+          <mxGeometry height="580" width="520" x="2250" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_pk" parent="1" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;" value="&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="180" x="2280" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_pk_desc" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="Primary Key (Unique surrogate row identifier)" vertex="1">
+          <mxGeometry height="30" width="280" x="2470" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_fk" parent="1" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fontColor=#004085;" value="&lt;b&gt;+ fk_id: uuid [FK]&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="180" x="2280" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_fk_desc" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="Foreign Key reference (Cascades or Set Null)" vertex="1">
+          <mxGeometry height="30" width="280" x="2470" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_uk" parent="1" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;fontColor=#28a745;" value="&lt;b&gt;+ email: text [UK]&lt;/b&gt;" vertex="1">
+          <mxGeometry height="30" width="180" x="2280" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_uk_desc" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="Unique Candidate Key constraint" vertex="1">
+          <mxGeometry height="30" width="280" x="2470" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_blue" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Identity &amp;amp; Auth" vertex="1">
+          <mxGeometry height="28" width="120" x="2280" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_green" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Skills &amp;amp; Expertise" vertex="1">
+          <mxGeometry height="28" width="120" x="2420" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_orange" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Doubts &amp;amp; Matching" vertex="1">
+          <mxGeometry height="28" width="130" x="2560" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_yellow" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Sessions &amp;amp; Chat" vertex="1">
+          <mxGeometry height="28" width="120" x="2280" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_purple" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Ratings &amp;amp; Scores" vertex="1">
+          <mxGeometry height="28" width="120" x="2420" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_teal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0e3e6;strokeColor=#0e8088;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Shared Resources" vertex="1">
+          <mxGeometry height="28" width="130" x="2560" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_red" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Planner Tasks" vertex="1">
+          <mxGeometry height="28" width="120" x="2280" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_grey" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Private Buckets" vertex="1">
+          <mxGeometry height="28" width="120" x="2420" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_c_plum" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e6d0de;strokeColor=#996185;strokeWidth=1.5;fontSize=11;fontStyle=1;" value="Notifications" vertex="1">
+          <mxGeometry height="28" width="130" x="2560" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_cf_title" parent="1" style="text;html=1;fontSize=12;fontStyle=1;align=left;verticalAlign=middle;" value="&lt;b&gt;Crow&#39;s Foot Relationship Notations:&lt;/b&gt;" vertex="1">
+          <mxGeometry height="26" width="300" x="2280" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_cf_11" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="Mandatory 1 to 1 (|| —— ||)" vertex="1">
+          <mxGeometry height="24" width="240" x="2280" y="425" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_cf_1n" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="Mandatory 1 to Many (|| —— |&amp;lt;)" vertex="1">
+          <mxGeometry height="24" width="240" x="2280" y="455" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_cf_0n" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;" value="Optional 0 to Many (o| —— &amp;gt;o)" vertex="1">
+          <mxGeometry height="24" width="240" x="2280" y="485" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_cf_rule" parent="1" style="text;html=1;fontSize=11;align=left;verticalAlign=middle;fontColor=#721c24;" value="&lt;i&gt;Note: Subtasks have been completely removed from schema &amp;amp; ERD as requested.&lt;/i&gt;" vertex="1">
+          <mxGeometry height="40" width="460" x="2280" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_academic_records" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#fad7ac;strokeColor=#b46504;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;academic_records&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ roll_number: text [UK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ semester: integer [UK]&lt;/b&gt;&lt;br/&gt;+ full_name: text&lt;br/&gt;+ programme: text&lt;br/&gt;+ department: text&lt;br/&gt;+ year_of_study: integer&lt;br/&gt;+ batch: text&lt;br/&gt;+ cpi: numeric(4,2)&lt;br/&gt;+ cgpa: numeric(4,2)&lt;br/&gt;+ credits: integer&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz" vertex="1">
+          <mxGeometry height="240" width="280" x="120" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_academic_imports" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#fad7ac;strokeColor=#b46504;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;academic_imports&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;+ filename: text&lt;br/&gt;+ checksum: text&lt;br/&gt;+ record_count: integer&lt;br/&gt;+ status: text&lt;br/&gt;+ imported_at: timestamptz" vertex="1">
+          <mxGeometry height="150" width="260" x="460" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_pending_registrations" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;pending_registrations&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;+ roll_number: text&lt;br/&gt;+ full_name: text&lt;br/&gt;+ personal_email: text&lt;br/&gt;+ institute_email: text&lt;br/&gt;+ verification_state: text&lt;br/&gt;+ verification_code: text&lt;br/&gt;+ auth_user_id: text&lt;br/&gt;+ expires_at: timestamptz&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="210" width="280" x="780" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_auth_users" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;auth.users&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ email: text [UK]&lt;/b&gt;&lt;br/&gt;+ email_verified: boolean&lt;br/&gt;+ password: text&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz" vertex="1">
+          <mxGeometry height="160" width="260" x="1120" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_skills" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;skills&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ name: text [UK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ slug: text [UK]&lt;/b&gt;&lt;br/&gt;+ category: text&lt;br/&gt;+ is_active: boolean&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="160" width="260" x="120" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_student_skills" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;student_skills&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ student_id: uuid [PK, FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ skill_id: uuid [PK, FK]&lt;/b&gt;&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="130" width="260" x="440" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_students" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2.5;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:15px;&quot;&gt;students&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ auth_user_id: text [UK, FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ roll_number: text [UK]&lt;/b&gt;&lt;br/&gt;+ full_name: text&lt;br/&gt;+ personal_email: text&lt;br/&gt;&lt;b&gt;+ institute_email: text [UK]&lt;/b&gt;&lt;br/&gt;+ phone: text&lt;br/&gt;+ photo_url: text&lt;br/&gt;+ year_of_study: integer&lt;br/&gt;+ department: text&lt;br/&gt;+ programme: text&lt;br/&gt;+ target_cgpa: numeric(4,2)&lt;br/&gt;+ onboarding_completed: boolean&lt;br/&gt;+ student_mode_last_seen_at: timestamptz&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz" vertex="1">
+          <mxGeometry height="340" width="300" x="780" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_tutor_pro_skills" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;tutor_pro_skills&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ student_id: uuid [PK, FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ skill_id: uuid [PK, FK]&lt;/b&gt;&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="130" width="260" x="1160" y="520" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_tutor_score_snapshots" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;tutor_score_snapshots&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ tutor_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ score: numeric(5,2)&lt;br/&gt;+ rating_component: numeric(5,2)&lt;br/&gt;+ solved_component: numeric(5,2)&lt;br/&gt;+ activity_component: numeric(5,2)&lt;br/&gt;+ resource_component: numeric(5,2)&lt;br/&gt;+ rank: integer&lt;br/&gt;+ calculated_at: timestamptz&lt;br/&gt;+ period_start: timestamptz&lt;br/&gt;+ period_end: timestamptz" vertex="1">
+          <mxGeometry height="240" width="280" x="1500" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_doubt_tags" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;doubt_tags&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ doubt_id: uuid [PK, FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ skill_id: uuid [PK, FK]&lt;/b&gt;&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="130" width="260" x="120" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_doubts" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#ffe6cc;strokeColor=#d79b00;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;doubts&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ student_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ description: text&lt;br/&gt;+ expected_outcome: text&lt;br/&gt;+ status: text&lt;br/&gt;+ expires_at: timestamptz&lt;br/&gt;+ booked_tutor_id: uuid [FK]&lt;br/&gt;+ selected_session_id: uuid [FK]&lt;br/&gt;+ suggestion_task_id: uuid [FK]&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz&lt;br/&gt;+ closed_at: timestamptz" vertex="1">
+          <mxGeometry height="260" width="280" x="440" y="980" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_sessions" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2.5;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;sessions&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ doubt_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ student_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ tutor_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ scheduled_start: timestamptz&lt;br/&gt;+ scheduled_end: timestamptz&lt;br/&gt;+ mode: text&lt;br/&gt;+ venue: text&lt;br/&gt;+ meeting_url: text&lt;br/&gt;+ status: text&lt;br/&gt;+ cancel_reason: text&lt;br/&gt;+ replacement_tutor_id: uuid [FK]&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz&lt;br/&gt;+ completed_at: timestamptz" vertex="1">
+          <mxGeometry height="290" width="300" x="780" y="980" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_session_messages" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;session_messages&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ session_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ sender_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ message_type: text&lt;br/&gt;+ body: text&lt;br/&gt;+ resource_id: uuid&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="170" width="260" x="1160" y="1010" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_session_ratings" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;session_ratings&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ session_id: uuid [UK, FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ student_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ tutor_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ rating: integer (1..5)&lt;br/&gt;+ feedback: text&lt;br/&gt;+ did_session_happen: boolean&lt;br/&gt;+ submitted_at: timestamptz&lt;br/&gt;+ release_batch_id: uuid&lt;br/&gt;+ is_released: boolean" vertex="1">
+          <mxGeometry height="220" width="270" x="1500" y="1000" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_resource_buckets" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;resource_buckets&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ owner_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ name: text&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz" vertex="1">
+          <mxGeometry height="140" width="260" x="120" y="1520" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_resources" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;resources&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ bucket_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ owner_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ type: text&lt;br/&gt;+ title: text&lt;br/&gt;+ description: text&lt;br/&gt;+ storage_key: text&lt;br/&gt;+ external_url: text&lt;br/&gt;+ text_content: text&lt;br/&gt;+ mime_type: text&lt;br/&gt;+ size_bytes: bigint&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz" vertex="1">
+          <mxGeometry height="270" width="270" x="440" y="1480" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_shared_resource_buckets" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#bac8d3;strokeColor=#23445d;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;shared_resource_buckets&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;+ name: text&lt;br/&gt;+ batch: text&lt;br/&gt;+ department: text&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="140" width="270" x="780" y="1520" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_shared_resources" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#bac8d3;strokeColor=#23445d;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;shared_resources&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ bucket_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ created_by: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ type: text&lt;br/&gt;+ title: text&lt;br/&gt;+ description: text&lt;br/&gt;+ storage_key: text&lt;br/&gt;+ external_url: text&lt;br/&gt;+ text_content: text&lt;br/&gt;+ mime_type: text&lt;br/&gt;+ size_bytes: bigint&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="250" width="270" x="1120" y="1480" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_resource_proposals" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#b0e3e6;strokeColor=#0e8088;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;resource_proposals&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ bucket_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ proposer_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ type: text&lt;br/&gt;+ title: text&lt;br/&gt;+ description: text&lt;br/&gt;+ storage_key: text&lt;br/&gt;+ external_url: text&lt;br/&gt;+ text_content: text&lt;br/&gt;+ batch: text&lt;br/&gt;+ department: text&lt;br/&gt;+ status: text&lt;br/&gt;+ expires_at: timestamptz&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="280" width="280" x="1460" y="1480" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_resource_votes" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#b0e3e6;strokeColor=#0e8088;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;resource_votes&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ proposal_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ voter_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ vote: text&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="140" width="250" x="1800" y="1520" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_tasks" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;tasks&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ student_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ title: text&lt;br/&gt;+ context: text&lt;br/&gt;+ due_at: timestamptz&lt;br/&gt;+ priority: text&lt;br/&gt;+ status: text&lt;br/&gt;+ is_tough: boolean&lt;br/&gt;+ created_at: timestamptz&lt;br/&gt;+ updated_at: timestamptz&lt;br/&gt;+ completed_at: timestamptz" vertex="1">
+          <mxGeometry height="250" width="280" x="120" y="1980" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_suggestion_requests" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;suggestion_requests&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ task_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ student_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ available_time: text&lt;br/&gt;+ context: text&lt;br/&gt;+ query: text&lt;br/&gt;+ time_available: text&lt;br/&gt;+ status: text&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="210" width="280" x="480" y="2000" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_suggestion_responses" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;suggestion_responses&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ request_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ tutor_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ suggested_workflow: text&lt;br/&gt;+ estimated_hours: numeric(4,1)&lt;br/&gt;+ steps: jsonb&lt;br/&gt;+ is_selected: boolean&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="210" width="290" x="840" y="2000" as="geometry" />
+        </mxCell>
+        <mxCell id="ent_notifications" parent="1" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=12;spacingTop=10;spacingRight=12;spacingBottom=10;fillColor=#e6d0de;strokeColor=#996185;strokeWidth=2;shadow=1;fontFamily=Helvetica;fontSize=11;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;notifications&lt;/b&gt;&lt;hr style=&quot;margin:6px 0;&quot;/&gt;&lt;b&gt;+ id: uuid [PK]&lt;/b&gt;&lt;br/&gt;&lt;b&gt;+ user_id: uuid [FK]&lt;/b&gt;&lt;br/&gt;+ type: text&lt;br/&gt;+ title: text&lt;br/&gt;+ body: text&lt;br/&gt;+ entity_type: text&lt;br/&gt;+ entity_id: text&lt;br/&gt;+ read_at: timestamptz&lt;br/&gt;+ created_at: timestamptz" vertex="1">
+          <mxGeometry height="210" width="270" x="1220" y="2000" as="geometry" />
+        </mxCell>
+        <mxCell id="e_auth_students" edge="1" parent="1" source="ent_auth_users" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;startArrow=ERmandOne;strokeColor=#6c8ebf;strokeWidth=2.5;" target="ent_students">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1250" y="420" />
+              <mxPoint x="930" y="420" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_skills_student_skills" edge="1" parent="1" source="ent_skills" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;" target="ent_student_skills">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_students_student_skills" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;" target="ent_student_skills">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_students_tutor_pro_skills" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;" target="ent_tutor_pro_skills">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_skills_tutor_pro_skills" edge="1" parent="1" source="ent_skills" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;" target="ent_tutor_pro_skills">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="250" y="450" />
+              <mxPoint x="1290" y="450" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_students_score_snapshots" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#9673a6;strokeWidth=2;" target="ent_tutor_score_snapshots">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="440" />
+              <mxPoint x="1640" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_students_doubts" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#d79b00;strokeWidth=2;" target="ent_doubts">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="830" y="900" />
+              <mxPoint x="580" y="900" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_doubts_doubt_tags" edge="1" parent="1" source="ent_doubts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#d79b00;strokeWidth=2;" target="ent_doubt_tags">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_skills_doubt_tags" edge="1" parent="1" source="ent_skills" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#82b366;strokeWidth=2;" target="ent_doubt_tags">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_doubts_sessions" edge="1" parent="1" source="ent_doubts" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;startArrow=ERmandOne;strokeColor=#d6b656;strokeWidth=2.5;" target="ent_sessions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_students_sessions" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#6c8ebf;strokeWidth=2.5;" target="ent_sessions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_sessions_messages" edge="1" parent="1" source="ent_sessions" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#d6b656;strokeWidth=2;" target="ent_session_messages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_sessions_ratings" edge="1" parent="1" source="ent_sessions" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmandOne;startArrow=ERmandOne;strokeColor=#9673a6;strokeWidth=2.5;" target="ent_session_ratings">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1080" y="1110" />
+              <mxPoint x="1500" y="1110" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_students_resource_buckets" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#666666;strokeWidth=2;" target="ent_resource_buckets">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="720" />
+              <mxPoint x="60" y="720" />
+              <mxPoint x="60" y="1590" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_resource_buckets_resources" edge="1" parent="1" source="ent_resource_buckets" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#666666;strokeWidth=2;" target="ent_resources">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_shared_buckets_resources" edge="1" parent="1" source="ent_shared_resource_buckets" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#23445d;strokeWidth=2;" target="ent_shared_resources">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_shared_buckets_proposals" edge="1" parent="1" source="ent_shared_resource_buckets" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#0e8088;strokeWidth=2;" target="ent_resource_proposals">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1050" y="1620" />
+              <mxPoint x="1460" y="1620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_proposals_votes" edge="1" parent="1" source="ent_resource_proposals" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#0e8088;strokeWidth=2;" target="ent_resource_votes">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_students_tasks" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#b85450;strokeWidth=2;" target="ent_tasks">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="780" y="740" />
+              <mxPoint x="40" y="740" />
+              <mxPoint x="40" y="2105" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_tasks_suggestions" edge="1" parent="1" source="ent_tasks" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#b85450;strokeWidth=2;" target="ent_suggestion_requests">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_suggestions_responses" edge="1" parent="1" source="ent_suggestion_requests" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#b85450;strokeWidth=2;" target="ent_suggestion_responses">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_students_notifications" edge="1" parent="1" source="ent_students" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=ERmany;startArrow=ERmandOne;strokeColor=#996185;strokeWidth=2;" target="ent_notifications">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="2100" y="760.11" />
+              <mxPoint x="2100" y="1940.11" />
+              <mxPoint x="1355.11" y="1940.11" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
