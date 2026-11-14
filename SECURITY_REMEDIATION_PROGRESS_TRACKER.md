@@ -1,7 +1,7 @@
 # PeerLearn — InsForge Advisor Security & Performance Remediation Progress Tracker
 
-> **Last Updated**: November 2026 (Phase 2 Remediation Complete)  
-> **Target System**: PostgreSQL / InsForge BaaS (`PeerLearn`)  
+> **Last Updated**: November 2026 (Phase 1 & Phase 2 Validation Campaign Complete)  
+> **Target System**: PostgreSQL / InsForge BaaS (`PeerLearn` — `https://c35py4a8.us-east.insforge.app`)  
 > **Master File**: `SECURITY_REMEDIATION_PROGRESS_TRACKER.md`  
 
 ---
@@ -9,60 +9,58 @@
 ## 1. Overall Remediation Progress Dashboard
 
 ```
-CRITICAL SECURITY PROGRESS:   [██████████████────────────] 52.9% (18 of 34 Target Findings)
-TOTAL AUDIT FINDINGS:         [███████───────────────────] 26.1% (18 of 69 Total Findings)
+LOCAL STAGING PROGRESS:       [██████████████────────────] 52.9% (18 of 34 Security Findings Code-Verified)
+REMOTE PRODUCTION APPLIED:    [──────────────────────────]  0.0% (Awaiting User Production Apply Approval)
+TOTAL AUDIT FINDINGS:         [███████───────────────────] 26.1% (18 of 69 Total Findings Staged)
 ```
 
-| Domain | Total Flagged | Phase 1 Staged | Phase 2 Staged | Phase 3 (Planned) | Phase 4 (Planned) | Unresolved |
-|---|:---:|:---:|:---:|:---:|:---:|:---:|
-| **Critical Security (Functions)** | 10 | **4** | **4** | 2 | 0 | 2 remaining |
-| **Critical Security (RLS)** | 24 | **3** | **7** | 8 | 6 | 14 remaining |
-| **Performance (Missing FK Indexes)** | 22 | 0 | 0 | 0 | 0 | 22 remaining |
-| **Performance (Unused Indexes)** | 13 | 0 | 0 | 0 | 0 | 13 remaining |
-| **TOTAL** | **69** | **7** | **11** | **10** | **6** | **51 remaining** |
+| Domain | Total Flagged | Phase 1 Staged | Phase 2 Staged | Remote Production Applied | Phase 3 (Planned) | Phase 4 (Planned) | Unresolved |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Critical Security (Functions)** | 10 | **4** | **4** | 0 | 2 | 0 | 2 remaining |
+| **Critical Security (RLS)** | 24 | **3** | **7** | 0 | 8 | 6 | 14 remaining |
+| **Performance (Missing FK Indexes)** | 22 | 0 | 0 | 0 | 0 | 0 | 22 remaining |
+| **Performance (Unused Indexes)** | 13 | 0 | 0 | 0 | 0 | 0 | 13 remaining |
+| **TOTAL** | **69** | **7** | **11** | **0** | **10** | **6** | **51 remaining** |
 
-> **Audit Discrepancy Note Resolved**:  
-> - The Phase 1 roadmap summarized Phase 2 as "10 findings" because table `doubt_tags` (Issue 34) was initially paired informally with `doubts` (Issue 18).
-> - There are **11 distinct Advisor finding IDs** across **9 unique database objects** in Phase 2:
->   - 2 functions with 2 findings each (anon + authenticated): `get_matching_doubts_for_tutor` (Issues 2 & 15) and `close_expired_doubts` (Issues 10 & 23).
->   - 7 distinct tables: `students` (17), `skills` (29), `student_skills` (16), `tutor_pro_skills` (27), `tutor_score_snapshots` (32), `doubts` (18), and `doubt_tags` (34).
-> - Phase 4 contains 6 remaining tables (`resource_buckets`, `resources`, `shared_resource_buckets`, `shared_resources`, `resource_proposals`, `resource_votes`), bringing the total critical security findings to exactly 34 (7 + 11 + 10 + 6 = 34).
+> **Audit & Deployment Status Notice**:  
+> - **Code Staging**: 18 of 34 critical security issues are **100% resolved and verified** in migration files and backend code.
+> - **Production Deployment**: Live PostgREST probes on `https://c35py4a8.us-east.insforge.app` confirm that the remote database is currently operating on the unhardened schema. The migrations have **NOT YET BEEN APPLIED TO THE REMOTE DATABASE** pending explicit user approval.
 
 ---
 
 ## 2. Phase 1 Solved & Remediated Errors (7 Issues)
 
-These 7 issues were authored and verified in [`migrations/20261114224000_phase1_security_remediation.sql`](file:///Users/srisaiganesh/peer%20learner/PeerLearn/migrations/20261114224000_phase1_security_remediation.sql).
+Authored in [`migrations/20261114224000_phase1_security_remediation.sql`](file:///Users/srisaiganesh/peer%20learner/PeerLearn/migrations/20261114224000_phase1_security_remediation.sql).
 
-| Issue # | Category | Rule ID | Affected Database Object | Remediation Applied | Status |
-|:---:|---|---|---|---|:---:|
-| **1** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text, text)` | Revoked `EXECUTE` from `anon`/`PUBLIC`; pinned `search_path = public, pg_temp;`. | 🟢 **STAGED (PHASE 1)** |
-| **6** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text, text)` | Revoked `EXECUTE` from `authenticated`/`PUBLIC`. Preserved service-role execution. | 🟢 **STAGED (PHASE 1)** |
-| **12** | Critical Security | `rls-disabled` | `public.academic_records` | `ENABLE ROW LEVEL SECURITY;`. Restricted to backend service-role (`adminClient`). | 🟢 **STAGED (PHASE 1)** |
-| **13** | Critical Security | `rls-disabled` | `public.pending_registrations` | `ENABLE ROW LEVEL SECURITY;`. Sealed registration records and OTPs from PostgREST. | 🟢 **STAGED (PHASE 1)** |
-| **28** | Critical Security | `rls-disabled` | `public.academic_imports` | `ENABLE ROW LEVEL SECURITY;`. Sealed administrative import logs from PostgREST. | 🟢 **STAGED (PHASE 1)** |
-| **31** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text)` | Revoked `EXECUTE` from `authenticated`/`PUBLIC` on legacy single-arg overload. | 🟢 **STAGED (PHASE 1)** |
-| **33** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text)` | Revoked `EXECUTE` from `anon`/`PUBLIC` on legacy single-arg overload. | 🟢 **STAGED (PHASE 1)** |
+| Issue # | Category | Rule ID | Affected Database Object | Remediation Applied | Local Staged Status | Remote Production Status |
+|:---:|---|---|---|---|:---:|:---:|
+| **1** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text, text)` | Revoked `EXECUTE` from `anon`/`PUBLIC`; pinned `search_path = public, pg_temp;`. | 🟢 **STAGED (PHASE 1)** | 🟡 Unapplied on Remote |
+| **6** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text, text)` | Revoked `EXECUTE` from `authenticated`/`PUBLIC`. Preserved service-role execution. | 🟢 **STAGED (PHASE 1)** | 🟡 Unapplied on Remote |
+| **12** | Critical Security | `rls-disabled` | `public.academic_records` | `ENABLE ROW LEVEL SECURITY;`. Restricted to backend service-role (`adminClient`). | 🟢 **STAGED (PHASE 1)** | 🔴 **Vulnerable on Remote** (12 rows leaked) |
+| **13** | Critical Security | `rls-disabled` | `public.pending_registrations` | `ENABLE ROW LEVEL SECURITY;`. Sealed registration records and OTPs from PostgREST. | 🟢 **STAGED (PHASE 1)** | 🔴 **Vulnerable on Remote** (5 rows leaked) |
+| **28** | Critical Security | `rls-disabled` | `public.academic_imports` | `ENABLE ROW LEVEL SECURITY;`. Sealed administrative import logs from PostgREST. | 🟢 **STAGED (PHASE 1)** | 🟢 0 rows leaked (empty) |
+| **31** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text)` | Revoked `EXECUTE` from `authenticated`/`PUBLIC` on legacy single-arg overload. | 🟢 **STAGED (PHASE 1)** | 🟡 Unapplied on Remote |
+| **33** | Critical Security | `dangerous-function` | `public.confirm_auth_user(text)` | Revoked `EXECUTE` from `anon`/`PUBLIC` on legacy single-arg overload. | 🟢 **STAGED (PHASE 1)** | 🟡 Unapplied on Remote |
 
 ---
 
 ## 3. Phase 2 Solved & Remediated Errors (11 Issues)
 
-These 11 issues were authored and verified in [`migrations/20261115_phase2_profiles_matching_security.sql`](file:///Users/srisaiganesh/peer%20learner/PeerLearn/migrations/20261115_phase2_profiles_matching_security.sql) and tested via [`testsprite_tests/test_phase2_security.py`](file:///Users/srisaiganesh/peer%20learner/PeerLearn/testsprite_tests/test_phase2_security.py).
+Authored in [`migrations/20261115_phase2_profiles_matching_security.sql`](file:///Users/srisaiganesh/peer%20learner/PeerLearn/migrations/20261115_phase2_profiles_matching_security.sql).
 
-| Issue # | Category | Rule ID | Affected Database Object | Remediation Applied | Status |
-|:---:|---|---|---|---|:---:|
-| **2** | Critical Security | `dangerous-function` | `public.get_matching_doubts_for_tutor(uuid)` | Revoked `EXECUTE` from `anon`/`PUBLIC`; pinned `search_path = public, pg_temp;`. | 🟢 **STAGED (PHASE 2)** |
-| **10** | Critical Security | `dangerous-function` | `public.close_expired_doubts()` | Revoked `EXECUTE` from `anon`/`PUBLIC`; pinned `search_path = public, pg_temp;`. | 🟢 **STAGED (PHASE 2)** |
-| **15** | Critical Security | `dangerous-function` | `public.get_matching_doubts_for_tutor(uuid)` | Revoked `EXECUTE` from `authenticated`/`PUBLIC`. Preserved backend service-role invocation. | 🟢 **STAGED (PHASE 2)** |
-| **16** | Critical Security | `rls-disabled` | `public.student_skills` | `ENABLE RLS;` Added authenticated read and student-owner insert/update/delete policies. | 🟢 **STAGED (PHASE 2)** |
-| **17** | Critical Security | `rls-disabled` | `public.students` | `ENABLE RLS;` Added authenticated read and self-update policy (`auth_user_id = auth.uid()::text`). | 🟢 **STAGED (PHASE 2)** |
-| **18** | Critical Security | `rls-disabled` | `public.doubts` | `ENABLE RLS;` Added open-read policy (`status = 'OPEN'`) and student owner insert/update/delete. | 🟢 **STAGED (PHASE 2)** |
-| **23** | Critical Security | `dangerous-function` | `public.close_expired_doubts()` | Revoked `EXECUTE` from `authenticated`/`PUBLIC`. Preserved scheduled/backend execution. | 🟢 **STAGED (PHASE 2)** |
-| **27** | Critical Security | `rls-disabled` | `public.tutor_pro_skills` | `ENABLE RLS;` Added authenticated read and tutor-managed pro skill policies. | 🟢 **STAGED (PHASE 2)** |
-| **29** | Critical Security | `rls-disabled` | `public.skills` | `ENABLE RLS;` Added public reference read policy (`anon, authenticated`). Writes locked to admin. | 🟢 **STAGED (PHASE 2)** |
-| **32** | Critical Security | `rls-disabled` | `public.tutor_score_snapshots` | `ENABLE RLS;` Added authenticated read policy for leaderboard; client writes strictly blocked. | 🟢 **STAGED (PHASE 2)** |
-| **34** | Critical Security | `rls-disabled` | `public.doubt_tags` | `ENABLE RLS;` Added parent doubt visibility join policy and doubt-owner insert/delete policies. | 🟢 **STAGED (PHASE 2)** |
+| Issue # | Category | Rule ID | Affected Database Object | Remediation Applied | Local Staged Status | Remote Production Status |
+|:---:|---|---|---|---|:---:|:---:|
+| **2** | Critical Security | `dangerous-function` | `public.get_matching_doubts_for_tutor(uuid)` | Revoked `EXECUTE` from `anon`/`PUBLIC`; pinned `search_path = public, pg_temp;`. | 🟢 **STAGED (PHASE 2)** | 🔴 **Vulnerable on Remote** (Anon executed) |
+| **10** | Critical Security | `dangerous-function` | `public.close_expired_doubts()` | Revoked `EXECUTE` from `anon`/`PUBLIC`; pinned `search_path = public, pg_temp;`. | 🟢 **STAGED (PHASE 2)** | 🔴 **Vulnerable on Remote** (Anon executed) |
+| **15** | Critical Security | `dangerous-function` | `public.get_matching_doubts_for_tutor(uuid)` | Revoked `EXECUTE` from `authenticated`/`PUBLIC`. Preserved backend service-role invocation. | 🟢 **STAGED (PHASE 2)** | 🔴 **Vulnerable on Remote** |
+| **16** | Critical Security | `rls-disabled` | `public.student_skills` | `ENABLE RLS;` Added authenticated read and student-owner insert/update/delete policies. | 🟢 **STAGED (PHASE 2)** | 🟡 Unapplied on Remote |
+| **17** | Critical Security | `rls-disabled` | `public.students` | `ENABLE RLS;` Added authenticated read and self-update policy (`auth_user_id = auth.uid()::text`). | 🟢 **STAGED (PHASE 2)** | 🔴 **Vulnerable on Remote** (2 rows leaked) |
+| **18** | Critical Security | `rls-disabled` | `public.doubts` | `ENABLE RLS;` Added open-read policy (`status = 'OPEN'`) and student owner insert/update/delete. | 🟢 **STAGED (PHASE 2)** | 🔴 **Vulnerable on Remote** (51 rows leaked) |
+| **23** | Critical Security | `dangerous-function` | `public.close_expired_doubts()` | Revoked `EXECUTE` from `authenticated`/`PUBLIC`. Preserved scheduled/backend execution. | 🟢 **STAGED (PHASE 2)** | 🔴 **Vulnerable on Remote** |
+| **27** | Critical Security | `rls-disabled` | `public.tutor_pro_skills` | `ENABLE RLS;` Added authenticated read and tutor-managed pro skill policies. | 🟢 **STAGED (PHASE 2)** | 🟡 Unapplied on Remote |
+| **29** | Critical Security | `rls-disabled` | `public.skills` | `ENABLE RLS;` Added public reference read policy (`anon, authenticated`). Writes locked to admin. | 🟢 **STAGED (PHASE 2)** | 🟢 295 items readable (public catalog) |
+| **32** | Critical Security | `rls-disabled` | `public.tutor_score_snapshots` | `ENABLE RLS;` Added authenticated read policy for leaderboard; client writes strictly blocked. | 🟢 **STAGED (PHASE 2)** | 🟢 0 rows leaked (empty) |
+| **34** | Critical Security | `rls-disabled` | `public.doubt_tags` | `ENABLE RLS;` Added parent doubt visibility join policy and doubt-owner insert/delete policies. | 🟢 **STAGED (PHASE 2)** | 🟡 Unapplied on Remote |
 
 ---
 
