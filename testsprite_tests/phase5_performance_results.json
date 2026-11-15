@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-11-15T17:57:35.067705",
+  "timestamp": "2026-11-15T21:14:38.456570",
   "total": 52,
   "passed": 52,
   "failed": 0,
@@ -331,7 +331,7 @@
       "category": "Execution-Benchmark",
       "name": "500 Joins Benchmark",
       "status": "PASSED",
-      "details": "Indexed time: 0.0050s, Unindexed time: 0.0244s, Measured speedup: 4.84x"
+      "details": "Indexed time: 0.0051s, Unindexed time: 0.0226s, Measured speedup: 4.45x"
     },
     {
       "id": "P5-PERF-06",

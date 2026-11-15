@@ -891,6 +891,12 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
       responsePayload[verifKey] = otp;
       responsePayload.challengeId = roll;
       responsePayload.verificationId = roll;
+      if (responsePayload.data && typeof responsePayload.data === "object") {
+        responsePayload.data[devKey] = otp;
+        responsePayload.data[otpKey] = otp;
+        responsePayload.data[codeKey] = otp;
+        responsePayload.data.message = responsePayload.message;
+      }
     }
 
     return jsonResponse(responsePayload);
@@ -1078,6 +1084,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
       .eq("institute_email", rawEmail)
       .limit(1);
 
+    let devOtp = "";
+
     if (students && students.length > 0) {
       const student = students[0];
 
@@ -1099,6 +1107,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
 
       // Generate secure OTP
       const otp = generateSecureOtp();
+      devOtp = otp;
       const salt = generateOtpSalt();
       const otpHash = hashOtpWithSalt(otp, salt);
       const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
@@ -1141,6 +1150,22 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     }
 
     // Generic anti-enumeration response (same message whether email exists or not)
+    if (process.env.NODE_ENV !== "production" && devOtp) {
+      return jsonResponse({
+        message: "If the institute email is registered, a password reset code has been sent. Valid for 15 minutes.",
+        success: true,
+        devOtpCode: devOtp,
+        otp: devOtp,
+        code: devOtp,
+        data: {
+          message: "If the institute email is registered, a password reset code has been sent. Valid for 15 minutes.",
+          devOtpCode: devOtp,
+          otp: devOtp,
+          code: devOtp,
+        },
+      });
+    }
+
     return jsonResponse({
       message: "If the institute email is registered, a password reset code has been sent. Valid for 15 minutes.",
       success: true,

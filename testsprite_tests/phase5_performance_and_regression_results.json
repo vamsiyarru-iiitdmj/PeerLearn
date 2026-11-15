@@ -1,7 +1,7 @@
 {
   "suite": "PeerLearn Phase 5 Performance & Full Regression Test Suite",
-  "timestamp": "2026-11-15T18:59:59.782937",
-  "elapsed_seconds": 0.022,
+  "timestamp": "2026-11-15T21:15:34.132174",
+  "elapsed_seconds": 0.047,
   "total_tests": 364,
   "total_passed": 364,
   "total_failed": 0,
@@ -407,7 +407,7 @@
       "name": "Concurrent Read Performance on Indexed FK Column",
       "status": "PASS",
       "expected": "50 sequential/concurrent queries execute under 200ms",
-      "actual": "0.04ms",
+      "actual": "0.09ms",
       "details": ""
     },
     {
@@ -416,7 +416,7 @@
       "name": "Concurrent Inserts across Indexed FK Column",
       "status": "PASS",
       "expected": "20 inserts across indexed FK column execute under 200ms",
-      "actual": "0.09ms",
+      "actual": "0.18ms",
       "details": ""
     },
     {
@@ -425,7 +425,7 @@
       "name": "Parent Row Update Lock Contention Elimination",
       "status": "PASS",
       "expected": "Parent row update completes without table locks under 50ms",
-      "actual": "0.01ms",
+      "actual": "0.02ms",
       "details": ""
     },
     {
@@ -443,7 +443,7 @@
       "name": "High-Concurrency Chat Messages Insertion Latency",
       "status": "PASS",
       "expected": "100 indexed message inserts execute under 200ms",
-      "actual": "0.67ms",
+      "actual": "1.39ms",
       "details": ""
     },
     {
@@ -461,7 +461,7 @@
       "name": "Batch Insert Overhead Across 22 FK Indexes",
       "status": "PASS",
       "expected": "200 indexed records across multiple FK relationships commit < 250ms",
-      "actual": "0.72ms",
+      "actual": "1.51ms",
       "details": ""
     },
     {
@@ -470,7 +470,7 @@
       "name": "Single-Row Insert Latency Benchmarking",
       "status": "PASS",
       "expected": "Average single-row commit latency < 10ms",
-      "actual": "0.005ms",
+      "actual": "0.012ms",
       "details": ""
     },
     {
@@ -479,7 +479,7 @@
       "name": "Non-Indexed Column Update Overhead",
       "status": "PASS",
       "expected": "Non-indexed column update completes in < 15ms",
-      "actual": "0.007ms",
+      "actual": "0.015ms",
       "details": ""
     },
     {
@@ -488,7 +488,7 @@
       "name": "Indexed FK Column Targeted Re-Index Update",
       "status": "PASS",
       "expected": "Indexed FK update completes cleanly in < 15ms",
-      "actual": "0.009ms",
+      "actual": "0.018ms",
       "details": ""
     },
     {
@@ -1100,7 +1100,7 @@
       "name": "Strict 6-Digit OTP Length",
       "status": "PASS",
       "expected": "Generated OTP is exactly 6 numeric digits",
-      "actual": "Generated: 291832",
+      "actual": "Generated: 800150",
       "details": ""
     },
     {
@@ -1190,7 +1190,7 @@
       "name": "Pending Registration Timestamp Tracking",
       "status": "PASS",
       "expected": "last_sent_at is tracked and updated",
-      "actual": "TS: 2026-11-15T13:29:59",
+      "actual": "TS: 2026-11-15T15:45:34",
       "details": ""
     },
     {
@@ -1973,7 +1973,7 @@
       "name": "Atomic Doubt Booking Execution",
       "status": "PASS",
       "expected": "Creates session and links to BOOKED doubt",
-      "actual": "Sess: sess-5ebdc538, Status: BOOKED",
+      "actual": "Sess: sess-97ad83f1, Status: BOOKED",
       "details": ""
     },
     {
@@ -2027,7 +2027,7 @@
       "name": "Doubt Selected Session Pointer Binding",
       "status": "PASS",
       "expected": "selected_session_id matches created session",
-      "actual": "Session: sess-5ebdc538",
+      "actual": "Session: sess-97ad83f1",
       "details": ""
     },
     {

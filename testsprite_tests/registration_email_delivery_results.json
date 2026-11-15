@@ -1,6 +1,6 @@
 {
   "suite_name": "Suite 1: Registration Email Delivery Comprehensive Test Suite",
-  "generated_at": "2026-11-15T13:31:16.136870Z",
+  "generated_at": "2026-11-15T15:44:57.514491Z",
   "total_tests": 54,
   "passed": 54,
   "failed": 0,
@@ -25,7 +25,7 @@
       "expected": true,
       "actual": true,
       "details": "Standard IIITDMJ student email verified",
-      "timestamp": "2026-11-15T13:31:16.135600Z"
+      "timestamp": "2026-11-15T15:44:57.512250Z"
     },
     {
       "id": "REG-DEL-02",
@@ -35,7 +35,7 @@
       "expected": "25bcs270@iiitdmj.ac.in",
       "actual": "25bcs270@iiitdmj.ac.in",
       "details": "Institute email dynamically computed from roll",
-      "timestamp": "2026-11-15T13:31:16.135731Z"
+      "timestamp": "2026-11-15T15:44:57.512458Z"
     },
     {
       "id": "REG-DEL-03",
@@ -45,7 +45,7 @@
       "expected": true,
       "actual": true,
       "details": "Personal email fallback generated as <roll>@gmail.com",
-      "timestamp": "2026-11-15T13:31:16.135745Z"
+      "timestamp": "2026-11-15T15:44:57.512482Z"
     },
     {
       "id": "REG-DEL-04",
@@ -55,7 +55,7 @@
       "expected": "student.personal@gmail.com",
       "actual": "student.personal@gmail.com",
       "details": "Personal email normalized to lowercase trimmed string",
-      "timestamp": "2026-11-15T13:31:16.135754Z"
+      "timestamp": "2026-11-15T15:44:57.512498Z"
     },
     {
       "id": "REG-DEL-05",
@@ -65,7 +65,7 @@
       "expected": true,
       "actual": true,
       "details": "Route returns 400 when roll number is empty or omitted",
-      "timestamp": "2026-11-15T13:31:16.135771Z"
+      "timestamp": "2026-11-15T15:44:57.512528Z"
     },
     {
       "id": "REG-DEL-06",
@@ -75,7 +75,7 @@
       "expected": true,
       "actual": true,
       "details": "Dispatcher rejects emails lacking @ or domain",
-      "timestamp": "2026-11-15T13:31:16.135842Z"
+      "timestamp": "2026-11-15T15:44:57.512629Z"
     },
     {
       "id": "REG-DEL-07",
@@ -85,7 +85,7 @@
       "expected": true,
       "actual": true,
       "details": "Dispatcher rejects trailing @ without host",
-      "timestamp": "2026-11-15T13:31:16.135851Z"
+      "timestamp": "2026-11-15T15:44:57.512642Z"
     },
     {
       "id": "REG-DEL-08",
@@ -95,7 +95,7 @@
       "expected": "25bcs270@iiitdmj.ac.in",
       "actual": "25bcs270@iiitdmj.ac.in",
       "details": "Input converted to canonical lowercase",
-      "timestamp": "2026-11-15T13:31:16.135860Z"
+      "timestamp": "2026-11-15T15:44:57.512657Z"
     },
     {
       "id": "REG-DEL-09",
@@ -105,7 +105,7 @@
       "expected": true,
       "actual": true,
       "details": "Route verifies roll against academic_records table",
-      "timestamp": "2026-11-15T13:31:16.135882Z"
+      "timestamp": "2026-11-15T15:44:57.512699Z"
     },
     {
       "id": "REG-DEL-10",
@@ -115,7 +115,7 @@
       "expected": true,
       "actual": true,
       "details": "Prevents duplicate student account registration",
-      "timestamp": "2026-11-15T13:31:16.136091Z"
+      "timestamp": "2026-11-15T15:44:57.513085Z"
     },
     {
       "id": "REG-DEL-11",
@@ -125,7 +125,7 @@
       "expected": true,
       "actual": true,
       "details": "Auto-inserts mock academic record for test rolls in dev",
-      "timestamp": "2026-11-15T13:31:16.136104Z"
+      "timestamp": "2026-11-15T15:44:57.513108Z"
     },
     {
       "id": "REG-DEL-12",
@@ -135,7 +135,7 @@
       "expected": true,
       "actual": true,
       "details": "Supports 21BD1A1234 test fixture in development",
-      "timestamp": "2026-11-15T13:31:16.136115Z"
+      "timestamp": "2026-11-15T15:44:57.513128Z"
     },
     {
       "id": "REG-DEL-13",
@@ -145,7 +145,7 @@
       "expected": true,
       "actual": true,
       "details": "Strict 4-16 alphanumeric characters enforced in prod",
-      "timestamp": "2026-11-15T13:31:16.136164Z"
+      "timestamp": "2026-11-15T15:44:57.513203Z"
     },
     {
       "id": "REG-DEL-14",
@@ -155,7 +155,7 @@
       "expected": true,
       "actual": true,
       "details": "Accommodates test harnesses and UUID-style dev roll numbers",
-      "timestamp": "2026-11-15T13:31:16.136281Z"
+      "timestamp": "2026-11-15T15:44:57.513412Z"
     },
     {
       "id": "REG-DEL-15",
@@ -165,7 +165,7 @@
       "expected": true,
       "actual": true,
       "details": "Scoped query inspects prior attempts for specific roll and purpose",
-      "timestamp": "2026-11-15T13:31:16.136304Z"
+      "timestamp": "2026-11-15T15:44:57.513450Z"
     },
     {
       "id": "REG-DEL-16",
@@ -175,7 +175,7 @@
       "expected": true,
       "actual": true,
       "details": "Rejects rapid repeated requests within 60s window",
-      "timestamp": "2026-11-15T13:31:16.136335Z"
+      "timestamp": "2026-11-15T15:44:57.513503Z"
     },
     {
       "id": "REG-DEL-17",
@@ -185,7 +185,7 @@
       "expected": true,
       "actual": true,
       "details": "Clear descriptive message guides user when rate-limited",
-      "timestamp": "2026-11-15T13:31:16.136346Z"
+      "timestamp": "2026-11-15T15:44:57.513523Z"
     },
     {
       "id": "REG-DEL-18",
@@ -195,7 +195,7 @@
       "expected": true,
       "actual": true,
       "details": "Requests after 60 seconds proceed to OTP generation",
-      "timestamp": "2026-11-15T13:31:16.136354Z"
+      "timestamp": "2026-11-15T15:44:57.513535Z"
     },
     {
       "id": "REG-DEL-19",
@@ -205,7 +205,7 @@
       "expected": true,
       "actual": true,
       "details": "Prevents developer and CI pipeline blocking during test runs",
-      "timestamp": "2026-11-15T13:31:16.136376Z"
+      "timestamp": "2026-11-15T15:44:57.513576Z"
     },
     {
       "id": "REG-DEL-20",
@@ -215,7 +215,7 @@
       "expected": true,
       "actual": true,
       "details": "Purges obsolete unverified OTP records before inserting fresh token",
-      "timestamp": "2026-11-15T13:31:16.136396Z"
+      "timestamp": "2026-11-15T15:44:57.513614Z"
     },
     {
       "id": "REG-DEL-21",
@@ -225,7 +225,7 @@
       "expected": true,
       "actual": true,
       "details": "randomInt(100000, 1000000) guarantees exactly 6 numeric digits",
-      "timestamp": "2026-11-15T13:31:16.136410Z"
+      "timestamp": "2026-11-15T15:44:57.513636Z"
     },
     {
       "id": "REG-DEL-22",
@@ -235,7 +235,7 @@
       "expected": true,
       "actual": true,
       "details": "Generates 32-character hexadecimal salt from 16 secure random bytes",
-      "timestamp": "2026-11-15T13:31:16.136449Z"
+      "timestamp": "2026-11-15T15:44:57.513701Z"
     },
     {
       "id": "REG-DEL-23",
@@ -245,7 +245,7 @@
       "expected": true,
       "actual": true,
       "details": "Stores only 64-char hex digest; plaintext OTP is not persisted",
-      "timestamp": "2026-11-15T13:31:16.136458Z"
+      "timestamp": "2026-11-15T15:44:57.513715Z"
     },
     {
       "id": "REG-DEL-24",
@@ -255,7 +255,7 @@
       "expected": 15,
       "actual": 15,
       "details": "Token expires exactly 15 minutes (900,000 ms) after dispatch",
-      "timestamp": "2026-11-15T13:31:16.136472Z"
+      "timestamp": "2026-11-15T15:44:57.513740Z"
     },
     {
       "id": "REG-DEL-25",
@@ -265,7 +265,7 @@
       "expected": true,
       "actual": true,
       "details": "Blocks verification attempts past the 15-minute validity window",
-      "timestamp": "2026-11-15T13:31:16.136492Z"
+      "timestamp": "2026-11-15T15:44:57.513778Z"
     },
     {
       "id": "REG-DEL-26",
@@ -275,7 +275,7 @@
       "expected": true,
       "actual": true,
       "details": "Purges expired pending records immediately upon access",
-      "timestamp": "2026-11-15T13:31:16.136512Z"
+      "timestamp": "2026-11-15T15:44:57.513815Z"
     },
     {
       "id": "REG-DEL-27",
@@ -285,7 +285,7 @@
       "expected": true,
       "actual": true,
       "details": "Rejects letters, whitespace, or symbols in OTP string",
-      "timestamp": "2026-11-15T13:31:16.136545Z"
+      "timestamp": "2026-11-15T15:44:57.513874Z"
     },
     {
       "id": "REG-DEL-28",
@@ -295,7 +295,7 @@
       "expected": true,
       "actual": true,
       "details": "Only exact 6-character numeric sequences accepted",
-      "timestamp": "2026-11-15T13:31:16.136550Z"
+      "timestamp": "2026-11-15T15:44:57.513883Z"
     },
     {
       "id": "REG-DEL-29",
@@ -305,7 +305,7 @@
       "expected": false,
       "actual": false,
       "details": "Off-by-one single digit fails cryptographic equality",
-      "timestamp": "2026-11-15T13:31:16.136562Z"
+      "timestamp": "2026-11-15T15:44:57.513906Z"
     },
     {
       "id": "REG-DEL-30",
@@ -315,7 +315,7 @@
       "expected": false,
       "actual": false,
       "details": "Transposed adjacent digits fail cryptographic equality",
-      "timestamp": "2026-11-15T13:31:16.136567Z"
+      "timestamp": "2026-11-15T15:44:57.513915Z"
     },
     {
       "id": "REG-DEL-31",
@@ -325,7 +325,7 @@
       "expected": false,
       "actual": false,
       "details": "Hash verification requires the exact specific per-request salt",
-      "timestamp": "2026-11-15T13:31:16.136575Z"
+      "timestamp": "2026-11-15T15:44:57.513930Z"
     },
     {
       "id": "REG-DEL-32",
@@ -335,7 +335,7 @@
       "expected": true,
       "actual": true,
       "details": "timingSafeEqual protects against timing analysis attacks",
-      "timestamp": "2026-11-15T13:31:16.136580Z"
+      "timestamp": "2026-11-15T15:44:57.513938Z"
     },
     {
       "id": "REG-DEL-33",
@@ -345,7 +345,7 @@
       "expected": true,
       "actual": true,
       "details": "Guards against Buffer length exception before comparison",
-      "timestamp": "2026-11-15T13:31:16.136583Z"
+      "timestamp": "2026-11-15T15:44:57.513944Z"
     },
     {
       "id": "REG-DEL-34",
@@ -355,7 +355,7 @@
       "expected": false,
       "actual": false,
       "details": "Returns false safely on empty OTP without throwing",
-      "timestamp": "2026-11-15T13:31:16.136586Z"
+      "timestamp": "2026-11-15T15:44:57.513950Z"
     },
     {
       "id": "REG-DEL-35",
@@ -365,7 +365,7 @@
       "expected": false,
       "actual": false,
       "details": "Returns false when salt or stored hash are null or empty",
-      "timestamp": "2026-11-15T13:31:16.136589Z"
+      "timestamp": "2026-11-15T15:44:57.513955Z"
     },
     {
       "id": "REG-DEL-36",
@@ -375,7 +375,7 @@
       "expected": true,
       "actual": true,
       "details": "Safely supports unmigrated historical rows during rollout",
-      "timestamp": "2026-11-15T13:31:16.136600Z"
+      "timestamp": "2026-11-15T15:44:57.513975Z"
     },
     {
       "id": "REG-DEL-37",
@@ -385,7 +385,7 @@
       "expected": true,
       "actual": true,
       "details": "Increments attempts column in pending_registrations on wrong OTP",
-      "timestamp": "2026-11-15T13:31:16.136612Z"
+      "timestamp": "2026-11-15T15:44:57.513997Z"
     },
     {
       "id": "REG-DEL-38",
@@ -395,7 +395,7 @@
       "expected": true,
       "actual": true,
       "details": "Informs user of exact attempts remaining before lockout",
-      "timestamp": "2026-11-15T13:31:16.136622Z"
+      "timestamp": "2026-11-15T15:44:57.514017Z"
     },
     {
       "id": "REG-DEL-39",
@@ -405,7 +405,7 @@
       "expected": true,
       "actual": true,
       "details": "Returns HTTP 429 once attempt counter reaches 5",
-      "timestamp": "2026-11-15T13:31:16.136650Z"
+      "timestamp": "2026-11-15T15:44:57.514069Z"
     },
     {
       "id": "REG-DEL-40",
@@ -415,7 +415,7 @@
       "expected": true,
       "actual": true,
       "details": "Destroys pending challenge immediately to thwart brute-force",
-      "timestamp": "2026-11-15T13:31:16.136669Z"
+      "timestamp": "2026-11-15T15:44:57.514105Z"
     },
     {
       "id": "REG-DEL-41",
@@ -425,7 +425,7 @@
       "expected": true,
       "actual": true,
       "details": "Prevents re-use of once-verified OTP",
-      "timestamp": "2026-11-15T13:31:16.136688Z"
+      "timestamp": "2026-11-15T15:44:57.514142Z"
     },
     {
       "id": "REG-DEL-42",
@@ -435,7 +435,7 @@
       "expected": true,
       "actual": true,
       "details": "Subsequent attempts find no record and fail immediately",
-      "timestamp": "2026-11-15T13:31:16.136700Z"
+      "timestamp": "2026-11-15T15:44:57.514165Z"
     },
     {
       "id": "REG-DEL-43",
@@ -445,7 +445,7 @@
       "expected": true,
       "actual": true,
       "details": "Configures standard SMTP transporter with user credentials",
-      "timestamp": "2026-11-15T13:31:16.136711Z"
+      "timestamp": "2026-11-15T15:44:57.514186Z"
     },
     {
       "id": "REG-DEL-44",
@@ -455,7 +455,7 @@
       "expected": true,
       "actual": true,
       "details": "Automatically enables SSL TLS encryption on port 465",
-      "timestamp": "2026-11-15T13:31:16.136721Z"
+      "timestamp": "2026-11-15T15:44:57.514207Z"
     },
     {
       "id": "REG-DEL-45",
@@ -465,7 +465,7 @@
       "expected": true,
       "actual": true,
       "details": "Catches transport connection errors cleanly",
-      "timestamp": "2026-11-15T13:31:16.136729Z"
+      "timestamp": "2026-11-15T15:44:57.514222Z"
     },
     {
       "id": "REG-DEL-46",
@@ -475,7 +475,7 @@
       "expected": true,
       "actual": true,
       "details": "Enables complete end-to-end testing without external SMTP credentials",
-      "timestamp": "2026-11-15T13:31:16.136740Z"
+      "timestamp": "2026-11-15T15:44:57.514242Z"
     },
     {
       "id": "REG-DEL-47",
@@ -485,7 +485,7 @@
       "expected": true,
       "actual": true,
       "details": "Persists dispatched emails to .email_outbox.json for automated verification",
-      "timestamp": "2026-11-15T13:31:16.136747Z"
+      "timestamp": "2026-11-15T15:44:57.514258Z"
     },
     {
       "id": "REG-DEL-48",
@@ -495,7 +495,7 @@
       "expected": true,
       "actual": true,
       "details": "Fails fast in production with explicit missing configuration keys",
-      "timestamp": "2026-11-15T13:31:16.136755Z"
+      "timestamp": "2026-11-15T15:44:57.514274Z"
     },
     {
       "id": "REG-DEL-49",
@@ -505,7 +505,7 @@
       "expected": true,
       "actual": true,
       "details": "Renders official IIITDM Jabalpur Peer Tutoring brand banner",
-      "timestamp": "2026-11-15T13:31:16.136776Z"
+      "timestamp": "2026-11-15T15:44:57.514313Z"
     },
     {
       "id": "REG-DEL-50",
@@ -515,7 +515,7 @@
       "expected": true,
       "actual": true,
       "details": "Increases legibility with spaced numbers and monospace font",
-      "timestamp": "2026-11-15T13:31:16.136801Z"
+      "timestamp": "2026-11-15T15:44:57.514360Z"
     },
     {
       "id": "REG-DEL-51",
@@ -525,7 +525,7 @@
       "expected": true,
       "actual": true,
       "details": "Prominently displays expiration time to prevent delayed submission",
-      "timestamp": "2026-11-15T13:31:16.136814Z"
+      "timestamp": "2026-11-15T15:44:57.514386Z"
     },
     {
       "id": "REG-DEL-52",
@@ -535,7 +535,7 @@
       "expected": true,
       "actual": true,
       "details": "Warns student that staff/tutors will never ask for their OTP",
-      "timestamp": "2026-11-15T13:31:16.136834Z"
+      "timestamp": "2026-11-15T15:44:57.514423Z"
     },
     {
       "id": "REG-DEL-53",
@@ -545,7 +545,7 @@
       "expected": true,
       "actual": true,
       "details": "Provides accessible text alternative for screen readers and legacy clients",
-      "timestamp": "2026-11-15T13:31:16.136847Z"
+      "timestamp": "2026-11-15T15:44:57.514448Z"
     },
     {
       "id": "REG-DEL-54",
@@ -555,7 +555,7 @@
       "expected": true,
       "actual": true,
       "details": "Clear, recognizable subject line enables fast identification in inbox",
-      "timestamp": "2026-11-15T13:31:16.136855Z"
+      "timestamp": "2026-11-15T15:44:57.514464Z"
     }
   ]
 }

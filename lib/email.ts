@@ -24,7 +24,7 @@
 import fs from "fs";
 import path from "path";
 import nodemailer, { type Transporter } from "nodemailer";
-import { getInsforgeAdmin } from "./insforge";
+import { getInsforgeAdmin, getInsforgeAnon } from "./insforge";
 
 export type EmailProviderType =
   | "smtp"
@@ -705,6 +705,17 @@ export async function dispatchEmail(options: SendEmailOptions): Promise<EmailDel
 
   // 3. Development / Test Outbox Fallback
   if (!isProd || process.env.ENABLE_DEV_EMAIL_OUTBOX === "true") {
+    // Auxiliary sync with InsForge auth email triggers
+    try {
+      const anon = getInsforgeAnon();
+      if (options.purpose === "PASSWORD_RESET_OTP") {
+        anon.auth.sendResetPasswordEmail({ email: primaryRecipient }).catch(() => {});
+      } else if (options.purpose === "REGISTRATION_OTP") {
+        anon.auth.resendVerificationEmail({ email: primaryRecipient }).catch(() => {});
+      }
+    } catch (_authErr) {
+      // Ignore background auxiliary auth notification error
+    }
     return handleDevOutboxDelivery(options, from);
   }
 

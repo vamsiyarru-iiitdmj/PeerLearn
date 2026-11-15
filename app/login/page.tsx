@@ -75,12 +75,13 @@ export default function LoginPage() {
     setForgotLoading(true);
     try {
       const res = await apiForgotPassword({ instituteEmail: forgotEmail.trim() });
-      const msg = res.devOtpCode
-        ? `${res.message} (Dev OTP: ${res.devOtpCode})`
+      const otpCode = (res as any)?.devOtpCode || (res as any)?.otp || (res as any)?.code || (res as any)?.data?.devOtpCode || (res as any)?.data?.otp;
+      const msg = otpCode
+        ? `${res.message || "Code sent!"} (Dev OTP: ${otpCode})`
         : res.message || "OTP sent to your institute email! Valid for 15 minutes.";
       setForgotSuccess(msg);
-      if (res.devOtpCode) {
-        setForgotOtp(res.devOtpCode);
+      if (otpCode) {
+        setForgotOtp(otpCode);
       }
       setForgotStep("verify");
       setForgotCooldown(60);
@@ -152,12 +153,13 @@ export default function LoginPage() {
         personalEmail: regPersonalEmail.trim(),
         instituteEmail: regInstituteEmail.trim(),
       });
-      const msg = res.devOtpCode
-        ? `${res.message} (Dev OTP: ${res.devOtpCode})`
+      const otpCode = (res as any)?.devOtpCode || (res as any)?.otp || (res as any)?.code || (res as any)?.data?.devOtpCode || (res as any)?.data?.otp;
+      const msg = otpCode
+        ? `${res.message || "Code sent!"} (Dev OTP: ${otpCode})`
         : res.message || "OTP sent to your institute email! Valid for 15 minutes.";
       setRegSuccess(msg);
-      if (res.devOtpCode) {
-        setRegOtp(res.devOtpCode);
+      if (otpCode) {
+        setRegOtp(otpCode);
       }
       setRegStep("verify");
       setRegCooldown(60);
@@ -179,12 +181,13 @@ export default function LoginPage() {
         personalEmail: regPersonalEmail.trim(),
         instituteEmail: regInstituteEmail.trim(),
       });
-      const msg = res.devOtpCode
-        ? `${res.message} (Dev OTP: ${res.devOtpCode})`
+      const otpCode = (res as any)?.devOtpCode || (res as any)?.otp || (res as any)?.code || (res as any)?.data?.devOtpCode || (res as any)?.data?.otp;
+      const msg = otpCode
+        ? `${res.message || "Code sent!"} (Dev OTP: ${otpCode})`
         : res.message || "New OTP sent to your institute email! Valid for 15 minutes.";
       setRegSuccess(msg);
-      if (res.devOtpCode) {
-        setRegOtp(res.devOtpCode);
+      if (otpCode) {
+        setRegOtp(otpCode);
       }
       setRegCooldown(60);
     } catch (err) {
@@ -451,6 +454,27 @@ export default function LoginPage() {
           {tab === "forgot" && forgotStep === "verify" && (
             <form onSubmit={handleForgotReset} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {forgotSuccess && <SuccessBox message={forgotSuccess} />}
+              {forgotOtp ? (
+                <div
+                  style={{
+                    padding: "0.625rem 0.875rem",
+                    borderRadius: "var(--radius)",
+                    backgroundColor: "#eff6ff",
+                    border: "1px solid #bfdbfe",
+                    color: "#1e40af",
+                    fontSize: 12,
+                    fontFamily: "var(--font-jakarta)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>bolt</span>
+                  <span><strong>Dev Auto-Fill:</strong> Verification code is <strong>{forgotOtp}</strong>. Auto-populated below for instant testing!</span>
+                </div>
+              ) : (
+                <InfoBox message="Enter the 6-digit verification code sent to your institute email or recorded in .email_outbox.json." />
+              )}
 
               <div>
                 <label htmlFor="forgot-otp" style={labelStyle}>6-Digit OTP</label>
@@ -769,6 +793,27 @@ export default function LoginPage() {
           {tab === "register" && regStep === "verify" && (
             <form onSubmit={handleRegisterVerify} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <SuccessBox message={regSuccess || `OTP sent to ${regInstituteEmail}. Check your inbox or dev code above.`} />
+              {regOtp ? (
+                <div
+                  style={{
+                    padding: "0.625rem 0.875rem",
+                    borderRadius: "var(--radius)",
+                    backgroundColor: "#eff6ff",
+                    border: "1px solid #bfdbfe",
+                    color: "#1e40af",
+                    fontSize: 12,
+                    fontFamily: "var(--font-jakarta)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 8,
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>bolt</span>
+                  <span><strong>Dev Auto-Fill:</strong> Verification code is <strong>{regOtp}</strong>. Auto-populated below for instant testing!</span>
+                </div>
+              ) : (
+                <InfoBox message="Enter the 6-digit verification code sent to your institute email or recorded in .email_outbox.json." />
+              )}
               <div>
                 <label htmlFor="reg-otp" style={labelStyle}>OTP Code</label>
                 <input
