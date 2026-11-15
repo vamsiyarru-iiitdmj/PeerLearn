@@ -304,7 +304,7 @@ export default function TutorDashboard() {
                 fontFamily: "var(--font-jakarta)",
               }}
             >
-              No pro skills selected yet. Click "Mastered Skills" to pick subjects you tutor!
+              No pro skills selected yet. Click &quot;Mastered Skills&quot; to pick subjects you tutor!
             </span>
           )}
         </div>

@@ -103,4 +103,24 @@ ON public.resource_votes (voter_id);
 CREATE INDEX IF NOT EXISTS idx_tutor_score_snapshots_tutor_id 
 ON public.tutor_score_snapshots (tutor_id);
 
+-- ════════════════════════════════════════════════════════════════════════════
+-- COMPOSITE INDEXES FOR HIGH-FREQUENCY RLS AND QUERY FILTERS
+-- ════════════════════════════════════════════════════════════════════════════
+
+-- 23. public.shared_resource_buckets (department, batch)
+CREATE INDEX IF NOT EXISTS idx_shared_resource_buckets_dept_batch 
+ON public.shared_resource_buckets (department, batch);
+
+-- 24. public.resource_proposals (status, department, batch)
+CREATE INDEX IF NOT EXISTS idx_resource_proposals_status_dept_batch 
+ON public.resource_proposals (status, department, batch);
+
+-- 25. public.suggestion_requests (status)
+CREATE INDEX IF NOT EXISTS idx_suggestion_requests_status 
+ON public.suggestion_requests (status);
+
+-- 26. public.session_ratings (tutor_id, is_released)
+CREATE INDEX IF NOT EXISTS idx_session_ratings_tutor_released 
+ON public.session_ratings (tutor_id, is_released);
+
 COMMIT;

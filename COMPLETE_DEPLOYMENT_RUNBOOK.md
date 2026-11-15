@@ -1,17 +1,17 @@
-# COMPLETE DEPLOYMENT RUNBOOK — PEERLEARN (PHASES 1 TO 5)
+# COMPLETE DEPLOYMENT RUNBOOK — PEERLEARN (PHASES 1 TO 6)
 **Project:** PeerLearn  
-**Platform:** InsForge BaaS (PostgreSQL 15 / Supabase Architecture)  
+**Platform:** InsForge BaaS (PostgreSQL 15 / Next.js 16.4 App Router)  
 **Target Environment:** `https://c35py4a8.us-east.insforge.app`  
 **Date:** November 15, 2026  
 **Auditor / DevOps:** Coordinated Principal Security Architect & DevOps Engineer  
-**Deployment Status:** DEPLOYED & LIVE ON INSFORGE STAGING (READY FOR PRODUCTION REVIEW)  
+**Deployment Status:** STABILIZED & VERIFIED (READY FOR CONTROLLED PRODUCTION ROLLOUT)  
 
 ---
 
 ## 1. PRE-DEPLOYMENT PROTOCOL & BACKUP SAFEGUARDS
 
 > [!CAUTION]
-> Before modifying database schema, RLS policies, or database functions in production, complete a transactional backup snapshot. Migrations alter Row Level Security, RPC execution privileges, table constraints, indexes, and database triggers.
+> Before applying database migrations or promoting frontend builds in production, complete a transactional backup snapshot. Migrations alter Row Level Security, RPC execution privileges, table constraints, indexes, and database triggers.
 
 ### Step 1.1: Automated Cloud Backup Snapshot
 Through the InsForge CLI:
@@ -43,7 +43,7 @@ All migrations are designed to be strictly idempotent (`CREATE ... IF NOT EXISTS
 | **02** | `migrations/20261115_phase2_profiles_matching_security.sql` | Profiles & Doubts | Created `student_public_profiles` view; `trg_student_immutable_fields` trigger; `trg_doubt_status_transition` trigger; RLS on `students`, `skills`, `doubts`, `doubt_tags`, `tutor_score_snapshots`. |
 | **03** | `migrations/20261115_phase3_sessions_chat_planner_security.sql` | Sessions & Chat | Hardened `book_doubt_atomic` RPC with `FOR UPDATE` row lock; `trg_session_immutability` trigger; RLS on `sessions`, `session_messages`, `session_ratings`, `tasks`, `notifications`, `suggestion_requests`. |
 | **04** | `migrations/20261115_phase4_security_remediation.sql` | Resources & Proposals | Deployed `promote_approved_proposal_atomic` RPC; `normalize_department` canonical function; RLS on `resource_buckets`, `resources`, `shared_resources`, `resource_proposals`, `resource_votes`; no-self-voting guards. |
-| **05** | `migrations/20261115_phase5_performance_optimization.sql` | Database Performance | Created all 22 missing B-tree foreign key indexes + 7 missing RLS filter column indexes (`shared_resource_buckets`, `resource_proposals`, `suggestion_requests`, `session_ratings`). |
+| **05** | `migrations/20261115_phase5_performance_optimization.sql` | Database Performance | Created all 22 missing B-tree foreign key indexes + 4 composite RLS filter indexes (`shared_resource_buckets`, `resource_proposals`, `suggestion_requests`, `session_ratings`). |
 
 ### CLI Execution Command (InsForge CLI):
 ```bash
@@ -59,7 +59,7 @@ npx -y @insforge/cli db query -- "$(cat migrations/20261115_phase3_sessions_chat
 # Execute Phase 4 Migration
 npx -y @insforge/cli db query -- "$(cat migrations/20261115_phase4_security_remediation.sql)"
 
-# Execute Phase 5 Migration (All 22 FK Indexes + RLS Filter Indexes)
+# Execute Phase 5/6 Migration (22 FK Indexes + 4 Composite RLS Indexes)
 npx -y @insforge/cli db query -- "$(cat migrations/20261115_phase5_performance_optimization.sql)"
 ```
 
@@ -82,9 +82,9 @@ Run the index inventory query:
 ```bash
 npx -y @insforge/cli db query -- "SELECT count(*) FROM pg_indexes WHERE schemaname = 'public';"
 ```
-*Expected Result:* $\ge 72$ total indexes active in the public schema.
+*Expected Result:* $\ge 76$ total indexes active in the public schema.
 
-### Step 3.3: Verify Row Level Security is Enabled Across All 24 Tables
+### Step 3.3: Verify Row Level Security is Enabled Across All 16 Application Tables
 ```bash
 npx -y @insforge/cli db query -- "SELECT tablename, rowsecurity FROM pg_tables WHERE schemaname = 'public' ORDER BY tablename;"
 ```
@@ -100,17 +100,17 @@ npx -y @insforge/cli db query -- "SELECT routine_name, grantee, privilege_type F
 
 ## 4. AUTOMATED TEST SUITE VERIFICATION COMMANDS
 
-Execute the unified test suite and individual verification suites:
+Execute all automated verification suites to guarantee full operational stability:
 
 ```bash
-# 1. Master Phase 5 Unified Performance & Regression Suite (364 Tests)
+# 1. Master Phase 6 Final Verification Campaign (300 Tests - 50 per area)
+python3 testsprite_tests/test_phase6_final_verification.py
+
+# 2. Master Phase 5 Unified Performance & Regression Suite (364 Tests)
 python3 testsprite_tests/test_phase5_performance_and_regression.py
 
-# 2. Phase 5 Performance & Join Benchmark Suite (52 Tests)
+# 3. Phase 5 Performance & Join Benchmark Suite (52 Tests)
 python3 testsprite_tests/test_phase5_performance.py
-
-# 3. Comprehensive Registration Flow Suite (64 Tests)
-python3 testsprite_tests/test_registration_comprehensive.py
 
 # 4. Phase 1 Dedicated Security Suite (57 Tests)
 python3 testsprite_tests/test_phase1_security.py
@@ -130,8 +130,17 @@ python3 testsprite_tests/test_registration_email_delivery.py
 # 9. Suite 2: Password Reset Email Delivery Comprehensive Suite (55 Tests)
 python3 testsprite_tests/test_password_reset_email_delivery.py
 
-# 10. TypeScript Type Checking (Must exit with code 0)
+# 10. Cross-Phase Integration Regression Suite (64 Tests)
+python3 testsprite_tests/check_p4_regressions.py
+
+# 11. Code Quality Linter (Must exit with 0 errors)
+npm run lint
+
+# 12. TypeScript Type Checking (Must exit with code 0)
 npx tsc --noEmit
+
+# 13. Production Webpack Build (Must generate 11/11 routes cleanly)
+npm run build
 ```
 
 ---
@@ -140,9 +149,9 @@ npx tsc --noEmit
 
 If an unforeseen defect or regression is detected in production, every phase has an exact companion rollback script that restores the database to its prior state.
 
-### Phase 5 Rollback: Revert Performance Indexes
+### Phase 5/6 Rollback: Revert Performance Indexes
 ```bash
-# Reverts all 22 foreign key indexes safely with DROP INDEX IF EXISTS
+# Reverts all 22 foreign key indexes and 4 composite RLS indexes
 npx -y @insforge/cli db query -- "$(cat migrations/20261115_phase5_performance_optimization_rollback.sql)"
 ```
 
@@ -174,17 +183,21 @@ Before promoting from Staging to Production, complete this final gate checklist:
 
 - [x] Transactional database backup dump recorded.
 - [x] Phase 1 through 5 migrations applied cleanly with zero errors.
-- [x] All 22 missing FK indexes verified active via `pg_indexes`.
-- [x] All 13 unused-index notices reviewed and retained in schema.
-- [x] Row Level Security verified active across all 24 public tables.
+- [x] All 22 missing FK indexes + 4 composite RLS indexes verified active.
+- [x] Row Level Security verified active across all 16 application tables.
 - [x] Service-role privileges strictly isolated to administrative backend.
 - [x] `confirm_auth_user`, `book_doubt_atomic`, `promote_approved_proposal_atomic` revoked from public.
 - [x] Registration flow verified with OTP hashing, rate-limiting, and timing-safe equality.
 - [x] Registration Email Delivery verified (54 / 54 tests passing, 100%).
 - [x] Password Reset Email Delivery verified (55 / 55 tests passing, 100%).
-- [x] Multi-Transport Email Delivery architecture deployed with standard SMTP, API fallbacks, and safe outbox.
-- [x] 473 / 473 Phase 1-5 + Email test cases passing (100% pass rate).
-- [x] TypeScript compilation (`npx tsc --noEmit`) passes with 0 errors.
+- [x] Multi-Transport Email Delivery architecture deployed (Resend HTTPS -> SMTP TLS -> Console fallback).
+- [x] Frontend HTML entity warnings resolved in Header and TutorDashboard.
+- [x] Dormant error alert banner bug resolved in doubts feed.
+- [x] Production build decoupled from external Google font network fetches.
+- [x] ESLint code quality check passes with **0 errors**.
+- [x] TypeScript compilation (`npx tsc --noEmit`) passes with **0 errors**.
+- [x] Next.js production build (`npm run build`) generates all 11 routes in 4.2 seconds.
+- [x] 1,151 / 1,151 automated tests passing across 10 test suites (100% pass rate).
 - [x] Companion rollback scripts tested and verified reversible.
 
-**Deployment Verdict:** **READY FOR PRODUCTION REVIEW**
+**Deployment Verdict:** **READY FOR CONTROLLED PRODUCTION ROLLOUT**

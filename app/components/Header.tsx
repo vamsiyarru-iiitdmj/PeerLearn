@@ -231,7 +231,7 @@ export default function Header() {
 
               {notifications.length === 0 ? (
                 <div className="py-6 text-center text-xs text-gray-500">
-                  No notifications yet. You're all caught up!
+                  No notifications yet. You&apos;re all caught up!
                 </div>
               ) : (
                 <div className="flex flex-col gap-2 max-h-72 overflow-y-auto">

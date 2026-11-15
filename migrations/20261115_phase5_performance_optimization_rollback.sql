@@ -28,4 +28,10 @@ DROP INDEX IF EXISTS public.idx_suggestion_requests_task_id;
 DROP INDEX IF EXISTS public.idx_resource_votes_voter_id;
 DROP INDEX IF EXISTS public.idx_tutor_score_snapshots_tutor_id;
 
+-- RLS Filter Composite Indexes
+DROP INDEX IF EXISTS public.idx_shared_resource_buckets_dept_batch;
+DROP INDEX IF EXISTS public.idx_resource_proposals_status_dept_batch;
+DROP INDEX IF EXISTS public.idx_suggestion_requests_status;
+DROP INDEX IF EXISTS public.idx_session_ratings_tutor_released;
+
 COMMIT;

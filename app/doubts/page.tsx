@@ -129,6 +129,31 @@ export default function DoubtsPage() {
         </div>
       )}
 
+      {/* Error Banner */}
+      {error && (
+        <div
+          role="alert"
+          className="p-4 mb-4 rounded-xl flex items-center justify-between border"
+          style={{
+            backgroundColor: "#ffdad6",
+            color: "#93000a",
+            borderColor: "#ffb4ab",
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-lg">error</span>
+            <span className="font-semibold text-sm">{error}</span>
+          </div>
+          <button
+            onClick={() => setError(null)}
+            className="text-xs font-bold px-2 py-1 cursor-pointer"
+            style={{ background: "none", border: "none" }}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
