@@ -26,6 +26,8 @@ ALTER FUNCTION public.book_doubt_atomic(UUID, UUID, TIMESTAMPTZ, TIMESTAMPTZ, TE
 -- ────────────────────────────────────────────────────────────────────────────
 
 -- 2.1 Table: public.sessions
+DROP TRIGGER IF EXISTS trg_session_immutability ON public.sessions;
+DROP FUNCTION IF EXISTS public.check_session_immutability();
 DROP POLICY IF EXISTS "sessions_participant_read" ON public.sessions;
 DROP POLICY IF EXISTS "sessions_participant_update" ON public.sessions;
 ALTER TABLE public.sessions DISABLE ROW LEVEL SECURITY;
@@ -36,6 +38,7 @@ DROP POLICY IF EXISTS "session_messages_participant_insert" ON public.session_me
 ALTER TABLE public.session_messages DISABLE ROW LEVEL SECURITY;
 
 -- 2.3 Table: public.session_ratings
+DROP INDEX IF EXISTS idx_session_ratings_unique_session_student;
 DROP POLICY IF EXISTS "session_ratings_read_policy" ON public.session_ratings;
 DROP POLICY IF EXISTS "session_ratings_insert_own" ON public.session_ratings;
 ALTER TABLE public.session_ratings DISABLE ROW LEVEL SECURITY;

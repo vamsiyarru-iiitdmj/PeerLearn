@@ -66,6 +66,70 @@ CREATE POLICY "sessions_participant_update" ON public.sessions
         OR (replacement_tutor_id IS NOT NULL AND replacement_tutor_id IN (SELECT s.id FROM public.students s WHERE s.auth_user_id = (SELECT auth.uid())::text))
     );
 
+-- Immutability & Status Transition Enforcement Trigger for Sessions
+CREATE OR REPLACE FUNCTION public.check_session_immutability()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public, pg_temp
+AS $$
+BEGIN
+    -- Only enforce restrictions when executed from an authenticated client context (PostgREST)
+    IF (SELECT auth.uid()) IS NOT NULL THEN
+        -- 1. Immutability of core relational fields
+        IF NEW.student_id <> OLD.student_id THEN
+            RAISE EXCEPTION 'SESSION_STUDENT_IMMUTABLE: student_id cannot be changed.';
+        END IF;
+
+        IF NEW.tutor_id <> OLD.tutor_id THEN
+            RAISE EXCEPTION 'SESSION_TUTOR_IMMUTABLE: tutor_id cannot be changed.';
+        END IF;
+
+        IF NEW.doubt_id <> OLD.doubt_id THEN
+            RAISE EXCEPTION 'SESSION_DOUBT_IMMUTABLE: doubt_id cannot be changed.';
+        END IF;
+
+        -- 2. Restrict status transitions
+        IF NEW.status <> OLD.status THEN
+            -- Only student can confirm completion
+            IF NEW.status = 'CONFIRMED' THEN
+                IF NOT EXISTS (
+                    SELECT 1 FROM public.students s
+                    WHERE s.id = OLD.student_id
+                      AND s.auth_user_id = (SELECT auth.uid())::text
+                ) THEN
+                    RAISE EXCEPTION 'SESSION_STATUS_TRANSITION_FORBIDDEN: Only the student can confirm session completion.';
+                END IF;
+            END IF;
+
+            -- Only tutor can set completed pending confirmation
+            IF NEW.status = 'COMPLETED_PENDING_CONFIRMATION' THEN
+                IF NOT EXISTS (
+                    SELECT 1 FROM public.students s
+                    WHERE (s.id = OLD.tutor_id OR (OLD.replacement_tutor_id IS NOT NULL AND s.id = OLD.replacement_tutor_id))
+                      AND s.auth_user_id = (SELECT auth.uid())::text
+                ) THEN
+                    RAISE EXCEPTION 'SESSION_STATUS_TRANSITION_FORBIDDEN: Only the tutor can mark session as completed pending confirmation.';
+                END IF;
+            END IF;
+
+            -- Prevent transitions from terminal states
+            IF OLD.status IN ('CONFIRMED', 'DISPUTED', 'EXPIRED') THEN
+                RAISE EXCEPTION 'SESSION_FINALIZED: Cannot transition from terminal state %.', OLD.status;
+            END IF;
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS trg_session_immutability ON public.sessions;
+CREATE TRIGGER trg_session_immutability
+BEFORE UPDATE ON public.sessions
+FOR EACH ROW
+EXECUTE FUNCTION public.check_session_immutability();
+
 
 -- 2.2 Table: public.session_messages (Issue 21)
 -- Live session chat messages.
@@ -110,6 +174,10 @@ CREATE POLICY "session_messages_participant_insert" ON public.session_messages
 -- Private ratings submitted by students for tutors.
 -- Students can view their own submitted ratings.
 -- Tutors can view feedback only after batch release (is_released = true).
+-- Database-level unique constraint prevents duplicate rating submissions.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_session_ratings_unique_session_student
+ON public.session_ratings (session_id, student_id);
+
 ALTER TABLE public.session_ratings ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "session_ratings_read_policy" ON public.session_ratings;
@@ -128,6 +196,8 @@ CREATE POLICY "session_ratings_insert_own" ON public.session_ratings
     FOR INSERT TO authenticated
     WITH CHECK (
         student_id IN (SELECT s.id FROM public.students s WHERE s.auth_user_id = (SELECT auth.uid())::text)
+        AND student_id <> tutor_id
+        AND is_released = false
         AND EXISTS (
             SELECT 1 FROM public.sessions sess
             WHERE sess.id = session_ratings.session_id

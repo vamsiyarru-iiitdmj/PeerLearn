@@ -1,7 +1,30 @@
 import { NextRequest, NextResponse } from "next/server";
+import crypto from "crypto";
 import { getInsforgeAdmin, getInsforgeAnon, authenticateRequest } from "@/lib/insforge";
 
 export const dynamic = "force-dynamic";
+
+// Cryptographic OTP helpers
+function generateSecureOtp(): string {
+  return crypto.randomInt(100000, 1000000).toString();
+}
+
+function generateOtpSalt(): string {
+  return crypto.randomBytes(16).toString("hex");
+}
+
+function hashOtpWithSalt(otp: string, salt: string): string {
+  return crypto.createHash("sha256").update(`${salt}:${otp}`).digest("hex");
+}
+
+function verifyOtpHash(providedOtp: string, storedHash: string, salt: string): boolean {
+  if (!providedOtp || !storedHash || !salt) return false;
+  const computed = hashOtpWithSalt(providedOtp.trim(), salt);
+  const bufA = Buffer.from(computed, "utf8");
+  const bufB = Buffer.from(storedHash, "utf8");
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
 
 function jsonResponse(data: any, status: number = 200) {
   const payload = {
@@ -35,6 +58,37 @@ function errorResponse(message: string, status: number = 400, details?: any) {
       },
     },
   );
+}
+
+// Module-level helper for normalized academic department matching
+function normalizeDeptString(dept: string | null | undefined): string {
+  if (!dept) return "";
+  const upper = dept.trim().toUpperCase();
+  if (["CSE", "COMPUTER SCIENCE", "COMPUTER SCIENCE & ENGINEERING", "COMPUTER SCIENCE AND ENGINEERING"].includes(upper)) {
+    return "COMPUTER SCIENCE & ENGINEERING";
+  }
+  if (["ECE", "ELECTRONICS", "ELECTRONICS & COMMUNICATION", "ELECTRONICS AND COMMUNICATION"].includes(upper)) {
+    return "ELECTRONICS & COMMUNICATION";
+  }
+  if (["ME", "MECHANICAL", "MECHANICAL ENGINEERING"].includes(upper)) {
+    return "MECHANICAL ENGINEERING";
+  }
+  if (["DESIGN", "SM", "SMART MANUFACTURING"].includes(upper)) {
+    return "SMART MANUFACTURING";
+  }
+  if (upper === "ALL") return "ALL";
+  return upper;
+}
+
+// Helper for validating resource URLs (external links must be valid http or https protocol)
+function isValidResourceUrl(urlStr: string | null | undefined): boolean {
+  if (!urlStr || !urlStr.trim()) return true;
+  try {
+    const parsed = new URL(urlStr.trim());
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
 }
 
 export async function OPTIONS() {
@@ -201,7 +255,34 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
 
   // Tutor Doubts: /tutor/doubts
   if (p === "tutor/doubts") {
-    const { data } = await admin.database
+    if (!studentId) {
+      return errorResponse("Student profile required", 401);
+    }
+
+    // Auto-close expired doubts
+    try {
+      await admin.database.rpc("close_expired_doubts");
+    } catch (e) {
+      // Fallback
+    }
+
+    // Enforce strict multi-tag tutor matching RPC (prevents tutor impersonation & broad leak)
+    const { data: matchedRows, error: matchErr } = await admin.database.rpc(
+      "get_matching_doubts_for_tutor",
+      { p_tutor_id: studentId }
+    );
+
+    if (matchErr) {
+      return errorResponse(`Failed to retrieve matched doubts: ${matchErr.message}`, 500);
+    }
+
+    if (!matchedRows || matchedRows.length === 0) {
+      return jsonResponse([]);
+    }
+
+    const doubtIds = (matchedRows || []).map((r: any) => r.id);
+
+    const { data, error } = await admin.database
       .from("doubts")
       .select(`
         id,
@@ -215,11 +296,14 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
           skills (id, name, slug)
         ),
         students:student_id (
-          id, full_name, roll_number
+          id, full_name, roll_number, department, year_of_study, photo_url
         )
       `)
+      .in("id", doubtIds)
       .eq("status", "OPEN")
       .order("created_at", { ascending: false });
+
+    if (error) return errorResponse(error.message, 500);
 
     const formatted = (data || []).map((d: any) => ({
       ...d,
@@ -394,11 +478,41 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
 
   // Resources: /resources
   if (p === "resources") {
-    const { data } = await admin.database
+    // Fetch private resource buckets for the current authenticated student
+    const { data: buckets } = await admin.database
+      .from("resource_buckets")
+      .select("*")
+      .eq("owner_id", studentId)
+      .order("created_at", { ascending: false });
+
+    if (!buckets || buckets.length === 0) {
+      return jsonResponse([]);
+    }
+
+    const bucketIds = buckets.map((b: any) => b.id);
+    const { data: resources } = await admin.database
       .from("resources")
       .select("*")
+      .in("bucket_id", bucketIds)
+      .eq("owner_id", studentId)
       .order("created_at", { ascending: false });
-    return jsonResponse(data || []);
+
+    const grouped = buckets.map((b: any) => {
+      const bResources = (resources || []).filter((r: any) => r.bucket_id === b.id);
+      return {
+        ...b,
+        resources: {
+          pdfs: bResources.filter((r: any) => r.type === "PDF"),
+          links: bResources.filter((r: any) => r.type === "LINK"),
+          photos: bResources.filter((r: any) => r.type === "PHOTO"),
+          text: bResources.filter((r: any) => r.type === "TEXT"),
+          notes: bResources.filter((r: any) => r.type === "TEXT"),
+          totalCount: bResources.length,
+        },
+      };
+    });
+
+    return jsonResponse(grouped);
   }
 
   // Resource Buckets: /resources/buckets
@@ -406,34 +520,155 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
     const { data } = await admin.database
       .from("resource_buckets")
       .select("*")
+      .eq("owner_id", studentId)
       .order("name", { ascending: true });
     return jsonResponse(data || []);
   }
 
   // Shared Resources: /shared-resources
   if (p === "shared-resources") {
-    const { data } = await admin.database
-      .from("shared_resources")
-      .select("*")
-      .order("created_at", { ascending: false });
-    return jsonResponse(data || []);
+    const studentDept = student?.department ? normalizeDeptString(student.department) : null;
+    let studentBatch: string | null = null;
+    if (student?.roll_number) {
+      const { data: acad } = await admin.database
+        .from("academic_records")
+        .select("batch")
+        .eq("roll_number", student.roll_number)
+        .single();
+      studentBatch = acad?.batch || null;
+    }
+
+    const { data: buckets } = await admin.database
+      .from("shared_resource_buckets")
+      .select(`
+        *,
+        shared_resources (
+          id, type, title, description, storage_key, external_url, text_content, created_at,
+          contributor:created_by (id, full_name, roll_number)
+        )
+      `)
+      .order("name", { ascending: true });
+
+    // Filter by academic scope: independent evaluation (both department AND batch must match)
+    // NULL values signify administrative restriction (denied to students)
+    const filtered = (buckets || []).filter((b: any) => {
+      if (!b.department || !b.batch) return false;
+      const bNormDept = normalizeDeptString(b.department);
+      const deptOk = bNormDept === "ALL" || (studentDept !== null && bNormDept === studentDept);
+      const batchOk = b.batch === "ALL" || (studentBatch !== null && b.batch === studentBatch);
+      return deptOk && batchOk;
+    });
+
+    const structured = filtered.map((b: any) => ({
+      ...b,
+      resources: {
+        pdfs: (b.shared_resources || []).filter((r: any) => r.type === "PDF"),
+        links: (b.shared_resources || []).filter((r: any) => r.type === "LINK"),
+        photos: (b.shared_resources || []).filter((r: any) => r.type === "PHOTO"),
+        text: (b.shared_resources || []).filter((r: any) => r.type === "TEXT"),
+        totalCount: (b.shared_resources || []).length,
+      },
+    }));
+
+    return jsonResponse(structured);
   }
 
   // Shared Proposals: /shared-resources/proposals
   if (p === "shared-resources/proposals") {
-    const { data } = await admin.database
+    const studentDept = student?.department ? normalizeDeptString(student.department) : null;
+    let studentBatch: string | null = null;
+    if (student?.roll_number) {
+      const { data: acad } = await admin.database
+        .from("academic_records")
+        .select("batch")
+        .eq("roll_number", student.roll_number)
+        .single();
+      studentBatch = acad?.batch || null;
+    }
+
+    const { data: proposals } = await admin.database
       .from("resource_proposals")
-      .select("*")
+      .select(`
+        *,
+        proposer:proposer_id (id, full_name, roll_number),
+        resource_votes (id, voter_id, vote)
+      `)
+      .eq("status", "OPEN")
+      .gt("expires_at", new Date().toISOString())
       .order("created_at", { ascending: false });
-    return jsonResponse(data || []);
+
+    // Academic scoping and privacy enforcement (strip individual votes array)
+    const formatted = (proposals || [])
+      .filter((prop: any) => {
+        if (prop.proposer_id === studentId) return true;
+        if (!prop.department || !prop.batch) return false;
+        const propNormDept = normalizeDeptString(prop.department);
+        const deptOk = propNormDept === "ALL" || (studentDept !== null && propNormDept === studentDept);
+        const batchOk = prop.batch === "ALL" || (studentBatch !== null && prop.batch === studentBatch);
+        return deptOk && batchOk;
+      })
+      .map((prop: any) => {
+        const votes = prop.resource_votes || [];
+        const approveCount = votes.filter((v: any) => v.vote === "APPROVE" || v.vote === true).length;
+        const rejectCount = votes.filter((v: any) => v.vote === "REJECT" || v.vote === false).length;
+        const sanitized = { ...prop };
+        delete sanitized.resource_votes; // Voter privacy: strip raw individual votes!
+        return {
+          ...sanitized,
+          upvotes_count: approveCount,
+          downvotes_count: rejectCount,
+          stats: {
+            approveCount,
+            rejectCount,
+            totalVotes: votes.length,
+          },
+        };
+      });
+
+    return jsonResponse(formatted);
   }
 
-  // Suggestions: /suggestions
-  if (p === "suggestions") {
-    const { data } = await admin.database
+  // Suggestion Details: /suggestions/[id]
+  if (p.startsWith("suggestions/") && p.split("/").length === 2) {
+    const id = p.split("/")[1];
+    const { data: request, error: reqErr } = await admin.database
       .from("suggestion_requests")
-      .select("*")
+      .select(`
+        *,
+        tasks (id, title, context, priority, due_at),
+        students:student_id (id, full_name, roll_number, department),
+        suggestion_responses (
+          id, title, description, steps, is_selected, created_at,
+          tutor:tutor_id (id, full_name, roll_number, photo_url)
+        )
+      `)
+      .eq("id", id)
+      .single();
+
+    if (reqErr || !request) return errorResponse("Suggestion request not found", 404);
+    if (request.status !== "OPEN" && request.student_id !== studentId) {
+      return errorResponse("Access denied to private suggestion request", 403);
+    }
+    return jsonResponse(request);
+  }
+
+  // Suggestions: /suggestions & /tasks/suggestions/feed
+  if (p === "suggestions" || p === "tasks/suggestions/feed") {
+    const { data, error } = await admin.database
+      .from("suggestion_requests")
+      .select(`
+        *,
+        tasks (id, title, context, priority, due_at),
+        students:student_id (id, full_name, roll_number, department),
+        suggestion_responses (
+          id, title, description, steps,
+          tutor:tutor_id (id, full_name, roll_number)
+        )
+      `)
+      .or(`status.eq.OPEN,student_id.eq.${studentId}`)
       .order("created_at", { ascending: false });
+
+    if (error) return errorResponse(error.message, 500);
     return jsonResponse(data || []);
   }
 
@@ -515,11 +750,22 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     const personalEmail = (body.personalEmail || body.personal_email || "").trim().toLowerCase();
     const instituteEmail = `${roll.toLowerCase()}@iiitdmj.ac.in`;
 
-    if (!roll) {
-      return errorResponse("Roll number is required", 400);
+    if (!roll || !/^[A-Z0-9]{4,16}$/.test(roll)) {
+      return errorResponse("Valid roll number is required (4-16 alphanumeric characters)", 400);
     }
 
-    // Verify roll number against academic records
+    // Check if student is already registered
+    const { data: existingStudent } = await admin.database
+      .from("students")
+      .select("id")
+      .or(`roll_number.eq.${roll},institute_email.eq.${instituteEmail}`)
+      .limit(1);
+
+    if (existingStudent && existingStudent.length > 0) {
+      return errorResponse("A student account with this roll number or email is already registered", 409);
+    }
+
+    // Verify roll number against authoritative academic records
     const { data: acad } = await admin.database
       .from("academic_records")
       .select("*")
@@ -530,25 +776,60 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
       return errorResponse(`Roll number ${roll} not found in authoritative records. Contact academic office.`, 400);
     }
 
-    // Generate OTP & save pending
-    const verificationCode = "123456";
+    // Rate limiting: 60-second resend cooldown
+    const { data: priorPending } = await admin.database
+      .from("pending_registrations")
+      .select("id, last_sent_at, created_at")
+      .eq("roll_number", roll)
+      .eq("purpose", "REGISTRATION")
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (priorPending && priorPending.length > 0) {
+      const lastSentTime = new Date(priorPending[0].last_sent_at || priorPending[0].created_at).getTime();
+      if (Date.now() - lastSentTime < 60 * 1000) {
+        return errorResponse("Please wait 60 seconds before requesting another verification code", 429);
+      }
+    }
+
+    // Generate cryptographic OTP and salt
+    const otp = generateSecureOtp();
+    const salt = generateOtpSalt();
+    const otpHash = hashOtpWithSalt(otp, salt);
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
 
-    await admin.database.from("pending_registrations").delete().eq("roll_number", roll);
-    await admin.database.from("pending_registrations").insert([
+    // Clean up prior pending records for this roll and insert new hashed OTP
+    await admin.database
+      .from("pending_registrations")
+      .delete()
+      .eq("roll_number", roll)
+      .eq("purpose", "REGISTRATION");
+
+    const { error: insErr } = await admin.database.from("pending_registrations").insert([
       {
         roll_number: roll,
         full_name: acad[0].full_name,
         personal_email: personalEmail || `${roll.toLowerCase()}@gmail.com`,
         institute_email: instituteEmail,
-        verification_code: verificationCode,
+        verification_code: otp, // Kept for compatibility with legacy column
+        otp_hash: otpHash,
+        otp_salt: salt,
+        attempts: 0,
+        max_attempts: 5,
+        last_sent_at: new Date().toISOString(),
+        purpose: "REGISTRATION",
         verification_state: "PENDING",
         expires_at: expiresAt,
       },
     ]);
 
+    if (insErr) {
+      return errorResponse("Failed to initiate registration: " + insErr.message, 500);
+    }
+
+    // Anti-leakage: never return OTP in response payload
     return jsonResponse({
-      message: "OTP sent to institute email",
+      message: `Verification code dispatched to official institute email (${instituteEmail}). Valid for 15 minutes.`,
       instituteEmail,
       rollNumber: roll,
     });
@@ -561,18 +842,69 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     const password = body.password;
     const instituteEmail = `${roll.toLowerCase()}@iiitdmj.ac.in`;
 
-    if (otp !== "123456" && otp !== "000000") {
-      return errorResponse("Invalid or expired OTP verification code", 400);
+    if (!roll || !otp) {
+      return errorResponse("Roll number and verification code are required", 400);
+    }
+    if (!/^\d{6}$/.test(otp)) {
+      return errorResponse("Verification code must be a 6-digit numeric code", 400);
+    }
+    if (!password || password.length < 8) {
+      return errorResponse("Password must be at least 8 characters long", 400);
     }
 
-    // Call confirm_auth_user RPC
+    // Retrieve active pending registration
+    const { data: pendingList, error: pErr } = await admin.database
+      .from("pending_registrations")
+      .select("*")
+      .eq("roll_number", roll)
+      .eq("purpose", "REGISTRATION")
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (pErr || !pendingList || pendingList.length === 0) {
+      return errorResponse("No active registration request found for this roll number", 400);
+    }
+
+    const pending = pendingList[0];
+    if (new Date(pending.expires_at).getTime() < Date.now()) {
+      await admin.database.from("pending_registrations").delete().eq("id", pending.id);
+      return errorResponse("Verification code has expired. Please request a new one.", 400);
+    }
+
+    // Lockout check: max 5 attempts
+    if (pending.attempts >= (pending.max_attempts || 5)) {
+      await admin.database.from("pending_registrations").delete().eq("id", pending.id);
+      return errorResponse("Maximum verification attempts exceeded. Registration request revoked.", 429);
+    }
+
+    // Verify OTP using salt & timing-safe check
+    let otpMatch = false;
+    if (pending.otp_hash && pending.otp_salt) {
+      otpMatch = verifyOtpHash(otp, pending.otp_hash, pending.otp_salt);
+    } else if (pending.verification_code) {
+      otpMatch = pending.verification_code === otp;
+    }
+
+    if (!otpMatch) {
+      await admin.database
+        .from("pending_registrations")
+        .update({ attempts: (pending.attempts || 0) + 1 })
+        .eq("id", pending.id);
+      const remaining = Math.max(0, (pending.max_attempts || 5) - (pending.attempts + 1));
+      return errorResponse(`Invalid verification code. ${remaining} attempts remaining.`, 400);
+    }
+
+    // Call confirm_auth_user RPC via service role
     const { data: confirmedId, error: rpcErr } = await admin.database.rpc("confirm_auth_user", {
       target_email: instituteEmail,
       new_password: password,
     });
 
-    // Check or insert student record
-    let studentId = confirmedId;
+    if (rpcErr || !confirmedId) {
+      return errorResponse(rpcErr?.message || "Failed to confirm user identity", 500);
+    }
+
+    // Check or insert student record using authoritative academic records & REAL auth_user_id
     const { data: existingStudent } = await admin.database
       .from("students")
       .select("*")
@@ -589,14 +921,14 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
         .limit(1);
 
       const acadRecord = acad?.[0];
-      const { data: newStud } = await admin.database
+      const { data: newStud, error: insStudentErr } = await admin.database
         .from("students")
         .insert([
           {
-            auth_user_id: confirmedId || "0cbbc647-4d86-474a-b574-28b02543463f",
+            auth_user_id: confirmedId,
             roll_number: roll,
-            full_name: acadRecord?.full_name || "Verified Student",
-            personal_email: `${roll.toLowerCase()}@gmail.com`,
+            full_name: pending.full_name || acadRecord?.full_name || "Verified Student",
+            personal_email: pending.personal_email || `${roll.toLowerCase()}@gmail.com`,
             institute_email: instituteEmail,
             year_of_study: acadRecord?.year_of_study || 2,
             department: acadRecord?.department || "CSE",
@@ -607,15 +939,31 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
         ])
         .select()
         .single();
+
+      if (insStudentErr) {
+        return errorResponse("Failed to create student record: " + insStudentErr.message, 500);
+      }
       student = newStud;
+    } else if (!student.auth_user_id || student.auth_user_id !== confirmedId) {
+      await admin.database
+        .from("students")
+        .update({ auth_user_id: confirmedId })
+        .eq("id", student.id);
+      student.auth_user_id = confirmedId;
     }
 
-    // Sign in to get tokens
-    const signIn = await admin.auth.signInWithPassword({ email: instituteEmail, password });
-    const token = signIn.data?.accessToken || "mock_token_" + Date.now();
+    // Atomically delete pending registration so OTP cannot be reused
+    await admin.database.from("pending_registrations").delete().eq("id", pending.id);
 
+    // Sign in to retrieve authentic session tokens
+    const signIn = await admin.auth.signInWithPassword({ email: instituteEmail, password });
+    if (signIn.error || !signIn.data?.accessToken) {
+      return errorResponse("Account confirmed, but sign-in failed. Please login manually.", 401);
+    }
+
+    const token = signIn.data.accessToken;
     return jsonResponse({
-      message: "Student registration verified",
+      message: "Student registration verified successfully",
       student,
       accessToken: token,
       token,
@@ -625,24 +973,146 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
 
   // 4. Auth: /auth/forgot-password
   if (p === "auth/forgot-password") {
+    const rawEmail = (body.instituteEmail || body.email || "").trim().toLowerCase();
+    if (!rawEmail || !rawEmail.includes("@")) {
+      return errorResponse("A valid institute email is required", 400);
+    }
+
+    // Verify student exists
+    const { data: students } = await admin.database
+      .from("students")
+      .select("id, roll_number, full_name, institute_email")
+      .eq("institute_email", rawEmail)
+      .limit(1);
+
+    if (students && students.length > 0) {
+      const student = students[0];
+
+      // Rate limit check: 60s cooldown
+      const { data: priorReset } = await admin.database
+        .from("pending_registrations")
+        .select("id, last_sent_at, created_at")
+        .eq("institute_email", rawEmail)
+        .eq("purpose", "PASSWORD_RESET")
+        .order("created_at", { ascending: false })
+        .limit(1);
+
+      if (priorReset && priorReset.length > 0) {
+        const lastSent = new Date(priorReset[0].last_sent_at || priorReset[0].created_at).getTime();
+        if (Date.now() - lastSent < 60 * 1000) {
+          return errorResponse("Please wait 60 seconds before requesting another reset code", 429);
+        }
+      }
+
+      // Generate secure OTP
+      const otp = generateSecureOtp();
+      const salt = generateOtpSalt();
+      const otpHash = hashOtpWithSalt(otp, salt);
+      const expiresAt = new Date(Date.now() + 15 * 60 * 1000).toISOString();
+
+      await admin.database
+        .from("pending_registrations")
+        .delete()
+        .eq("institute_email", rawEmail)
+        .eq("purpose", "PASSWORD_RESET");
+
+      await admin.database.from("pending_registrations").insert([
+        {
+          roll_number: student.roll_number,
+          full_name: student.full_name,
+          personal_email: rawEmail,
+          institute_email: rawEmail,
+          verification_code: otp,
+          otp_hash: otpHash,
+          otp_salt: salt,
+          attempts: 0,
+          max_attempts: 5,
+          last_sent_at: new Date().toISOString(),
+          purpose: "PASSWORD_RESET",
+          verification_state: "RESET_PENDING",
+          expires_at: expiresAt,
+        },
+      ]);
+    }
+
+    // Generic anti-enumeration response (same message whether email exists or not)
     return jsonResponse({
-      message: "Password reset OTP dispatched to your institute email",
+      message: "If the institute email is registered, a password reset code has been sent. Valid for 15 minutes.",
       success: true,
     });
   }
 
   // 5. Auth: /auth/reset-password
   if (p === "auth/reset-password") {
-    const email = (body.instituteEmail || "").trim().toLowerCase();
+    const email = (body.instituteEmail || body.email || "").trim().toLowerCase();
+    const otp = (body.otp || body.code || body.token || "").toString().trim();
     const newPassword = body.newPassword;
-    if (newPassword && email) {
-      await admin.database.rpc("confirm_auth_user", {
-        target_email: email,
-        new_password: newPassword,
-      });
+
+    if (!email || !otp || !newPassword) {
+      return errorResponse("Email, verification code, and new password are required", 400);
     }
+    if (!/^\d{6}$/.test(otp)) {
+      return errorResponse("Verification code must be a 6-digit numeric code", 400);
+    }
+    if (newPassword.length < 8) {
+      return errorResponse("New password must be at least 8 characters long", 400);
+    }
+
+    // Lookup reset record
+    const { data: pendingList, error: pErr } = await admin.database
+      .from("pending_registrations")
+      .select("*")
+      .eq("institute_email", email)
+      .eq("purpose", "PASSWORD_RESET")
+      .order("created_at", { ascending: false })
+      .limit(1);
+
+    if (pErr || !pendingList || pendingList.length === 0) {
+      return errorResponse("No active password reset request found for this email", 400);
+    }
+
+    const pending = pendingList[0];
+    if (new Date(pending.expires_at).getTime() < Date.now()) {
+      await admin.database.from("pending_registrations").delete().eq("id", pending.id);
+      return errorResponse("Password reset code has expired. Please request a new one.", 400);
+    }
+
+    if (pending.attempts >= (pending.max_attempts || 5)) {
+      await admin.database.from("pending_registrations").delete().eq("id", pending.id);
+      return errorResponse("Maximum verification attempts exceeded. Reset request revoked.", 429);
+    }
+
+    let otpMatch = false;
+    if (pending.otp_hash && pending.otp_salt) {
+      otpMatch = verifyOtpHash(otp, pending.otp_hash, pending.otp_salt);
+    } else if (pending.verification_code) {
+      otpMatch = pending.verification_code === otp;
+    }
+
+    if (!otpMatch) {
+      await admin.database
+        .from("pending_registrations")
+        .update({ attempts: (pending.attempts || 0) + 1 })
+        .eq("id", pending.id);
+      const remaining = Math.max(0, (pending.max_attempts || 5) - (pending.attempts + 1));
+      return errorResponse(`Invalid verification code. ${remaining} attempts remaining.`, 400);
+    }
+
+    // Update password via confirm_auth_user RPC
+    const { error: rpcErr } = await admin.database.rpc("confirm_auth_user", {
+      target_email: email,
+      new_password: newPassword,
+    });
+
+    if (rpcErr) {
+      return errorResponse("Failed to update password: " + rpcErr.message, 500);
+    }
+
+    // Revoke used reset code atomically
+    await admin.database.from("pending_registrations").delete().eq("id", pending.id);
+
     return jsonResponse({
-      message: "Password reset successfully",
+      message: "Password has been successfully reset. You may now log in with your new password.",
       success: true,
     });
   }
@@ -662,6 +1132,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
 
   // Create Doubt: /doubts
   if (p === "doubts") {
+    if (!studentId) {
+      return errorResponse("Student profile required", 401);
+    }
     const description = body.description || body.title || "";
     const expectedOutcome = body.expectedOutcome || "Clear conceptual doubt";
     const tagIds = body.tagIds || body.skillIds || [];
@@ -670,8 +1143,22 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     if (!description.trim()) {
       return errorResponse("Description cannot be blank", 400);
     }
+    if (!expectedOutcome.trim()) {
+      return errorResponse("Expected outcome cannot be blank", 400);
+    }
     if (!tagIds || tagIds.length === 0) {
       return errorResponse("At least one skill tag is required", 400);
+    }
+
+    // Validate all skill IDs exist and are active in the catalog
+    const { data: validSkills, error: valErr } = await admin.database
+      .from("skills")
+      .select("id, name, slug")
+      .in("id", tagIds)
+      .eq("is_active", true);
+
+    if (valErr || !validSkills || validSkills.length !== tagIds.length) {
+      return errorResponse("One or more selected skill tags are invalid or inactive", 400);
     }
 
     const expiresAt = new Date(Date.now() + expiryHours * 60 * 60 * 1000).toISOString();
@@ -680,8 +1167,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
       .insert([
         {
           student_id: studentId,
-          description,
-          expected_outcome: expectedOutcome,
+          description: description.trim(),
+          expected_outcome: expectedOutcome.trim(),
           status: "OPEN",
           expires_at: expiresAt,
         },
@@ -700,6 +1187,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     return jsonResponse({
       ...doubt,
       title: description.slice(0, 60),
+      tags: validSkills,
       message: "Doubt published successfully to matching tutors",
     }, 201);
   }
@@ -707,12 +1195,35 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
   // Withdraw Doubt: /doubts/[id]/withdraw
   if (p.startsWith("doubts/") && p.endsWith("/withdraw")) {
     const doubtId = p.split("/")[1];
-    await admin.database
+    const { data: doubt, error: doubtErr } = await admin.database
       .from("doubts")
-      .update({ status: "WITHDRAWN" })
+      .select("id, student_id, status")
       .eq("id", doubtId)
-      .eq("student_id", studentId);
-    return jsonResponse({ message: "Doubt withdrawn successfully" });
+      .single();
+
+    if (doubtErr || !doubt) {
+      return errorResponse("Doubt not found", 404);
+    }
+    if (doubt.student_id !== studentId) {
+      return errorResponse("Access denied: You can only withdraw your own doubts", 403);
+    }
+    if (doubt.status !== "OPEN") {
+      return errorResponse(`Cannot withdraw doubt in status: ${doubt.status}`, 400);
+    }
+
+    const { data: updated, error: updateErr } = await admin.database
+      .from("doubts")
+      .update({
+        status: "WITHDRAWN",
+        closed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", doubtId)
+      .select()
+      .single();
+
+    if (updateErr) return errorResponse(updateErr.message, 500);
+    return jsonResponse({ message: "Doubt withdrawn successfully", doubt: updated });
   }
 
   // Book Doubt: /doubts/[id]/book
@@ -768,7 +1279,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     const { data: updated, error } = await admin.database
       .from("sessions")
       .update({
-        status: "COMPLETED",
+        status: "COMPLETED_PENDING_CONFIRMATION",
         completed_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
@@ -954,35 +1465,87 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
   // Toggle Task Complete: /tasks/[id]/complete
   if (p.startsWith("tasks/") && p.endsWith("/complete")) {
     const id = p.split("/")[1];
-    const { data: task } = await admin.database.from("tasks").select("status").eq("id", id).single();
-    const newStatus = task?.status === "COMPLETED" ? "PENDING" : "COMPLETED";
-    const { data: updated } = await admin.database
+    const { data: task } = await admin.database
       .from("tasks")
-      .update({ status: newStatus })
+      .select("id, student_id, status")
       .eq("id", id)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
+    const newStatus = task.status === "COMPLETED" ? "PENDING" : "COMPLETED";
+    const { data: updated, error: updateErr } = await admin.database
+      .from("tasks")
+      .update({
+        status: newStatus,
+        completed_at: newStatus === "COMPLETED" ? new Date().toISOString() : null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .eq("student_id", studentId)
       .select()
       .single();
+
+    if (updateErr) return errorResponse(updateErr.message, 500);
     return jsonResponse(updated);
   }
 
   // Toggle Task Tough: /tasks/[id]/toggle-tough
   if (p.startsWith("tasks/") && p.endsWith("/toggle-tough")) {
     const id = p.split("/")[1];
-    const { data: task } = await admin.database.from("tasks").select("is_tough").eq("id", id).single();
-    const { data: updated } = await admin.database
+    const { data: task } = await admin.database
       .from("tasks")
-      .update({ is_tough: !task?.is_tough })
+      .select("id, student_id, is_tough")
       .eq("id", id)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
+    const { data: updated, error: updateErr } = await admin.database
+      .from("tasks")
+      .update({
+        is_tough: !task.is_tough,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .eq("student_id", studentId)
       .select()
       .single();
+
+    if (updateErr) return errorResponse(updateErr.message, 500);
     return jsonResponse(updated);
   }
 
   // Ask Suggestion: /tasks/[id]/ask-suggestion
   if (p.startsWith("tasks/") && p.endsWith("/ask-suggestion")) {
     const taskId = p.split("/")[1];
+    const { data: task } = await admin.database
+      .from("tasks")
+      .select("id, student_id")
+      .eq("id", taskId)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
     const { query, timeAvailable } = body;
-    const { data: reqRow } = await admin.database
+
+    // Mark task as tough
+    await admin.database
+      .from("tasks")
+      .update({ is_tough: true, updated_at: new Date().toISOString() })
+      .eq("id", taskId)
+      .eq("student_id", studentId);
+
+    const { data: reqRow, error: reqErr } = await admin.database
       .from("suggestion_requests")
       .insert([
         {
@@ -995,7 +1558,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
       ])
       .select()
       .single();
-    return jsonResponse({ message: "Suggestion requested from peers", requestId: reqRow?.id });
+
+    if (reqErr) return errorResponse(reqErr.message, 500);
+    return jsonResponse({ message: "Suggestion requested from peers", requestId: reqRow?.id }, 201);
   }
 
   // Add Task Subtask: /tasks/[id]/subtasks
@@ -1033,6 +1598,91 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     return jsonResponse(subtask, 201);
   }
 
+  // Respond to Suggestion: /suggestions/[id]/respond
+  if (p.startsWith("suggestions/") && p.endsWith("/respond")) {
+    const requestId = p.split("/")[1];
+    const { data: request } = await admin.database
+      .from("suggestion_requests")
+      .select("id, status")
+      .eq("id", requestId)
+      .single();
+
+    if (!request) return errorResponse("Suggestion request not found", 404);
+    if (request.status !== "OPEN") return errorResponse("Suggestion request is no longer open", 400);
+
+    const { title, description, steps } = body;
+    if (!title || !title.trim()) return errorResponse("Title is required", 400);
+
+    const { data: response, error: respErr } = await admin.database
+      .from("suggestion_responses")
+      .insert([
+        {
+          request_id: requestId,
+          tutor_id: studentId,
+          title: title.trim(),
+          description: description?.trim() || null,
+          suggested_workflow: steps || [],
+          steps: steps || [],
+        },
+      ])
+      .select()
+      .single();
+
+    if (respErr) return errorResponse(respErr.message, 500);
+    return jsonResponse({ message: "Workflow suggestion plan submitted for student review", response }, 201);
+  }
+
+  // Adopt Suggestion Plan: /suggestions/[id]/use-plan
+  if (p.startsWith("suggestions/") && p.endsWith("/use-plan")) {
+    const requestId = p.split("/")[1];
+    const { data: request } = await admin.database
+      .from("suggestion_requests")
+      .select("id, task_id, student_id")
+      .eq("id", requestId)
+      .single();
+
+    if (!request) return errorResponse("Suggestion request not found", 404);
+    if (request.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this suggestion request", 403);
+    }
+
+    const { responseId } = body;
+    const { data: plan } = await admin.database
+      .from("suggestion_responses")
+      .select("id, steps")
+      .eq("id", responseId)
+      .eq("request_id", requestId)
+      .single();
+
+    if (!plan) return errorResponse("Suggestion response plan not found", 404);
+
+    await admin.database
+      .from("suggestion_responses")
+      .update({ is_selected: true })
+      .eq("id", plan.id);
+
+    const stepsArray = Array.isArray(plan.steps) ? plan.steps : [];
+    if (stepsArray.length > 0) {
+      const subtaskInserts = stepsArray.map((stepText: string, idx: number) => ({
+        task_id: request.task_id,
+        title: stepText,
+        step_order: idx + 1,
+        is_completed: false,
+      }));
+      await admin.database.from("task_subtasks").insert(subtaskInserts);
+    }
+
+    await admin.database
+      .from("suggestion_requests")
+      .update({ status: "FULFILLED", updated_at: new Date().toISOString() })
+      .eq("id", requestId);
+
+    return jsonResponse({
+      message: "Plan adopted! Actionable workflow steps converted into task subtasks.",
+      stepsCount: stepsArray.length,
+    });
+  }
+
   // Read all notifications: /notifications/read-all
   if (p === "notifications/read-all") {
     await admin.database
@@ -1042,28 +1692,271 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     return jsonResponse({ message: "All notifications marked as read" });
   }
 
-  // Resources: /resources
-  if (p === "resources") {
-    const { title, url, bucketId, description } = body;
-    const { data: resRow } = await admin.database
-      .from("resources")
+  // Create Resource Bucket: /resources/buckets
+  if (p === "resources/buckets") {
+    const { name } = body;
+    if (!name || !name.trim()) {
+      return errorResponse("Bucket name is required", 400);
+    }
+    const { data: bucket, error: bErr } = await admin.database
+      .from("resource_buckets")
       .insert([
         {
-          title,
-          url,
-          bucket_id: bucketId,
-          description,
-          student_id: studentId,
+          owner_id: studentId,
+          name: name.trim(),
         },
       ])
       .select()
       .single();
+
+    if (bErr) return errorResponse(bErr.message, 500);
+    return jsonResponse(bucket, 201);
+  }
+
+  // Add Resource: /resources
+  if (p === "resources") {
+    const { title, url, bucketId, description, type, content } = body;
+    if (!title || !title.trim()) {
+      return errorResponse("Resource title is required", 400);
+    }
+    if (!bucketId) {
+      return errorResponse("Bucket ID is required", 400);
+    }
+
+    // Verify parent bucket ownership
+    const { data: bucket } = await admin.database
+      .from("resource_buckets")
+      .select("id, owner_id")
+      .eq("id", bucketId)
+      .single();
+
+    if (!bucket) return errorResponse("Resource bucket not found", 404);
+    if (bucket.owner_id !== studentId) {
+      return errorResponse("Forbidden: You do not own this resource bucket", 403);
+    }
+
+    if (url && !isValidResourceUrl(url)) {
+      return errorResponse("Invalid resource URL: external_url must use http or https protocol", 400);
+    }
+
+    const rawType = (type || "LINK").toUpperCase();
+    const mappedType = rawType === "NOTE" ? "TEXT" : ["PDF", "LINK", "PHOTO", "TEXT"].includes(rawType) ? rawType : "LINK";
+
+    const { data: resRow, error: resErr } = await admin.database
+      .from("resources")
+      .insert([
+        {
+          bucket_id: bucketId,
+          owner_id: studentId,
+          type: mappedType,
+          title: title.trim(),
+          description: description?.trim() || null,
+          external_url: url || body.external_url || null,
+          text_content: content || body.text_content || null,
+        },
+      ])
+      .select()
+      .single();
+
+    if (resErr) return errorResponse(resErr.message, 500);
     return jsonResponse(resRow, 201);
+  }
+
+  // Submit Shared Resource Proposal: /shared-resources/proposals
+  if (p === "shared-resources/proposals") {
+    const { title, description, type, url, targetBucketName, targetBucketId } = body;
+    if (!title || !title.trim()) {
+      return errorResponse("Proposal title is required", 400);
+    }
+
+    if (url && !isValidResourceUrl(url)) {
+      return errorResponse("Invalid proposal URL: external_url must use http or https protocol", 400);
+    }
+
+    let bId = targetBucketId || body.bucketId;
+    if (!bId) {
+      const tName = targetBucketName || "General Academic Materials";
+      const { data: existingB } = await admin.database
+        .from("shared_resource_buckets")
+        .select("id")
+        .ilike("name", `%${tName}%`)
+        .limit(1);
+
+      if (existingB && existingB.length > 0) {
+        bId = existingB[0].id;
+      } else {
+        const { data: anyB } = await admin.database.from("shared_resource_buckets").select("id").limit(1);
+        if (anyB && anyB.length > 0) {
+          bId = anyB[0].id;
+        } else {
+          return errorResponse("Target shared bucket not found. Please provide a valid targetBucketId", 400);
+        }
+      }
+    }
+
+    // Validate target bucket exists and proposer is authorized for its academic scope
+    const { data: targetBucket } = await admin.database
+      .from("shared_resource_buckets")
+      .select("*")
+      .eq("id", bId)
+      .single();
+
+    if (!targetBucket) {
+      return errorResponse("Target shared resource bucket not found", 404);
+    }
+
+    const proposerDept = student?.department ? normalizeDeptString(student.department) : null;
+    let proposerBatch: string | null = null;
+    if (student?.roll_number) {
+      const { data: acad } = await admin.database
+        .from("academic_records")
+        .select("batch")
+        .eq("roll_number", student.roll_number)
+        .single();
+      proposerBatch = acad?.batch || null;
+    }
+
+    const bNormDept = normalizeDeptString(targetBucket.department);
+    const deptMatch = bNormDept === "ALL" || (proposerDept !== null && bNormDept === proposerDept);
+    const batchMatch = targetBucket.batch === "ALL" || (proposerBatch !== null && targetBucket.batch === proposerBatch);
+
+    if (!deptMatch || !batchMatch) {
+      return errorResponse("Forbidden: You are not authorized to submit proposals to a bucket outside your academic department/batch", 403);
+    }
+
+    const rawType = (type || "PDF").toUpperCase();
+    const mappedType = rawType === "NOTE" ? "TEXT" : ["PDF", "LINK", "PHOTO", "TEXT"].includes(rawType) ? rawType : "PDF";
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+
+    const { data: proposal, error: propErr } = await admin.database
+      .from("resource_proposals")
+      .insert([
+        {
+          bucket_id: bId,
+          proposer_id: studentId,
+          type: mappedType,
+          title: title.trim(),
+          description: description?.trim() || null,
+          external_url: url || null,
+          department: targetBucket.department,
+          batch: targetBucket.batch,
+          status: "OPEN",
+          expires_at: expiresAt,
+        },
+      ])
+      .select()
+      .single();
+
+    if (propErr) return errorResponse(propErr.message, 500);
+    return jsonResponse({ message: "Proposal submitted successfully for 24-hour voting", proposal }, 201);
+  }
+
+  // Vote on Proposal: /shared-resources/proposals/[id]/vote
+  if (p.startsWith("shared-resources/proposals/") && p.endsWith("/vote")) {
+    const proposalId = p.split("/")[2];
+    const { vote } = body;
+
+    const { data: proposal } = await admin.database
+      .from("resource_proposals")
+      .select("*")
+      .eq("id", proposalId)
+      .single();
+
+    if (!proposal) return errorResponse("Proposal not found", 404);
+    if (proposal.status !== "OPEN" || new Date(proposal.expires_at) <= new Date()) {
+      return errorResponse("Voting for this proposal is closed", 400);
+    }
+
+    if (proposal.proposer_id === studentId) {
+      return errorResponse("Contributors cannot vote on their own proposals", 403);
+    }
+
+    const isUp = vote === true || vote === "UP" || vote === "APPROVE" || vote === "+1";
+    const voteStr = isUp ? "APPROVE" : "REJECT";
+
+    const { error: vErr } = await admin.database.from("resource_votes").insert([
+      {
+        proposal_id: proposalId,
+        voter_id: studentId,
+        vote: voteStr,
+      },
+    ]);
+
+    if (vErr) {
+      if (vErr.message?.includes("duplicate") || vErr.code === "23505" || vErr.message?.includes("unique")) {
+        return errorResponse("You have already voted on this proposal", 409);
+      }
+      return errorResponse(vErr.message, 500);
+    }
+
+    // Atomic proposal promotion via promote_approved_proposal_atomic RPC (FOR UPDATE row locking)
+    // Threshold rule: approveCount >= 3 && approveCount > rejectCount promotes into shared_resources
+    const { data: promoteRes, error: promoteErr } = await admin.database.rpc("promote_approved_proposal_atomic", {
+      p_proposal_id: proposalId,
+    });
+
+    let approveCount = promoteRes?.approve_count;
+    let rejectCount = promoteRes?.reject_count;
+
+    // Resilient fallback tally calculation if RPC is unconfigured or in mock environment
+    if (approveCount === undefined || rejectCount === undefined) {
+      const { data: allVotes } = await admin.database
+        .from("resource_votes")
+        .select("vote")
+        .eq("proposal_id", proposalId);
+
+      approveCount = (allVotes || []).filter((v: any) => v.vote === "APPROVE").length;
+      rejectCount = (allVotes || []).filter((v: any) => v.vote === "REJECT").length;
+
+      if (approveCount >= 3 && approveCount > rejectCount) {
+        await admin.database
+          .from("resource_proposals")
+          .update({ status: "APPROVED" })
+          .eq("id", proposalId);
+
+        await admin.database.from("shared_resources").insert([
+          {
+            bucket_id: proposal.bucket_id,
+            created_by: proposal.proposer_id,
+            type: proposal.type,
+            title: proposal.title,
+            description: proposal.description,
+            external_url: proposal.external_url,
+            storage_key: proposal.storage_key,
+            text_content: proposal.text_content,
+          },
+        ]);
+      }
+    }
+
+    return jsonResponse({
+      message: "Vote cast successfully",
+      approved: isUp,
+      promoted: promoteRes?.promoted || (approveCount >= 3 && approveCount > rejectCount),
+      tally: { approve: approveCount, reject: rejectCount },
+    });
   }
 
   // Tutor Pro Skills update: /tutor/pro-skills
   if (p === "tutor/pro-skills") {
-    const skillIds = body.skillIds || [];
+    if (!studentId) {
+      return errorResponse("Student profile required", 401);
+    }
+    const skillIds: string[] = body.skillIds || [];
+
+    // Validate all skillIds exist and are active in catalog
+    if (skillIds.length > 0) {
+      const { data: validSkills, error: valErr } = await admin.database
+        .from("skills")
+        .select("id")
+        .in("id", skillIds)
+        .eq("is_active", true);
+
+      if (valErr || !validSkills || validSkills.length !== skillIds.length) {
+        return errorResponse("One or more selected skills are invalid or inactive", 400);
+      }
+    }
+
     await admin.database.from("tutor_pro_skills").delete().eq("student_id", studentId);
     if (skillIds.length > 0) {
       const inserts = skillIds.map((sid: string) => ({ student_id: studentId, skill_id: sid }));
@@ -1108,7 +2001,7 @@ async function handleUpdate(req: NextRequest, params: Promise<{ path: string[] }
     if (targetCgpa !== undefined) {
       await admin.database
         .from("students")
-        .update({ target_cgpa: Number(targetCgpa) })
+        .update({ target_cgpa: Number(targetCgpa), updated_at: new Date().toISOString() })
         .eq("id", studentId);
     }
     return jsonResponse({ message: "Target CGPA updated successfully" });
@@ -1116,15 +2009,41 @@ async function handleUpdate(req: NextRequest, params: Promise<{ path: string[] }
 
   // Update profile: /me/profile
   if (p === "me/profile") {
-    const updates: any = {};
+    const updates: any = { updated_at: new Date().toISOString() };
     if (body.phone !== undefined) updates.phone = body.phone;
-    if (body.photo_url !== undefined) updates.photo_url = body.photo_url;
-    if (body.target_cgpa !== undefined) updates.target_cgpa = Number(body.target_cgpa);
+    const photoUrl = body.photo_url !== undefined ? body.photo_url : body.photoUrl;
+    if (photoUrl !== undefined) updates.photo_url = photoUrl;
+    const targetCgpa = body.target_cgpa !== undefined ? body.target_cgpa : body.targetCgpa;
+    if (targetCgpa !== undefined) updates.target_cgpa = Number(targetCgpa);
 
-    if (Object.keys(updates).length > 0) {
+    if (Object.keys(updates).length > 1) {
       await admin.database.from("students").update(updates).eq("id", studentId);
     }
     return jsonResponse({ message: "Profile updated successfully" });
+  }
+
+  // Tutor Pro Skills update (PUT): /tutor/pro-skills
+  if (p === "tutor/pro-skills") {
+    const skillIds: string[] = body.skillIds || [];
+
+    if (skillIds.length > 0) {
+      const { data: validSkills, error: valErr } = await admin.database
+        .from("skills")
+        .select("id")
+        .in("id", skillIds)
+        .eq("is_active", true);
+
+      if (valErr || !validSkills || validSkills.length !== skillIds.length) {
+        return errorResponse("One or more selected skills are invalid or inactive", 400);
+      }
+    }
+
+    await admin.database.from("tutor_pro_skills").delete().eq("student_id", studentId);
+    if (skillIds.length > 0) {
+      const inserts = skillIds.map((sid: string) => ({ student_id: studentId, skill_id: sid }));
+      await admin.database.from("tutor_pro_skills").insert(inserts);
+    }
+    return jsonResponse({ message: "Pro skills updated successfully" });
   }
 
   // Mark notification read: /notifications/[id]/read
@@ -1136,6 +2055,66 @@ async function handleUpdate(req: NextRequest, params: Promise<{ path: string[] }
       .eq("id", id)
       .eq("user_id", studentId);
     return jsonResponse({ message: "Notification marked read" });
+  }
+
+  // Toggle task complete (PATCH): /tasks/[id]/toggle
+  if (p.startsWith("tasks/") && p.endsWith("/toggle")) {
+    const id = p.split("/")[1];
+    const { data: task } = await admin.database
+      .from("tasks")
+      .select("id, student_id, status")
+      .eq("id", id)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
+    const newStatus = task.status === "COMPLETED" ? "PENDING" : "COMPLETED";
+    const { data: updated, error: updateErr } = await admin.database
+      .from("tasks")
+      .update({
+        status: newStatus,
+        completed_at: newStatus === "COMPLETED" ? new Date().toISOString() : null,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .eq("student_id", studentId)
+      .select()
+      .single();
+
+    if (updateErr) return errorResponse(updateErr.message, 500);
+    return jsonResponse(updated);
+  }
+
+  // Toggle task tough (PATCH): /tasks/[id]/tough
+  if (p.startsWith("tasks/") && p.endsWith("/tough")) {
+    const id = p.split("/")[1];
+    const { data: task } = await admin.database
+      .from("tasks")
+      .select("id, student_id, is_tough")
+      .eq("id", id)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
+    const { data: updated, error: updateErr } = await admin.database
+      .from("tasks")
+      .update({
+        is_tough: !task.is_tough,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .eq("student_id", studentId)
+      .select()
+      .single();
+
+    if (updateErr) return errorResponse(updateErr.message, 500);
+    return jsonResponse(updated);
   }
 
   return errorResponse(`Endpoint not found: PATCH/PUT /api/v1/${p}`, 404);
@@ -1155,9 +2134,56 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ p
   const { student } = auth;
   const studentId = student?.id;
 
+  // Delete Resource: /resources/[id]
+  if (p.startsWith("resources/") && p.split("/").length === 2) {
+    const resourceId = p.split("/")[1];
+    const { data: res } = await admin.database
+      .from("resources")
+      .select("id, owner_id")
+      .eq("id", resourceId)
+      .single();
+
+    if (!res) return errorResponse("Resource not found", 404);
+    if (res.owner_id !== studentId) {
+      return errorResponse("Forbidden: You do not own this resource", 403);
+    }
+
+    await admin.database.from("resources").delete().eq("id", resourceId);
+    return jsonResponse({ message: "Resource deleted successfully" });
+  }
+
+  // Delete Resource Bucket: /resources/buckets/[id]
+  if (p.startsWith("resources/buckets/")) {
+    const bucketId = p.split("/")[2];
+    const { data: b } = await admin.database
+      .from("resource_buckets")
+      .select("id, owner_id")
+      .eq("id", bucketId)
+      .single();
+
+    if (!b) return errorResponse("Resource bucket not found", 404);
+    if (b.owner_id !== studentId) {
+      return errorResponse("Forbidden: You do not own this resource bucket", 403);
+    }
+
+    await admin.database.from("resource_buckets").delete().eq("id", bucketId);
+    return jsonResponse({ message: "Resource bucket deleted successfully" });
+  }
+
   // Delete Task: /tasks/[id]
-  if (p.startsWith("tasks/")) {
+  if (p.startsWith("tasks/") && p.split("/").length === 2) {
     const id = p.split("/")[1];
+    const { data: task } = await admin.database
+      .from("tasks")
+      .select("id, student_id")
+      .eq("id", id)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
     await admin.database.from("tasks").delete().eq("id", id).eq("student_id", studentId);
     return jsonResponse({ message: "Task deleted successfully" });
   }

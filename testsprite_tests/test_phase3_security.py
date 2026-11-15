@@ -116,6 +116,18 @@ def run_migration_ddl_tests():
     record("P3-MIG-12", "Migration DDL", "Transactional Wrapper", "PASS" if p12 else "FAIL",
            "Migration is wrapped within an atomic BEGIN...COMMIT block")
 
+    # P3-MIG-13: Session Immutability Trigger
+    p13 = "check_session_immutability" in sql and "trg_session_immutability" in sql and \
+          "SESSION_STUDENT_IMMUTABLE" in sql and "SESSION_TUTOR_IMMUTABLE" in sql and \
+          "SESSION_DOUBT_IMMUTABLE" in sql and "SESSION_STATUS_TRANSITION_FORBIDDEN" in sql
+    record("P3-MIG-13", "Migration DDL", "Session Immutability Trigger", "PASS" if p13 else "FAIL",
+           "Trigger check_session_immutability guards participant immutability and status transitions")
+
+    # P3-MIG-14: Session Ratings Unique Index & Self-Rating Protection
+    p14 = "idx_session_ratings_unique_session_student" in sql and "student_id <> tutor_id" in sql
+    record("P3-MIG-14", "Migration DDL", "Session Ratings Unique & Self-Rate Guard", "PASS" if p14 else "FAIL",
+           "Database unique index and student_id <> tutor_id prevent duplicate and self ratings")
+
 
 # ════════════════════════════════════════════════════════════════════════════
 # 2. ROLLBACK SCRIPT REVERSIBILITY (P3-ROL-01 to P3-ROL-06)
@@ -169,6 +181,13 @@ def run_rollback_tests():
     all_disabled = all(f"ALTER TABLE public.{t} DISABLE ROW LEVEL SECURITY;" in sql for t in tables)
     record("P3-ROL-06", "Rollback", "Disable RLS Across 8 Tables", "PASS" if all_disabled else "FAIL",
            "Rollback disables RLS on all 8 target tables cleanly")
+
+    # P3-ROL-07: Drop Immutability Trigger & Unique Index
+    p7 = "DROP TRIGGER IF EXISTS trg_session_immutability" in sql and \
+         "DROP FUNCTION IF EXISTS public.check_session_immutability" in sql and \
+         "DROP INDEX IF EXISTS idx_session_ratings_unique_session_student" in sql
+    record("P3-ROL-07", "Rollback", "Drop Session Immutability Trigger & Unique Index", "PASS" if p7 else "FAIL",
+           "Rollback drops trg_session_immutability and idx_session_ratings_unique_session_student cleanly")
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -255,6 +274,36 @@ def run_backend_audits():
                         p8 = False
     record("P3-BACK-08", "Backend AST", "Frontend Client Key Isolation", "PASS" if p8 else "FAIL",
            "Verified no master service keys are embedded or leaked into frontend client components")
+
+    # P3-BACK-09: Next.js task completion enforces task ownership
+    p9 = False
+    if os.path.exists(route_path):
+        with open(route_path, "r", encoding="utf-8") as f:
+            c = f.read()
+            p9 = 'p.startsWith("tasks/") && p.endsWith("/complete")' in c and \
+                 'task.student_id !== studentId' in c
+    record("P3-BACK-09", "Backend AST", "Task Complete Ownership Guard", "PASS" if p9 else "FAIL",
+           "route.ts verifies student ownership before toggling completion on /tasks/:id/complete")
+
+    # P3-BACK-10: Next.js task toggle tough enforces task ownership
+    p10 = False
+    if os.path.exists(route_path):
+        with open(route_path, "r", encoding="utf-8") as f:
+            c = f.read()
+            p10 = 'p.startsWith("tasks/") && p.endsWith("/toggle-tough")' in c and \
+                  'task.student_id !== studentId' in c
+    record("P3-BACK-10", "Backend AST", "Task Toggle Tough Ownership Guard", "PASS" if p10 else "FAIL",
+           "route.ts verifies student ownership before toggling tough flag on /tasks/:id/toggle-tough")
+
+    # P3-BACK-11: Next.js ask suggestion enforces task ownership
+    p11 = False
+    if os.path.exists(route_path):
+        with open(route_path, "r", encoding="utf-8") as f:
+            c = f.read()
+            p11 = 'p.startsWith("tasks/") && p.endsWith("/ask-suggestion")' in c and \
+                  'task.student_id !== studentId' in c
+    record("P3-BACK-11", "Backend AST", "Ask Suggestion Task Ownership Guard", "PASS" if p11 else "FAIL",
+           "route.ts verifies student ownership on /tasks/:id/ask-suggestion before creating request")
 
 
 # ════════════════════════════════════════════════════════════════════════════

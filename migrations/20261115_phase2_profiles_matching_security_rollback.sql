@@ -24,46 +24,64 @@ ALTER FUNCTION public.close_expired_doubts() RESET search_path;
 
 
 -- ────────────────────────────────────────────────────────────────────────────
--- 2. DROP PHASE 2 ROW LEVEL SECURITY POLICIES
+-- 2. DROP PHASE 2 TRIGGERS & AUXILIARY FUNCTIONS
 -- ────────────────────────────────────────────────────────────────────────────
 
--- 2.1 Table: public.doubt_tags
+DROP TRIGGER IF EXISTS trg_doubt_status_transition ON public.doubts;
+DROP FUNCTION IF EXISTS public.check_doubt_transitions();
+
+DROP TRIGGER IF EXISTS trg_student_immutable_fields ON public.students;
+DROP FUNCTION IF EXISTS public.check_student_immutable_fields();
+
+
+-- ────────────────────────────────────────────────────────────────────────────
+-- 3. DROP PEER DISCOVERY VIEW
+-- ────────────────────────────────────────────────────────────────────────────
+
+DROP VIEW IF EXISTS public.student_public_profiles;
+
+
+-- ────────────────────────────────────────────────────────────────────────────
+-- 4. DROP PHASE 2 ROW LEVEL SECURITY POLICIES
+-- ────────────────────────────────────────────────────────────────────────────
+
+-- 4.1 Table: public.doubt_tags
 DROP POLICY IF EXISTS "doubt_tags_read_policy" ON public.doubt_tags;
 DROP POLICY IF EXISTS "doubt_tags_insert_own" ON public.doubt_tags;
 DROP POLICY IF EXISTS "doubt_tags_delete_own" ON public.doubt_tags;
 ALTER TABLE public.doubt_tags DISABLE ROW LEVEL SECURITY;
 
--- 2.2 Table: public.doubts
+-- 4.2 Table: public.doubts
 DROP POLICY IF EXISTS "doubts_read_policy" ON public.doubts;
 DROP POLICY IF EXISTS "doubts_insert_own" ON public.doubts;
 DROP POLICY IF EXISTS "doubts_update_own" ON public.doubts;
 DROP POLICY IF EXISTS "doubts_delete_own" ON public.doubts;
 ALTER TABLE public.doubts DISABLE ROW LEVEL SECURITY;
 
--- 2.3 Table: public.tutor_score_snapshots
+-- 4.3 Table: public.tutor_score_snapshots
 DROP POLICY IF EXISTS "tutor_score_snapshots_read_authenticated" ON public.tutor_score_snapshots;
 ALTER TABLE public.tutor_score_snapshots DISABLE ROW LEVEL SECURITY;
 
--- 2.4 Table: public.tutor_pro_skills
+-- 4.4 Table: public.tutor_pro_skills
 DROP POLICY IF EXISTS "tutor_pro_skills_read_authenticated" ON public.tutor_pro_skills;
 DROP POLICY IF EXISTS "tutor_pro_skills_insert_own" ON public.tutor_pro_skills;
 DROP POLICY IF EXISTS "tutor_pro_skills_update_own" ON public.tutor_pro_skills;
 DROP POLICY IF EXISTS "tutor_pro_skills_delete_own" ON public.tutor_pro_skills;
 ALTER TABLE public.tutor_pro_skills DISABLE ROW LEVEL SECURITY;
 
--- 2.5 Table: public.student_skills
+-- 4.5 Table: public.student_skills
 DROP POLICY IF EXISTS "student_skills_read_authenticated" ON public.student_skills;
 DROP POLICY IF EXISTS "student_skills_insert_own" ON public.student_skills;
 DROP POLICY IF EXISTS "student_skills_update_own" ON public.student_skills;
 DROP POLICY IF EXISTS "student_skills_delete_own" ON public.student_skills;
 ALTER TABLE public.student_skills DISABLE ROW LEVEL SECURITY;
 
--- 2.6 Table: public.students
+-- 4.6 Table: public.students
 DROP POLICY IF EXISTS "students_read_authenticated" ON public.students;
 DROP POLICY IF EXISTS "students_update_own" ON public.students;
 ALTER TABLE public.students DISABLE ROW LEVEL SECURITY;
 
--- 2.7 Table: public.skills
+-- 4.7 Table: public.skills
 DROP POLICY IF EXISTS "skills_read_all" ON public.skills;
 ALTER TABLE public.skills DISABLE ROW LEVEL SECURITY;
 

@@ -144,21 +144,14 @@ export class AuthService {
       this.logger.warn(`InsForge OTP trigger notice: ${e.message}; using fallback verification code`);
     }
 
-    this.logger.log(`[OTP Verification Code for ${instituteEmail}]: ${verificationCode}`);
+    this.logger.log(`[OTP Verification Code dispatched to ${instituteEmail}]`);
 
     return {
       message: `Verification OTP dispatched to official institute email (${instituteEmail}). Valid for 15 minutes.`,
       instituteEmail,
       rollNumber,
-      otp: verificationCode,
-      code: verificationCode,
-      verification_code: verificationCode,
-      devOtpCode: verificationCode,
       status: 'success',
       data: {
-        otp: verificationCode,
-        code: verificationCode,
-        verification_code: verificationCode,
         message: 'OTP sent successfully',
       },
     };
@@ -193,9 +186,9 @@ export class AuthService {
       instituteEmail = pending.institute_email.trim().toLowerCase();
     }
 
-    // 2. Validate OTP code
+    // 2. Validate OTP code strictly against pending registration
     let otpValid = false;
-    if (otpCode === pending.verification_code || otpCode === '123456' || otpCode === '000000' || otpCode === '111111') {
+    if (otpCode && pending.verification_code && otpCode === pending.verification_code) {
       otpValid = true;
     } else {
       try {
@@ -438,7 +431,7 @@ export class AuthService {
 
     const admin = this.insforgeService.getAdminClient();
 
-    // 1. Verify student profile
+    // 1. Verify student profile (generic response if not found to prevent user enumeration)
     const derivedRoll = rawEmail.split('@')[0].toUpperCase();
     const { data: students, error: stErr } = await admin.database
       .from('students')
@@ -447,7 +440,10 @@ export class AuthService {
       .limit(1);
 
     if (stErr || !students || students.length === 0) {
-      throw new BadRequestException('No student profile found with this institute email or roll number');
+      return {
+        success: true,
+        message: `If the institute email is registered, a password reset code has been sent. Valid for 15 minutes.`,
+      };
     }
 
     const student = students[0];
@@ -489,21 +485,11 @@ export class AuthService {
       this.logger.warn(`InsForge reset OTP notice: ${e.message}; using fallback verification code`);
     }
 
-    this.logger.log(`[Password Reset OTP for ${instituteEmail}]: ${verificationCode}`);
+    this.logger.log(`[Password Reset OTP dispatched to ${instituteEmail}]`);
 
     return {
       success: true,
-      message: `Password reset OTP has been sent to ${instituteEmail}. Valid for 15 minutes.`,
-      instituteEmail,
-      otp: verificationCode,
-      code: verificationCode,
-      devOtpCode: verificationCode,
-      data: {
-        otp: verificationCode,
-        code: verificationCode,
-        devOtpCode: verificationCode,
-        message: 'Password reset OTP sent successfully',
-      },
+      message: `If the institute email is registered, a password reset code has been sent to ${instituteEmail}. Valid for 15 minutes.`,
     };
   }
 
@@ -512,8 +498,8 @@ export class AuthService {
     const rawEmail = (dto.instituteEmail || (dto as any).email || '').trim().toLowerCase();
     const code = (dto.otp || dto.token || (dto as any).code || '').toString().trim();
 
-    if (!dto.newPassword || dto.newPassword.length < 6) {
-      throw new BadRequestException('New password must be at least 6 characters');
+    if (!dto.newPassword || dto.newPassword.length < 8) {
+      throw new BadRequestException('New password must be at least 8 characters long');
     }
 
     if (rawEmail) {
@@ -525,11 +511,9 @@ export class AuthService {
         .limit(1);
 
       let otpValid = false;
-      if (code === '123456' || code === '000000' || code === '111111') {
-        otpValid = true;
-      } else if (pendingList && pendingList.length > 0) {
+      if (pendingList && pendingList.length > 0) {
         const pending = pendingList[0];
-        if (pending.verification_code === code) {
+        if (code && pending.verification_code && pending.verification_code === code) {
           otpValid = true;
         }
       }
@@ -538,6 +522,15 @@ export class AuthService {
         try {
           const verifyRes = await admin.auth.verifyOtp({
             email: rawEmail,
+            otp: code,
+          });
+          if (verifyRes?.data?.user) {
+            otpValid = true;
+          }
+        } catch (e) {
+          otpValid = false;
+        }
+      }
             otp: code,
           });
           if (verifyRes?.data?.user) {

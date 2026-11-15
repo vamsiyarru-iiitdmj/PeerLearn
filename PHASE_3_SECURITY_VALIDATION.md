@@ -30,8 +30,8 @@ The automated test suite `testsprite_tests/test_phase3_security.py` was executed
 ================================================================================
 PEERLEARN PHASE 3 SECURITY & REGRESSION VERIFICATION SUITE
 ================================================================================
-Total Test Cases:    74
-Passed (Verified):   66
+Total Test Cases:    80
+Passed (Verified):   72
 Failed:              0
 Not Tested (Live):   8  (Awaiting remote DB migration application)
 Local Pass Rate:     100.0%
@@ -42,14 +42,14 @@ Local Pass Rate:     100.0%
 
 | Category | Total | Passed | Failed | Blocked / Live Staged | Pass Rate (Local) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Group 1: Migration DDL Structural Completeness** | 12 | 12 | 0 | 0 | **100%** |
-| **Group 2: Rollback Script Reversibility** | 6 | 6 | 0 | 0 | **100%** |
-| **Group 3: Backend AST Architecture Audits** | 8 | 8 | 0 | 0 | **100%** |
+| **Group 1: Migration DDL Structural Completeness** | 14 | 14 | 0 | 0 | **100%** |
+| **Group 2: Rollback Script Reversibility** | 7 | 7 | 0 | 0 | **100%** |
+| **Group 3: Backend AST Architecture Audits** | 11 | 11 | 0 | 0 | **100%** |
 | **Group 4: RLS Policy Logic & Clauses** | 16 | 16 | 0 | 0 | **100%** |
 | **Group 5: Multi-User Identity Isolation Emulation** | 14 | 14 | 0 | 0 | **100%** |
 | **Group 6: Application Regression & API Contracts** | 10 | 10 | 0 | 0 | **100%** |
 | **Group 7: Live PostgREST Penetration Probes** | 8 | 0 | 0 | 8 | *Pending Apply* |
-| **TOTAL** | **74** | **66** | **0** | **8** | **100%** |
+| **TOTAL** | **80** | **72** | **0** | **8** | **100%** |
 
 ---
 

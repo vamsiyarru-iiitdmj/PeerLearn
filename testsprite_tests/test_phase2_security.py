@@ -119,6 +119,30 @@ def run_migration_ddl_tests():
     record("P2-MIG-12", "Migration DDL", "Transactional & Idempotent Wrapper", "PASS" if p12 else "FAIL",
            "Migration wrapped in BEGIN...COMMIT with DROP POLICY IF EXISTS idempotency guards")
 
+    # P2-MIG-13: Student Public Profiles View (Approved Projection Only)
+    p13 = "CREATE OR REPLACE VIEW public.student_public_profiles" in sql and \
+          "full_name" in sql and "personal_email" not in sql.split("CREATE OR REPLACE VIEW public.student_public_profiles")[1].split(";")[0]
+    record("P2-MIG-13", "Migration DDL", "Public Profiles Discovery View", "PASS" if p13 else "FAIL",
+           "student_public_profiles view projects only safe fields, concealing personal_email and phone")
+
+    # P2-MIG-14: Student Profile Immutability Trigger
+    p14 = "trg_student_immutable_fields" in sql and "check_student_immutable_fields" in sql and \
+          "Cannot modify immutable field" in sql
+    record("P2-MIG-14", "Migration DDL", "Student Immutability Trigger", "PASS" if p14 else "FAIL",
+           "trg_student_immutable_fields blocks tampering with auth_user_id, roll_number, department, year_of_study")
+
+    # P2-MIG-15: Doubt State Machine & Lifecycle Trigger
+    p15 = "trg_doubt_status_transition" in sql and "check_doubt_transitions" in sql and \
+          "Invalid status transition" in sql
+    record("P2-MIG-15", "Migration DDL", "Doubt Lifecycle State Trigger", "PASS" if p15 else "FAIL",
+           "trg_doubt_status_transition enforces valid state transitions (OPEN -> BOOKED -> SOLVED/WITHDRAWN)")
+
+    # P2-MIG-16: Skills Existence Validation in Junction RLS
+    p16 = "SELECT 1 FROM public.skills sk WHERE sk.id = student_skills.skill_id AND sk.is_active = true" in sql and \
+          "SELECT 1 FROM public.skills sk WHERE sk.id = tutor_pro_skills.skill_id AND sk.is_active = true" in sql
+    record("P2-MIG-16", "Migration DDL", "Skills Catalog Existence Check", "PASS" if p16 else "FAIL",
+           "student_skills and tutor_pro_skills INSERT policies validate that referenced skill exists and is active")
+
 # ════════════════════════════════════════════════════════════════════════════
 # 2. ROLLBACK SCRIPT REVERSIBILITY (P2-ROL-01 to P2-ROL-07)
 # ════════════════════════════════════════════════════════════════════════════
@@ -172,6 +196,23 @@ def run_rollback_tests():
     r7 = all(f"ALTER TABLE public.{t} DISABLE ROW LEVEL SECURITY;" in r_sql for t in tables)
     record("P2-ROL-07", "Rollback", "Disable RLS Across 7 Tables", "PASS" if r7 else "FAIL",
            "Rollback disables RLS on all 7 target tables")
+
+    # P2-ROL-08: Drop Student Public Profiles View
+    r8 = "DROP VIEW IF EXISTS public.student_public_profiles;" in r_sql
+    record("P2-ROL-08", "Rollback", "Drop Student Public Profiles View", "PASS" if r8 else "FAIL",
+           "Rollback drops student_public_profiles view")
+
+    # P2-ROL-09: Drop Student Immutability Trigger
+    r9 = "DROP TRIGGER IF EXISTS trg_student_immutable_fields ON public.students;" in r_sql and \
+         "DROP FUNCTION IF EXISTS public.check_student_immutable_fields();" in r_sql
+    record("P2-ROL-09", "Rollback", "Drop Student Immutability Trigger", "PASS" if r9 else "FAIL",
+           "Rollback drops trg_student_immutable_fields and check_student_immutable_fields")
+
+    # P2-ROL-10: Drop Doubt Lifecycle Trigger
+    r10 = "DROP TRIGGER IF EXISTS trg_doubt_status_transition ON public.doubts;" in r_sql and \
+          "DROP FUNCTION IF EXISTS public.check_doubt_transitions();" in r_sql
+    record("P2-ROL-10", "Rollback", "Drop Doubt Lifecycle Trigger", "PASS" if r10 else "FAIL",
+           "Rollback drops trg_doubt_status_transition and check_doubt_transitions")
 
 # ════════════════════════════════════════════════════════════════════════════
 # 3. BACKEND SERVICE-ROLE ARCHITECTURE AUDITS (P2-BACK-01 to P2-BACK-08)
