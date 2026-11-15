@@ -308,6 +308,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
         doubt_id,
         student_id,
         tutor_id,
+        replacement_tutor_id,
         scheduled_start,
         scheduled_end,
         mode,
@@ -316,10 +317,79 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ path
         created_at,
         doubts:doubt_id (description)
       `)
-      .or(`student_id.eq.${studentId},tutor_id.eq.${studentId}`)
+      .or(`student_id.eq.${studentId},tutor_id.eq.${studentId},replacement_tutor_id.eq.${studentId}`)
       .order("created_at", { ascending: false });
 
     return jsonResponse(data || []);
+  }
+
+  // Session Chat Messages: /sessions/[id]/messages
+  if (p.startsWith("sessions/") && p.endsWith("/messages")) {
+    const sessionId = p.split("/")[1];
+    const { data: session } = await admin.database
+      .from("sessions")
+      .select("id, student_id, tutor_id, replacement_tutor_id")
+      .eq("id", sessionId)
+      .single();
+
+    if (!session) return errorResponse("Session not found", 404);
+    if (session.student_id !== studentId && session.tutor_id !== studentId && session.replacement_tutor_id !== studentId) {
+      return errorResponse("Access denied: You are not a participant in this session", 403);
+    }
+
+    const { data: messages, error: msgError } = await admin.database
+      .from("session_messages")
+      .select("*")
+      .eq("session_id", sessionId)
+      .order("created_at", { ascending: true });
+
+    if (msgError) return errorResponse(msgError.message, 500);
+    return jsonResponse(messages || []);
+  }
+
+  // Single Session Details: /sessions/[id]
+  if (p.startsWith("sessions/") && p.split("/").length === 2) {
+    const sessionId = p.split("/")[1];
+    const { data: session, error: sessError } = await admin.database
+      .from("sessions")
+      .select(`
+        *,
+        doubts:doubt_id (id, description, expected_outcome),
+        student:student_id (id, full_name, roll_number, photo_url, department),
+        tutor:tutor_id (id, full_name, roll_number, photo_url, department)
+      `)
+      .eq("id", sessionId)
+      .single();
+
+    if (sessError || !session) return errorResponse("Session not found", 404);
+    if (session.student_id !== studentId && session.tutor_id !== studentId && session.replacement_tutor_id !== studentId) {
+      return errorResponse("Access denied: You are not a participant in this session", 403);
+    }
+    return jsonResponse(session);
+  }
+
+  // Task Subtasks: /tasks/[id]/subtasks
+  if (p.startsWith("tasks/") && p.endsWith("/subtasks")) {
+    const taskId = p.split("/")[1];
+    const { data: task } = await admin.database
+      .from("tasks")
+      .select("student_id")
+      .eq("id", taskId)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
+    const { data: subtasks, error: subError } = await admin.database
+      .from("task_subtasks")
+      .select("*")
+      .eq("task_id", taskId)
+      .order("created_at", { ascending: true });
+
+    if (subError) return errorResponse(subError.message, 500);
+    return jsonResponse(subtasks || []);
   }
 
   // Resources: /resources
@@ -648,27 +718,211 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
   // Book Doubt: /doubts/[id]/book
   if (p.startsWith("doubts/") && p.endsWith("/book")) {
     const doubtId = p.split("/")[1];
+    const scheduledStart = body.scheduledStart || new Date().toISOString();
+    const scheduledEnd = body.scheduledEnd || new Date(Date.now() + 3600000).toISOString();
+    const mode = body.mode || "ONLINE";
+    const venue = body.venue || null;
+    const meetingUrl = body.meetingUrl || body.meetLink || null;
+
+    const { data: rpcRes, error: rpcErr } = await admin.database.rpc("book_doubt_atomic", {
+      p_doubt_id: doubtId,
+      p_tutor_id: studentId,
+      p_scheduled_start: scheduledStart,
+      p_scheduled_end: scheduledEnd,
+      p_mode: mode,
+      p_venue: venue,
+      p_meeting_url: meetingUrl,
+    });
+
+    if (rpcErr) {
+      return errorResponse(rpcErr.message || "Failed to book doubt", 400);
+    }
+
+    const sessionId = rpcRes?.sessionId || rpcRes?.session_id;
+    if (sessionId) {
+      const { data: session } = await admin.database
+        .from("sessions")
+        .select("*")
+        .eq("id", sessionId)
+        .single();
+      return jsonResponse(session || rpcRes);
+    }
+
+    return jsonResponse(rpcRes);
+  }
+
+  // Complete Session: /sessions/[id]/complete
+  if (p.startsWith("sessions/") && p.endsWith("/complete")) {
+    const sessionId = p.split("/")[1];
     const { data: session } = await admin.database
       .from("sessions")
+      .select("id, tutor_id, student_id, doubt_id")
+      .eq("id", sessionId)
+      .single();
+
+    if (!session) return errorResponse("Session not found", 404);
+    if (session.tutor_id !== studentId) {
+      return errorResponse("Only the session tutor can mark completion", 403);
+    }
+
+    const { data: updated, error } = await admin.database
+      .from("sessions")
+      .update({
+        status: "COMPLETED",
+        completed_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", sessionId)
+      .select()
+      .single();
+
+    if (error) return errorResponse(error.message, 500);
+
+    if (session.doubt_id) {
+      await admin.database
+        .from("doubts")
+        .update({ status: "SESSION_COMPLETED_PENDING_CONFIRMATION" })
+        .eq("id", session.doubt_id);
+    }
+
+    await admin.database.from("notifications").insert([
+      {
+        user_id: session.student_id,
+        type: "SESSION_COMPLETED_FORM",
+        title: "Confirm Session Completion & Rate Tutor",
+        body: "Your tutor marked the session complete. Please confirm whether the session took place and share your feedback.",
+        entity_type: "SESSION",
+        entity_id: sessionId,
+      },
+    ]);
+
+    return jsonResponse({ message: "Session marked completed", session: updated });
+  }
+
+  // Confirm Session: /sessions/[id]/confirm
+  if (p.startsWith("sessions/") && p.endsWith("/confirm")) {
+    const sessionId = p.split("/")[1];
+    const { data: session } = await admin.database
+      .from("sessions")
+      .select("id, student_id, doubt_id")
+      .eq("id", sessionId)
+      .single();
+
+    if (!session) return errorResponse("Session not found", 404);
+    if (session.student_id !== studentId) {
+      return errorResponse("Only the student can confirm session completion", 403);
+    }
+
+    const { data: updated, error } = await admin.database
+      .from("sessions")
+      .update({
+        status: "CONFIRMED",
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", sessionId)
+      .select()
+      .single();
+
+    if (error) return errorResponse(error.message, 500);
+
+    if (session.doubt_id) {
+      await admin.database
+        .from("doubts")
+        .update({ status: "SOLVED", closed_at: new Date().toISOString() })
+        .eq("id", session.doubt_id);
+    }
+
+    return jsonResponse({ message: "Session confirmed", session: updated });
+  }
+
+  // Submit Session Rating: /sessions/[id]/rating
+  if (p.startsWith("sessions/") && p.endsWith("/rating")) {
+    const sessionId = p.split("/")[1];
+    const { rating, feedback, didSessionHappen } = body;
+
+    const { data: session } = await admin.database
+      .from("sessions")
+      .select("id, student_id, tutor_id, doubt_id")
+      .eq("id", sessionId)
+      .single();
+
+    if (!session) return errorResponse("Session not found", 404);
+    if (session.student_id !== studentId) {
+      return errorResponse("Only the student who booked can submit a rating", 403);
+    }
+
+    const { data: existingRating } = await admin.database
+      .from("session_ratings")
+      .select("id")
+      .eq("session_id", sessionId)
+      .eq("student_id", studentId)
+      .limit(1);
+
+    if (existingRating && existingRating.length > 0) {
+      return errorResponse("You have already submitted a rating for this session", 409);
+    }
+
+    const { data: ratingRecord, error: ratingErr } = await admin.database
+      .from("session_ratings")
       .insert([
         {
-          doubt_id: doubtId,
-          tutor_id: studentId,
-          mode: body.mode || "ONLINE",
-          scheduled_start: body.scheduledStart || new Date().toISOString(),
-          scheduled_end: body.scheduledEnd || new Date(Date.now() + 3600000).toISOString(),
-          status: "SCHEDULED",
+          session_id: sessionId,
+          student_id: studentId,
+          tutor_id: session.tutor_id,
+          rating: Number(rating) || 5,
+          feedback: feedback || null,
+          did_session_happen: didSessionHappen !== undefined ? Boolean(didSessionHappen) : true,
+          is_released: false,
         },
       ])
       .select()
       .single();
 
-    await admin.database
-      .from("doubts")
-      .update({ status: "BOOKED", booked_tutor_id: studentId, selected_session_id: session?.id })
-      .eq("id", doubtId);
+    if (ratingErr) return errorResponse(ratingErr.message, 500);
 
-    return jsonResponse(session);
+    if (didSessionHappen !== false) {
+      await admin.database.from("sessions").update({ status: "CONFIRMED" }).eq("id", sessionId);
+      if (session.doubt_id) {
+        await admin.database.from("doubts").update({ status: "SOLVED", closed_at: new Date().toISOString() }).eq("id", session.doubt_id);
+      }
+    } else {
+      await admin.database.from("sessions").update({ status: "DISPUTED" }).eq("id", sessionId);
+    }
+
+    return jsonResponse({ message: "Rating submitted successfully", rating: ratingRecord }, 201);
+  }
+
+  // Send Session Chat Message: /sessions/[id]/messages
+  if (p.startsWith("sessions/") && p.endsWith("/messages")) {
+    const sessionId = p.split("/")[1];
+    const { message, messageType } = body;
+
+    const { data: session } = await admin.database
+      .from("sessions")
+      .select("id, student_id, tutor_id, replacement_tutor_id")
+      .eq("id", sessionId)
+      .single();
+
+    if (!session) return errorResponse("Session not found", 404);
+    if (session.student_id !== studentId && session.tutor_id !== studentId && session.replacement_tutor_id !== studentId) {
+      return errorResponse("Access denied: You are not a participant in this session", 403);
+    }
+
+    const { data: msg, error: msgErr } = await admin.database
+      .from("session_messages")
+      .insert([
+        {
+          session_id: sessionId,
+          sender_id: studentId,
+          body: message || body.body || "",
+          message_type: messageType || "TEXT",
+        },
+      ])
+      .select()
+      .single();
+
+    if (msgErr) return errorResponse(msgErr.message, 500);
+    return jsonResponse(msg, 201);
   }
 
   // Create Task: /tasks
@@ -744,9 +998,47 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ pat
     return jsonResponse({ message: "Suggestion requested from peers", requestId: reqRow?.id });
   }
 
+  // Add Task Subtask: /tasks/[id]/subtasks
+  if (p.startsWith("tasks/") && p.endsWith("/subtasks")) {
+    const taskId = p.split("/")[1];
+    const { data: task } = await admin.database
+      .from("tasks")
+      .select("student_id")
+      .eq("id", taskId)
+      .single();
+
+    if (!task) return errorResponse("Task not found", 404);
+    if (task.student_id !== studentId) {
+      return errorResponse("Access denied: You do not own this task", 403);
+    }
+
+    const { title } = body;
+    if (!title || !title.trim()) {
+      return errorResponse("Subtask title is required", 400);
+    }
+
+    const { data: subtask, error } = await admin.database
+      .from("task_subtasks")
+      .insert([
+        {
+          task_id: taskId,
+          title: title.trim(),
+          is_completed: false,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) return errorResponse(error.message, 500);
+    return jsonResponse(subtask, 201);
+  }
+
   // Read all notifications: /notifications/read-all
   if (p === "notifications/read-all") {
-    await admin.database.from("notifications").update({ is_read: true }).eq("user_id", studentId);
+    await admin.database
+      .from("notifications")
+      .update({ read_at: new Date().toISOString() })
+      .eq("user_id", studentId);
     return jsonResponse({ message: "All notifications marked as read" });
   }
 
@@ -838,7 +1130,11 @@ async function handleUpdate(req: NextRequest, params: Promise<{ path: string[] }
   // Mark notification read: /notifications/[id]/read
   if (p.startsWith("notifications/") && p.endsWith("/read")) {
     const id = p.split("/")[1];
-    await admin.database.from("notifications").update({ is_read: true }).eq("id", id);
+    await admin.database
+      .from("notifications")
+      .update({ read_at: new Date().toISOString() })
+      .eq("id", id)
+      .eq("user_id", studentId);
     return jsonResponse({ message: "Notification marked read" });
   }
 
