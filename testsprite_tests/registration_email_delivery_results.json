@@ -1,0 +1,561 @@
+{
+  "suite_name": "Suite 1: Registration Email Delivery Comprehensive Test Suite",
+  "generated_at": "2026-11-15T13:31:16.136870Z",
+  "total_tests": 54,
+  "passed": 54,
+  "failed": 0,
+  "blocked": 0,
+  "pass_rate": "100.0%",
+  "categories": {
+    "Recipient & Email Validation": 8,
+    "Academic Resolution & Records": 6,
+    "Rate Limiting & Cooldown": 6,
+    "OTP Cryptography & Expiration": 8,
+    "Tampering Defense & Timing Safety": 8,
+    "Lockout Defense & Anti-Replay": 6,
+    "Email Delivery & Multi-Transport": 6,
+    "Template Formatting & Fallback": 6
+  },
+  "tests": [
+    {
+      "id": "REG-DEL-01",
+      "category": "Recipient Validation",
+      "name": "Valid Institute Email Format",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Standard IIITDMJ student email verified",
+      "timestamp": "2026-11-15T13:31:16.135600Z"
+    },
+    {
+      "id": "REG-DEL-02",
+      "category": "Recipient Validation",
+      "name": "Auto-Derivation from Roll Number",
+      "status": "PASS",
+      "expected": "25bcs270@iiitdmj.ac.in",
+      "actual": "25bcs270@iiitdmj.ac.in",
+      "details": "Institute email dynamically computed from roll",
+      "timestamp": "2026-11-15T13:31:16.135731Z"
+    },
+    {
+      "id": "REG-DEL-03",
+      "category": "Recipient Validation",
+      "name": "Personal Email Fallback Derivation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Personal email fallback generated as <roll>@gmail.com",
+      "timestamp": "2026-11-15T13:31:16.135745Z"
+    },
+    {
+      "id": "REG-DEL-04",
+      "category": "Recipient Validation",
+      "name": "Personal Email Sanitization",
+      "status": "PASS",
+      "expected": "student.personal@gmail.com",
+      "actual": "student.personal@gmail.com",
+      "details": "Personal email normalized to lowercase trimmed string",
+      "timestamp": "2026-11-15T13:31:16.135754Z"
+    },
+    {
+      "id": "REG-DEL-05",
+      "category": "Recipient Validation",
+      "name": "Missing Roll & Email Rejection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Route returns 400 when roll number is empty or omitted",
+      "timestamp": "2026-11-15T13:31:16.135771Z"
+    },
+    {
+      "id": "REG-DEL-06",
+      "category": "Recipient Validation",
+      "name": "Malformed Email Rejection in Email Library",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Dispatcher rejects emails lacking @ or domain",
+      "timestamp": "2026-11-15T13:31:16.135842Z"
+    },
+    {
+      "id": "REG-DEL-07",
+      "category": "Recipient Validation",
+      "name": "Incomplete Email Address Rejection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Dispatcher rejects trailing @ without host",
+      "timestamp": "2026-11-15T13:31:16.135851Z"
+    },
+    {
+      "id": "REG-DEL-08",
+      "category": "Recipient Validation",
+      "name": "Case-Insensitive Email Normalization",
+      "status": "PASS",
+      "expected": "25bcs270@iiitdmj.ac.in",
+      "actual": "25bcs270@iiitdmj.ac.in",
+      "details": "Input converted to canonical lowercase",
+      "timestamp": "2026-11-15T13:31:16.135860Z"
+    },
+    {
+      "id": "REG-DEL-09",
+      "category": "Academic Resolution",
+      "name": "Unregistered Roll Number Rejection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Route verifies roll against academic_records table",
+      "timestamp": "2026-11-15T13:31:16.135882Z"
+    },
+    {
+      "id": "REG-DEL-10",
+      "category": "Academic Resolution",
+      "name": "Already Registered Roll 409 Conflict",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Prevents duplicate student account registration",
+      "timestamp": "2026-11-15T13:31:16.136091Z"
+    },
+    {
+      "id": "REG-DEL-11",
+      "category": "Academic Resolution",
+      "name": "Dev Mode Auto-Provisioning for TEST Roll",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Auto-inserts mock academic record for test rolls in dev",
+      "timestamp": "2026-11-15T13:31:16.136104Z"
+    },
+    {
+      "id": "REG-DEL-12",
+      "category": "Academic Resolution",
+      "name": "Dev Mode Legacy Roll Provisioning",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Supports 21BD1A1234 test fixture in development",
+      "timestamp": "2026-11-15T13:31:16.136115Z"
+    },
+    {
+      "id": "REG-DEL-13",
+      "category": "Academic Resolution",
+      "name": "Production Roll Number Regex Pattern",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Strict 4-16 alphanumeric characters enforced in prod",
+      "timestamp": "2026-11-15T13:31:16.136164Z"
+    },
+    {
+      "id": "REG-DEL-14",
+      "category": "Academic Resolution",
+      "name": "Dev Mode Roll Number Regex Flexibility",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Accommodates test harnesses and UUID-style dev roll numbers",
+      "timestamp": "2026-11-15T13:31:16.136281Z"
+    },
+    {
+      "id": "REG-DEL-15",
+      "category": "Rate Limiting",
+      "name": "60s Cooldown Pending Registration Query",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Scoped query inspects prior attempts for specific roll and purpose",
+      "timestamp": "2026-11-15T13:31:16.136304Z"
+    },
+    {
+      "id": "REG-DEL-16",
+      "category": "Rate Limiting",
+      "name": "60s Resend Cooldown Enforcement (HTTP 429)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects rapid repeated requests within 60s window",
+      "timestamp": "2026-11-15T13:31:16.136335Z"
+    },
+    {
+      "id": "REG-DEL-17",
+      "category": "Rate Limiting",
+      "name": "Cooldown Breach Human-Readable Notice",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Clear descriptive message guides user when rate-limited",
+      "timestamp": "2026-11-15T13:31:16.136346Z"
+    },
+    {
+      "id": "REG-DEL-18",
+      "category": "Rate Limiting",
+      "name": "Elapsed Cooldown Window Allows Dispatch",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Requests after 60 seconds proceed to OTP generation",
+      "timestamp": "2026-11-15T13:31:16.136354Z"
+    },
+    {
+      "id": "REG-DEL-19",
+      "category": "Rate Limiting",
+      "name": "Dev Mode Cooldown Bypass for Automated Testing",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Prevents developer and CI pipeline blocking during test runs",
+      "timestamp": "2026-11-15T13:31:16.136376Z"
+    },
+    {
+      "id": "REG-DEL-20",
+      "category": "Rate Limiting",
+      "name": "Prior Pending Registration Deletion on Resend",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Purges obsolete unverified OTP records before inserting fresh token",
+      "timestamp": "2026-11-15T13:31:16.136396Z"
+    },
+    {
+      "id": "REG-DEL-21",
+      "category": "OTP Cryptography",
+      "name": "Cryptographic 6-Digit OTP Generation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "randomInt(100000, 1000000) guarantees exactly 6 numeric digits",
+      "timestamp": "2026-11-15T13:31:16.136410Z"
+    },
+    {
+      "id": "REG-DEL-22",
+      "category": "OTP Cryptography",
+      "name": "Cryptographic 16-Byte Salt Generation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Generates 32-character hexadecimal salt from 16 secure random bytes",
+      "timestamp": "2026-11-15T13:31:16.136449Z"
+    },
+    {
+      "id": "REG-DEL-23",
+      "category": "OTP Cryptography",
+      "name": "Salted SHA-256 Hash Digest",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Stores only 64-char hex digest; plaintext OTP is not persisted",
+      "timestamp": "2026-11-15T13:31:16.136458Z"
+    },
+    {
+      "id": "REG-DEL-24",
+      "category": "OTP Cryptography",
+      "name": "15-Minute Expiration Calculation",
+      "status": "PASS",
+      "expected": 15,
+      "actual": 15,
+      "details": "Token expires exactly 15 minutes (900,000 ms) after dispatch",
+      "timestamp": "2026-11-15T13:31:16.136472Z"
+    },
+    {
+      "id": "REG-DEL-25",
+      "category": "OTP Cryptography",
+      "name": "Expired OTP Detection & Rejection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Blocks verification attempts past the 15-minute validity window",
+      "timestamp": "2026-11-15T13:31:16.136492Z"
+    },
+    {
+      "id": "REG-DEL-26",
+      "category": "OTP Cryptography",
+      "name": "Atomic Purge of Expired Registration",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Purges expired pending records immediately upon access",
+      "timestamp": "2026-11-15T13:31:16.136512Z"
+    },
+    {
+      "id": "REG-DEL-27",
+      "category": "OTP Cryptography",
+      "name": "Numeric-Only 6-Digit Code Validation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects letters, whitespace, or symbols in OTP string",
+      "timestamp": "2026-11-15T13:31:16.136545Z"
+    },
+    {
+      "id": "REG-DEL-28",
+      "category": "OTP Cryptography",
+      "name": "Length Validation (<6 and >6 Digits Rejected)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Only exact 6-character numeric sequences accepted",
+      "timestamp": "2026-11-15T13:31:16.136550Z"
+    },
+    {
+      "id": "REG-DEL-29",
+      "category": "Tampering Defense",
+      "name": "Single-Digit Tampering Rejection",
+      "status": "PASS",
+      "expected": false,
+      "actual": false,
+      "details": "Off-by-one single digit fails cryptographic equality",
+      "timestamp": "2026-11-15T13:31:16.136562Z"
+    },
+    {
+      "id": "REG-DEL-30",
+      "category": "Tampering Defense",
+      "name": "Transposed Digit Tampering Rejection",
+      "status": "PASS",
+      "expected": false,
+      "actual": false,
+      "details": "Transposed adjacent digits fail cryptographic equality",
+      "timestamp": "2026-11-15T13:31:16.136567Z"
+    },
+    {
+      "id": "REG-DEL-31",
+      "category": "Tampering Defense",
+      "name": "Salt Mismatch Rejection",
+      "status": "PASS",
+      "expected": false,
+      "actual": false,
+      "details": "Hash verification requires the exact specific per-request salt",
+      "timestamp": "2026-11-15T13:31:16.136575Z"
+    },
+    {
+      "id": "REG-DEL-32",
+      "category": "Tampering Defense",
+      "name": "Constant-Time Comparison Implementation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "timingSafeEqual protects against timing analysis attacks",
+      "timestamp": "2026-11-15T13:31:16.136580Z"
+    },
+    {
+      "id": "REG-DEL-33",
+      "category": "Tampering Defense",
+      "name": "Timing-Safe Buffer Length Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Guards against Buffer length exception before comparison",
+      "timestamp": "2026-11-15T13:31:16.136583Z"
+    },
+    {
+      "id": "REG-DEL-34",
+      "category": "Tampering Defense",
+      "name": "Empty OTP String Guard",
+      "status": "PASS",
+      "expected": false,
+      "actual": false,
+      "details": "Returns false safely on empty OTP without throwing",
+      "timestamp": "2026-11-15T13:31:16.136586Z"
+    },
+    {
+      "id": "REG-DEL-35",
+      "category": "Tampering Defense",
+      "name": "Empty Salt/Hash Input Guard",
+      "status": "PASS",
+      "expected": false,
+      "actual": false,
+      "details": "Returns false when salt or stored hash are null or empty",
+      "timestamp": "2026-11-15T13:31:16.136589Z"
+    },
+    {
+      "id": "REG-DEL-36",
+      "category": "Tampering Defense",
+      "name": "Legacy Plaintext Code Backward Compatibility",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Safely supports unmigrated historical rows during rollout",
+      "timestamp": "2026-11-15T13:31:16.136600Z"
+    },
+    {
+      "id": "REG-DEL-37",
+      "category": "Lockout Defense",
+      "name": "Failed Attempt Counter Increment",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Increments attempts column in pending_registrations on wrong OTP",
+      "timestamp": "2026-11-15T13:31:16.136612Z"
+    },
+    {
+      "id": "REG-DEL-38",
+      "category": "Lockout Defense",
+      "name": "Remaining Attempts Calculation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Informs user of exact attempts remaining before lockout",
+      "timestamp": "2026-11-15T13:31:16.136622Z"
+    },
+    {
+      "id": "REG-DEL-39",
+      "category": "Lockout Defense",
+      "name": "5-Attempt Lockout Enforcement (HTTP 429)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns HTTP 429 once attempt counter reaches 5",
+      "timestamp": "2026-11-15T13:31:16.136650Z"
+    },
+    {
+      "id": "REG-DEL-40",
+      "category": "Lockout Defense",
+      "name": "Pending Record Revocation on Lockout",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Destroys pending challenge immediately to thwart brute-force",
+      "timestamp": "2026-11-15T13:31:16.136669Z"
+    },
+    {
+      "id": "REG-DEL-41",
+      "category": "Lockout Defense",
+      "name": "Atomic Token Deletion on Success (Anti-Replay)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Prevents re-use of once-verified OTP",
+      "timestamp": "2026-11-15T13:31:16.136688Z"
+    },
+    {
+      "id": "REG-DEL-42",
+      "category": "Lockout Defense",
+      "name": "Replay of Consumed OTP Rejection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Subsequent attempts find no record and fail immediately",
+      "timestamp": "2026-11-15T13:31:16.136700Z"
+    },
+    {
+      "id": "REG-DEL-43",
+      "category": "Email Delivery",
+      "name": "Nodemailer SMTP Transporter Initialization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Configures standard SMTP transporter with user credentials",
+      "timestamp": "2026-11-15T13:31:16.136711Z"
+    },
+    {
+      "id": "REG-DEL-44",
+      "category": "Email Delivery",
+      "name": "SMTP SSL Port 465 Secure Flag",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Automatically enables SSL TLS encryption on port 465",
+      "timestamp": "2026-11-15T13:31:16.136721Z"
+    },
+    {
+      "id": "REG-DEL-45",
+      "category": "Email Delivery",
+      "name": "SMTP Network Exception Handling",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Catches transport connection errors cleanly",
+      "timestamp": "2026-11-15T13:31:16.136729Z"
+    },
+    {
+      "id": "REG-DEL-46",
+      "category": "Email Delivery",
+      "name": "Dev Mode Safe Outbox Fallback",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enables complete end-to-end testing without external SMTP credentials",
+      "timestamp": "2026-11-15T13:31:16.136740Z"
+    },
+    {
+      "id": "REG-DEL-47",
+      "category": "Email Delivery",
+      "name": "Dev Outbox JSON Persistence",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Persists dispatched emails to .email_outbox.json for automated verification",
+      "timestamp": "2026-11-15T13:31:16.136747Z"
+    },
+    {
+      "id": "REG-DEL-48",
+      "category": "Email Delivery",
+      "name": "Production Missing SMTP Credentials Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Fails fast in production with explicit missing configuration keys",
+      "timestamp": "2026-11-15T13:31:16.136755Z"
+    },
+    {
+      "id": "REG-DEL-49",
+      "category": "Template Formatting",
+      "name": "HTML Responsive Header & Branding",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Renders official IIITDM Jabalpur Peer Tutoring brand banner",
+      "timestamp": "2026-11-15T13:31:16.136776Z"
+    },
+    {
+      "id": "REG-DEL-50",
+      "category": "Template Formatting",
+      "name": "Spaced 6-Digit OTP Formatting",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Increases legibility with spaced numbers and monospace font",
+      "timestamp": "2026-11-15T13:31:16.136801Z"
+    },
+    {
+      "id": "REG-DEL-51",
+      "category": "Template Formatting",
+      "name": "15-Minute Expiration Notice in HTML",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Prominently displays expiration time to prevent delayed submission",
+      "timestamp": "2026-11-15T13:31:16.136814Z"
+    },
+    {
+      "id": "REG-DEL-52",
+      "category": "Template Formatting",
+      "name": "Security Notice Against Sharing OTP",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Warns student that staff/tutors will never ask for their OTP",
+      "timestamp": "2026-11-15T13:31:16.136834Z"
+    },
+    {
+      "id": "REG-DEL-53",
+      "category": "Template Formatting",
+      "name": "Plaintext Accessible Fallback Presence",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Provides accessible text alternative for screen readers and legacy clients",
+      "timestamp": "2026-11-15T13:31:16.136847Z"
+    },
+    {
+      "id": "REG-DEL-54",
+      "category": "Template Formatting",
+      "name": "Subject Line with Verification Code",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Clear, recognizable subject line enables fast identification in inbox",
+      "timestamp": "2026-11-15T13:31:16.136855Z"
+    }
+  ]
+}

@@ -37,6 +37,26 @@ export default function LoginPage() {
     await login({ instituteEmail: loginEmail.trim(), password: loginPassword });
   };
 
+  // ── Cooldown timers ─────────────────────────────────────────────────────
+  const [regCooldown, setRegCooldown] = useState(0);
+  const [forgotCooldown, setForgotCooldown] = useState(0);
+
+  useEffect(() => {
+    if (regCooldown <= 0) return;
+    const interval = setInterval(() => {
+      setRegCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [regCooldown]);
+
+  useEffect(() => {
+    if (forgotCooldown <= 0) return;
+    const interval = setInterval(() => {
+      setForgotCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [forgotCooldown]);
+
   // ── Forgot Password form ────────────────────────────────────────────────
   const [forgotStep, setForgotStep] = useState<ForgotStep>("request");
   const [forgotEmail, setForgotEmail] = useState("");
@@ -57,12 +77,13 @@ export default function LoginPage() {
       const res = await apiForgotPassword({ instituteEmail: forgotEmail.trim() });
       const msg = res.devOtpCode
         ? `${res.message} (Dev OTP: ${res.devOtpCode})`
-        : res.message || "OTP sent to your institute email!";
+        : res.message || "OTP sent to your institute email! Valid for 15 minutes.";
       setForgotSuccess(msg);
       if (res.devOtpCode) {
         setForgotOtp(res.devOtpCode);
       }
       setForgotStep("verify");
+      setForgotCooldown(60);
     } catch (err) {
       setForgotError(err instanceof ApiError ? err.message : "Failed to send reset OTP. Check your institute email.");
     } finally {
@@ -73,8 +94,8 @@ export default function LoginPage() {
   const handleForgotReset = async (e: React.FormEvent) => {
     e.preventDefault();
     setForgotError(null);
-    if (forgotNewPassword.length < 6) {
-      setForgotError("Password must be at least 6 characters.");
+    if (forgotNewPassword.length < 8) {
+      setForgotError("Password must be at least 8 characters.");
       return;
     }
     if (forgotNewPassword !== forgotConfirmPassword) {
@@ -133,14 +154,41 @@ export default function LoginPage() {
       });
       const msg = res.devOtpCode
         ? `${res.message} (Dev OTP: ${res.devOtpCode})`
-        : res.message || "OTP sent to your institute email!";
+        : res.message || "OTP sent to your institute email! Valid for 15 minutes.";
       setRegSuccess(msg);
       if (res.devOtpCode) {
         setRegOtp(res.devOtpCode);
       }
       setRegStep("verify");
+      setRegCooldown(60);
     } catch (err) {
       setRegError(err instanceof ApiError ? err.message : "Registration failed. Try again.");
+    } finally {
+      setRegLoading(false);
+    }
+  };
+
+  const handleRegisterResend = async () => {
+    if (regCooldown > 0 || regLoading) return;
+    setRegError(null);
+    setRegLoading(true);
+    try {
+      const res = await apiRegisterStart({
+        rollNumber: regRoll.trim().toUpperCase(),
+        fullName: regFullName.trim(),
+        personalEmail: regPersonalEmail.trim(),
+        instituteEmail: regInstituteEmail.trim(),
+      });
+      const msg = res.devOtpCode
+        ? `${res.message} (Dev OTP: ${res.devOtpCode})`
+        : res.message || "New OTP sent to your institute email! Valid for 15 minutes.";
+      setRegSuccess(msg);
+      if (res.devOtpCode) {
+        setRegOtp(res.devOtpCode);
+      }
+      setRegCooldown(60);
+    } catch (err) {
+      setRegError(err instanceof ApiError ? err.message : "Failed to resend verification code. Try again.");
     } finally {
       setRegLoading(false);
     }
@@ -435,9 +483,9 @@ export default function LoginPage() {
                     type={showForgotPw ? "text" : "password"}
                     value={forgotNewPassword}
                     onChange={(e) => setForgotNewPassword(e.target.value)}
-                    placeholder="At least 6 characters"
+                    placeholder="At least 8 characters"
                     required
-                    minLength={6}
+                    minLength={8}
                     style={{ ...inputStyle, paddingRight: 44 }}
                     autoComplete="new-password"
                   />
@@ -465,7 +513,7 @@ export default function LoginPage() {
                   onChange={(e) => setForgotConfirmPassword(e.target.value)}
                   placeholder="Repeat new password"
                   required
-                  minLength={6}
+                  minLength={8}
                   style={inputStyle}
                   autoComplete="new-password"
                 />
@@ -497,17 +545,24 @@ export default function LoginPage() {
               <div style={{ textAlign: "center", marginTop: 4 }}>
                 <button
                   type="button"
-                  onClick={() => setForgotStep("request")}
+                  disabled={forgotCooldown > 0 || forgotLoading}
+                  onClick={async (e) => {
+                    if (forgotCooldown > 0) return;
+                    await handleForgotRequest(e);
+                  }}
                   style={{
                     background: "none",
                     border: "none",
-                    color: "var(--color-primary)",
+                    color: forgotCooldown > 0 ? "var(--color-on-surface-variant)" : "var(--color-primary)",
                     fontSize: 12,
                     fontWeight: 600,
-                    cursor: "pointer",
+                    cursor: forgotCooldown > 0 ? "not-allowed" : "pointer",
+                    opacity: forgotCooldown > 0 ? 0.65 : 1,
                   }}
                 >
-                  Didn&apos;t receive code? Resend OTP
+                  {forgotCooldown > 0
+                    ? `Resend OTP in ${forgotCooldown}s`
+                    : "Didn't receive code? Resend OTP"}
                 </button>
               </div>
             </form>
@@ -619,8 +674,10 @@ export default function LoginPage() {
             <form onSubmit={handleRegisterStart} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               <InfoBox message="Registration requires your official IIITDMJ roll number and institute email to link your academic record." />
               <div>
-                <label style={labelStyle}>Roll Number</label>
+                <label htmlFor="reg-roll" style={labelStyle}>Roll Number</label>
                 <input
+                  id="reg-roll"
+                  name="rollNumber"
                   type="text"
                   value={regRoll}
                   onChange={(e) => {
@@ -640,8 +697,10 @@ export default function LoginPage() {
                 </p>
               </div>
               <div>
-                <label style={labelStyle}>Full Name</label>
+                <label htmlFor="reg-fullname" style={labelStyle}>Full Name</label>
                 <input
+                  id="reg-fullname"
+                  name="fullName"
                   type="text"
                   value={regFullName}
                   onChange={(e) => setRegFullName(e.target.value)}
@@ -652,8 +711,10 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label style={labelStyle}>Personal Email</label>
+                <label htmlFor="reg-personal-email" style={labelStyle}>Personal Email</label>
                 <input
+                  id="reg-personal-email"
+                  name="personalEmail"
                   type="email"
                   value={regPersonalEmail}
                   onChange={(e) => setRegPersonalEmail(e.target.value)}
@@ -664,12 +725,14 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label style={labelStyle}>Institute Email</label>
+                <label htmlFor="reg-institute-email" style={labelStyle}>Institute Email</label>
                 <input
+                  id="reg-institute-email"
+                  name="instituteEmail"
                   type="email"
                   value={regInstituteEmail}
                   onChange={(e) => setRegInstituteEmail(e.target.value)}
-                  placeholder="e.g. 2022cse001@iiitdmj.ac.in"
+                  placeholder="e.g. 25bcs270@iiitdmj.ac.in"
                   required
                   style={inputStyle}
                   autoComplete="email"
@@ -705,10 +768,12 @@ export default function LoginPage() {
           {/* ── REGISTER FORM — Step 2: Verify OTP ─────────────────────── */}
           {tab === "register" && regStep === "verify" && (
             <form onSubmit={handleRegisterVerify} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <SuccessBox message={`OTP sent to ${regInstituteEmail}. Check your inbox or dev code above.`} />
+              <SuccessBox message={regSuccess || `OTP sent to ${regInstituteEmail}. Check your inbox or dev code above.`} />
               <div>
-                <label style={labelStyle}>OTP Code</label>
+                <label htmlFor="reg-otp" style={labelStyle}>OTP Code</label>
                 <input
+                  id="reg-otp"
+                  name="otp"
                   type="text"
                   inputMode="numeric"
                   value={regOtp}
@@ -721,14 +786,16 @@ export default function LoginPage() {
                 />
               </div>
               <div>
-                <label style={labelStyle}>Set Password</label>
+                <label htmlFor="reg-password" style={labelStyle}>Set Password</label>
                 <div style={{ position: "relative" }}>
                   <input
+                    id="reg-password"
+                    name="password"
                     type={showRegPw ? "text" : "password"}
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
-                    placeholder="Minimum 6 characters"
-                    minLength={6}
+                    placeholder="Minimum 8 characters"
+                    minLength={8}
                     required
                     style={{ ...inputStyle, paddingRight: 44 }}
                     autoComplete="new-password"
@@ -738,6 +805,7 @@ export default function LoginPage() {
                     onClick={() => setShowRegPw((v) => !v)}
                     style={pwToggleStyle}
                     tabIndex={-1}
+                    aria-label={showRegPw ? "Hide password" : "Show password"}
                   >
                     <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
                       {showRegPw ? "visibility_off" : "visibility"}
@@ -769,13 +837,31 @@ export default function LoginPage() {
                 )}
               </button>
 
-              <button
-                type="button"
-                onClick={() => { setRegStep("start"); setRegError(null); setRegSuccess(null); }}
-                style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-on-surface-variant)", fontSize: 12, textDecoration: "underline" }}
-              >
-                ← Back to change details
-              </button>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 4 }}>
+                <button
+                  type="button"
+                  onClick={() => { setRegStep("start"); setRegError(null); setRegSuccess(null); }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-on-surface-variant)", fontSize: 12, textDecoration: "underline" }}
+                >
+                  ← Back to change details
+                </button>
+                <button
+                  type="button"
+                  disabled={regCooldown > 0 || regLoading}
+                  onClick={handleRegisterResend}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    color: regCooldown > 0 ? "var(--color-on-surface-variant)" : "var(--color-primary)",
+                    fontSize: 12,
+                    fontWeight: 600,
+                    cursor: regCooldown > 0 ? "not-allowed" : "pointer",
+                    opacity: regCooldown > 0 ? 0.65 : 1,
+                  }}
+                >
+                  {regCooldown > 0 ? `Resend code in ${regCooldown}s` : "Resend OTP code"}
+                </button>
+              </div>
             </form>
           )}
         </div>

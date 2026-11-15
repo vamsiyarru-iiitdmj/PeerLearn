@@ -72,7 +72,14 @@ SECURITY DEFINER
 SET search_path = public, pg_temp
 AS $$
 BEGIN
-    IF NEW.auth_user_id IS DISTINCT FROM OLD.auth_user_id THEN
+    -- Allow service_role or superuser to manage account lifecycle
+    IF current_setting('role', true) IN ('service_role', 'project_admin') OR current_user IN ('postgres', 'service_role', 'project_admin', 'supabase_admin') THEN
+        RETURN NEW;
+    END IF;
+
+    -- For authenticated students, disallow changing identity/academic attributes
+    -- But allow initial binding if OLD.auth_user_id was null
+    IF OLD.auth_user_id IS NOT NULL AND NEW.auth_user_id IS DISTINCT FROM OLD.auth_user_id THEN
         RAISE EXCEPTION 'Cannot modify immutable field: auth_user_id';
     END IF;
     IF NEW.roll_number IS DISTINCT FROM OLD.roll_number THEN

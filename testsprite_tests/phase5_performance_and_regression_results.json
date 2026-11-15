@@ -1,0 +1,3339 @@
+{
+  "suite": "PeerLearn Phase 5 Performance & Full Regression Test Suite",
+  "timestamp": "2026-11-15T18:59:59.782937",
+  "elapsed_seconds": 0.022,
+  "total_tests": 364,
+  "total_passed": 364,
+  "total_failed": 0,
+  "total_blocked": 0,
+  "pass_rate_percent": 100.0,
+  "categories": {
+    "Category A: FK Indexes": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0,
+      "blocked": 0,
+      "rate": 100.0
+    },
+    "Category B: Constraints & Indexes": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0,
+      "blocked": 0,
+      "rate": 100.0
+    },
+    "Category C: Auth Security": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0,
+      "blocked": 0,
+      "rate": 100.0
+    },
+    "Category D: Profiles & Matching": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0,
+      "blocked": 0,
+      "rate": 100.0
+    },
+    "Category E: Sessions & Chat": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0,
+      "blocked": 0,
+      "rate": 100.0
+    },
+    "Category F: Resources & Proposals": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0,
+      "blocked": 0,
+      "rate": 100.0
+    },
+    "Category G: Backend API": {
+      "total": 52,
+      "passed": 52,
+      "failed": 0,
+      "blocked": 0,
+      "rate": 100.0
+    }
+  },
+  "results": [
+    {
+      "id": "P5-CAT-A-01",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_shared_resources_bucket_id on shared_resources(bucket_id) (Issue 35)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_shared_resources_bucket_id on public.shared_resources(bucket_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-02",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_suggestion_responses_request_id on suggestion_responses(request_id) (Issue 36)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_suggestion_responses_request_id on public.suggestion_responses(request_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-03",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_session_messages_sender_id on session_messages(sender_id) (Issue 37)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_session_messages_sender_id on public.session_messages(sender_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-04",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_task_subtasks_task_id on task_subtasks(task_id) (Issue 38)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_task_subtasks_task_id on public.task_subtasks(task_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-05",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_sessions_doubt_id on sessions(doubt_id) (Issue 39)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_sessions_doubt_id on public.sessions(doubt_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-06",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_resource_proposals_proposer_id on resource_proposals(proposer_id) (Issue 40)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_resource_proposals_proposer_id on public.resource_proposals(proposer_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-07",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_sessions_replacement_tutor_id on sessions(replacement_tutor_id) (Issue 41)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_sessions_replacement_tutor_id on public.sessions(replacement_tutor_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-08",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_student_skills_skill_id on student_skills(skill_id) (Issue 42)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_student_skills_skill_id on public.student_skills(skill_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-09",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_resources_owner_id on resources(owner_id) (Issue 43)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_resources_owner_id on public.resources(owner_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-10",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_session_ratings_student_id on session_ratings(student_id) (Issue 44)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_session_ratings_student_id on public.session_ratings(student_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-11",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_session_ratings_tutor_id on session_ratings(tutor_id) (Issue 45)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_session_ratings_tutor_id on public.session_ratings(tutor_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-12",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_resources_bucket_id on resources(bucket_id) (Issue 46)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_resources_bucket_id on public.resources(bucket_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-13",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_shared_resources_created_by on shared_resources(created_by) (Issue 47)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_shared_resources_created_by on public.shared_resources(created_by)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-14",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_suggestion_responses_tutor_id on suggestion_responses(tutor_id) (Issue 48)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_suggestion_responses_tutor_id on public.suggestion_responses(tutor_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-15",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_suggestion_requests_student_id on suggestion_requests(student_id) (Issue 49)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_suggestion_requests_student_id on public.suggestion_requests(student_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-16",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_doubts_booked_tutor_id on doubts(booked_tutor_id) (Issue 50)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_doubts_booked_tutor_id on public.doubts(booked_tutor_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-17",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_doubts_selected_session_id on doubts(selected_session_id) (Issue 51)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_doubts_selected_session_id on public.doubts(selected_session_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-18",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_resource_proposals_bucket_id on resource_proposals(bucket_id) (Issue 52)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_resource_proposals_bucket_id on public.resource_proposals(bucket_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-19",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_resource_buckets_owner_id on resource_buckets(owner_id) (Issue 53)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_resource_buckets_owner_id on public.resource_buckets(owner_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-20",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_suggestion_requests_task_id on suggestion_requests(task_id) (Issue 54)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_suggestion_requests_task_id on public.suggestion_requests(task_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-21",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_resource_votes_voter_id on resource_votes(voter_id) (Issue 55)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_resource_votes_voter_id on public.resource_votes(voter_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-22",
+      "category": "Category A: FK Indexes",
+      "name": "Index DDL: idx_tutor_score_snapshots_tutor_id on tutor_score_snapshots(tutor_id) (Issue 56)",
+      "status": "PASS",
+      "expected": "CREATE INDEX IF NOT EXISTS idx_tutor_score_snapshots_tutor_id on public.tutor_score_snapshots(tutor_id)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-23",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on shared_resources(bucket_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_shared_resources_bucket_id",
+      "actual": "SEARCH shared_resources USING INDEX idx_shared_resources_bucket_id (bucket_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-24",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on session_messages(sender_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_session_messages_sender_id",
+      "actual": "SEARCH session_messages USING INDEX idx_session_messages_sender_id (sender_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-25",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on task_subtasks(task_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_task_subtasks_task_id",
+      "actual": "SEARCH task_subtasks USING INDEX idx_task_subtasks_task_id (task_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-26",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on sessions(doubt_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_sessions_doubt_id",
+      "actual": "SEARCH sessions USING INDEX idx_sessions_doubt_id (doubt_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-27",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on resources(owner_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_resources_owner_id",
+      "actual": "SEARCH resources USING INDEX idx_resources_owner_id (owner_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-28",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on session_ratings(tutor_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_session_ratings_tutor_id",
+      "actual": "SEARCH session_ratings USING INDEX idx_session_ratings_tutor_id (tutor_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-29",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on doubts(booked_tutor_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_doubts_booked_tutor_id",
+      "actual": "SEARCH doubts USING INDEX idx_doubts_booked_tutor_id (booked_tutor_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-30",
+      "category": "Category A: FK Indexes",
+      "name": "Index Scan Verification on resource_votes(voter_id)",
+      "status": "PASS",
+      "expected": "EXPLAIN query plan utilizes index idx_resource_votes_voter_id",
+      "actual": "SEARCH resource_votes USING INDEX idx_resource_votes_voter_id (voter_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-31",
+      "category": "Category A: FK Indexes",
+      "name": "Cascade Delete: tasks -> task_subtasks",
+      "status": "PASS",
+      "expected": "0 orphan subtasks after parent task deletion",
+      "actual": "0 orphans",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-32",
+      "category": "Category A: FK Indexes",
+      "name": "Cascade Delete: doubts -> sessions",
+      "status": "PASS",
+      "expected": "0 linked sessions remain after doubt deletion",
+      "actual": "0 orphans",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-33",
+      "category": "Category A: FK Indexes",
+      "name": "Cascade Delete: shared_resource_buckets -> shared_resources",
+      "status": "PASS",
+      "expected": "0 child shared resources remain",
+      "actual": "0 orphans",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-34",
+      "category": "Category A: FK Indexes",
+      "name": "Cascade Delete: suggestion_requests -> suggestion_responses",
+      "status": "PASS",
+      "expected": "0 responses remain after request deletion",
+      "actual": "0 orphans",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-35",
+      "category": "Category A: FK Indexes",
+      "name": "Cascade Delete: resource_buckets -> resources",
+      "status": "PASS",
+      "expected": "0 private resources remain after bucket deletion",
+      "actual": "0 orphans",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-36",
+      "category": "Category A: FK Indexes",
+      "name": "Cascade Delete: resource_proposals -> resource_votes",
+      "status": "PASS",
+      "expected": "0 votes remain after proposal deletion",
+      "actual": "0 orphans",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-37",
+      "category": "Category A: FK Indexes",
+      "name": "Orphan Prevention: shared_resources with invalid bucket_id",
+      "status": "PASS",
+      "expected": "Foreign key constraint rejects invalid bucket_id",
+      "actual": "Rejected: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-38",
+      "category": "Category A: FK Indexes",
+      "name": "Orphan Prevention: session_messages with invalid sender_id/session_id",
+      "status": "PASS",
+      "expected": "Foreign key constraint rejects invalid sender_id/session_id",
+      "actual": "Rejected: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-39",
+      "category": "Category A: FK Indexes",
+      "name": "Concurrent Read Performance on Indexed FK Column",
+      "status": "PASS",
+      "expected": "50 sequential/concurrent queries execute under 200ms",
+      "actual": "0.04ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-40",
+      "category": "Category A: FK Indexes",
+      "name": "Concurrent Inserts across Indexed FK Column",
+      "status": "PASS",
+      "expected": "20 inserts across indexed FK column execute under 200ms",
+      "actual": "0.09ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-41",
+      "category": "Category A: FK Indexes",
+      "name": "Parent Row Update Lock Contention Elimination",
+      "status": "PASS",
+      "expected": "Parent row update completes without table locks under 50ms",
+      "actual": "0.01ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-42",
+      "category": "Category A: FK Indexes",
+      "name": "Concurrent Independent Updates on Indexed FK Column",
+      "status": "PASS",
+      "expected": "Independent updates execute cleanly without deadlocks",
+      "actual": "[('st-bob',), ('st-charlie',)]",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-43",
+      "category": "Category A: FK Indexes",
+      "name": "High-Concurrency Chat Messages Insertion Latency",
+      "status": "PASS",
+      "expected": "100 indexed message inserts execute under 200ms",
+      "actual": "0.67ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-44",
+      "category": "Category A: FK Indexes",
+      "name": "Multi-statement Transaction Commit Isolation",
+      "status": "PASS",
+      "expected": "Transactional child row committed and indexed correctly",
+      "actual": "Committed rows: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-45",
+      "category": "Category A: FK Indexes",
+      "name": "Batch Insert Overhead Across 22 FK Indexes",
+      "status": "PASS",
+      "expected": "200 indexed records across multiple FK relationships commit < 250ms",
+      "actual": "0.72ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-46",
+      "category": "Category A: FK Indexes",
+      "name": "Single-Row Insert Latency Benchmarking",
+      "status": "PASS",
+      "expected": "Average single-row commit latency < 10ms",
+      "actual": "0.005ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-47",
+      "category": "Category A: FK Indexes",
+      "name": "Non-Indexed Column Update Overhead",
+      "status": "PASS",
+      "expected": "Non-indexed column update completes in < 15ms",
+      "actual": "0.007ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-48",
+      "category": "Category A: FK Indexes",
+      "name": "Indexed FK Column Targeted Re-Index Update",
+      "status": "PASS",
+      "expected": "Indexed FK update completes cleanly in < 15ms",
+      "actual": "0.009ms",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-49",
+      "category": "Category A: FK Indexes",
+      "name": "Rollback Script Completeness (All 22 Indexes Dropped)",
+      "status": "PASS",
+      "expected": "All 22 DROP INDEX IF EXISTS public.<idx> statements present in rollback script",
+      "actual": "All Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-50",
+      "category": "Category A: FK Indexes",
+      "name": "Rollback Script Idempotency (IF EXISTS on all drops)",
+      "status": "PASS",
+      "expected": "At least 22 'DROP INDEX IF EXISTS' statements found (Count=22)",
+      "actual": "Count: 22",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-51",
+      "category": "Category A: FK Indexes",
+      "name": "Rollback Script Transactional Wrapper (BEGIN...COMMIT)",
+      "status": "PASS",
+      "expected": "Rollback script is wrapped in BEGIN; ... COMMIT;",
+      "actual": "Wrapped: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-A-52",
+      "category": "Category A: FK Indexes",
+      "name": "Full DDL Reversibility Cycle (Drop & Recreate)",
+      "status": "PASS",
+      "expected": "All 22 indexes cleanly dropped and successfully recreated",
+      "actual": "Dropped=True, Restored=True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-01",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_students_auth on students(auth_user_id)",
+      "status": "PASS",
+      "expected": "Index idx_students_auth present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 57 / 63)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-02",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_students_email on students(institute_email)",
+      "status": "PASS",
+      "expected": "Index idx_students_email present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 65)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-03",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_students_roll on students(roll_number)",
+      "status": "PASS",
+      "expected": "Index idx_students_roll present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 69)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-04",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_academic_roll on academic_records(roll_number)",
+      "status": "PASS",
+      "expected": "Index idx_academic_roll present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 59)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-05",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_tutor_pro_skills_skill on tutor_pro_skills(skill_id)",
+      "status": "PASS",
+      "expected": "Index idx_tutor_pro_skills_skill present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 60)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-06",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_doubt_tags_skill on doubt_tags(skill_id)",
+      "status": "PASS",
+      "expected": "Index idx_doubt_tags_skill present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 58)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-07",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_doubts_student_status on doubts(student_id, status)",
+      "status": "PASS",
+      "expected": "Index idx_doubts_student_status present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 66)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-08",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_doubts_status_expires on doubts(status, expires_at)",
+      "status": "PASS",
+      "expected": "Index idx_doubts_status_expires present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 68)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-09",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_sessions_student on sessions(student_id)",
+      "status": "PASS",
+      "expected": "Index idx_sessions_student present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 57)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-10",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_sessions_tutor on sessions(tutor_id)",
+      "status": "PASS",
+      "expected": "Index idx_sessions_tutor present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 64)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-11",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_session_messages_session on session_messages(session_id)",
+      "status": "PASS",
+      "expected": "Index idx_session_messages_session present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 62)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-12",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_tasks_student_due on tasks(student_id, due_date)",
+      "status": "PASS",
+      "expected": "Index idx_tasks_student_due present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 61)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-13",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Preserved Index Definition: idx_notifications_user_read on notifications(user_id, is_read)",
+      "status": "PASS",
+      "expected": "Index idx_notifications_user_read present in init-peerlearn-schema.sql",
+      "actual": "Present: True (Issue 67)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-14",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: students.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-15",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: students.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-16",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: doubts.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-17",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: sessions.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-18",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: tasks.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-19",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: resources.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-20",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: resource_proposals.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-21",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: academic_records.roll_number integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-22",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: pending_registrations.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-23",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Primary Key Constraint: notifications.id integrity",
+      "status": "PASS",
+      "expected": "Primary key prevents duplicate / NULL insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-24",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: students.institute_email UNIQUE",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-25",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: students.roll_number UNIQUE",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-26",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: students.auth_user_id UNIQUE",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-27",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: resource_votes UNIQUE(proposal_id, voter_id)",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-28",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: student_skills UNIQUE(student_id, skill_id)",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-29",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: tutor_pro_skills UNIQUE(tutor_id, skill_id)",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-30",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: doubt_tags UNIQUE(doubt_id, skill_id)",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-31",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: session_ratings UNIQUE(session_id)",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-32",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: skills.name UNIQUE",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-33",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Unique Constraint: pending_registrations.roll_number UNIQUE",
+      "status": "PASS",
+      "expected": "Unique constraint aborts duplicate insertion",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-34",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: doubts.status CHECK constraint",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-35",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: sessions.status CHECK constraint",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-36",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: session_ratings.rating CHECK (1-5)",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-37",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: session_ratings.rating CHECK (>0)",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-38",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: resource_proposals.status CHECK",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-39",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: resource_votes.vote CHECK ('APPROVE','REJECT')",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-40",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: tasks.status CHECK ('PENDING','IN_PROGRESS','COMPLETED')",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-41",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: tasks.priority CHECK ('LOW','MEDIUM','HIGH')",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects out-of-domain value",
+      "actual": "Enforced: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-42",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: students.year_of_study range validation",
+      "status": "PASS",
+      "expected": "Range / logical order constraint satisfied",
+      "actual": "Result: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-43",
+      "category": "Category B: Constraints & Indexes",
+      "name": "CHECK Constraint: sessions.scheduled_end after scheduled_start",
+      "status": "PASS",
+      "expected": "Range / logical order constraint satisfied",
+      "actual": "Result: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-44",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Small Dataset Planner Query Analysis",
+      "status": "PASS",
+      "expected": "Query plan generated for student email lookup",
+      "actual": "SEARCH students USING INDEX sqlite_autoindex_students_3 (institute_email=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-45",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Scaled Query Plan on idx_students_auth",
+      "status": "PASS",
+      "expected": "Query utilizes idx_students_auth for O(1) auth token resolution",
+      "actual": "SEARCH students USING INDEX sqlite_autoindex_students_4 (auth_user_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-46",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Scaled Query Plan on idx_students_email",
+      "status": "PASS",
+      "expected": "Query utilizes idx_students_email for student login",
+      "actual": "SEARCH students USING INDEX sqlite_autoindex_students_3 (institute_email=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-47",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Compound Query Plan on idx_doubts_student_status",
+      "status": "PASS",
+      "expected": "Query utilizes idx_doubts_student_status for dashboard queries",
+      "actual": "SEARCH doubts USING INDEX idx_doubts_student_status (student_id=? AND status=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-48",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Ordered Query Plan on idx_tasks_student_due",
+      "status": "PASS",
+      "expected": "Query utilizes idx_tasks_student_due avoiding temporary sorting B-tree",
+      "actual": "SEARCH tasks USING INDEX idx_tasks_student_due (student_id=?)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-49",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Timeline Query Plan on idx_session_messages_session",
+      "status": "PASS",
+      "expected": "Chat timeline query utilizes idx_session_messages_session",
+      "actual": "SEARCH session_messages USING INDEX idx_session_messages_session (session_id=?) USE TEMP B-TREE FOR ORDER BY",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-50",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Advisor Suppression Directives Documentation",
+      "status": "PASS",
+      "expected": "Advisor remediation documentation records 13 suppression commands (Found=13)",
+      "actual": "Found: 13",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-51",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Advisor False Positive Justification Architecture Audit",
+      "status": "PASS",
+      "expected": "Advisor guide formally documents why cold staging stats cause false positives",
+      "actual": "Documented: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-B-52",
+      "category": "Category B: Constraints & Indexes",
+      "name": "Zero Accidental Index Drops Across All Migrations",
+      "status": "PASS",
+      "expected": "No migration drops any of the 13 intentional production indexes",
+      "actual": "Accidental drops: []",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-01",
+      "category": "Category C: Auth Security",
+      "name": "Revoke confirm_auth_user from PUBLIC",
+      "status": "PASS",
+      "expected": "REVOKE ALL FROM PUBLIC present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-02",
+      "category": "Category C: Auth Security",
+      "name": "Revoke confirm_auth_user from anon",
+      "status": "PASS",
+      "expected": "REVOKE ALL FROM anon present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-03",
+      "category": "Category C: Auth Security",
+      "name": "Revoke confirm_auth_user from authenticated",
+      "status": "PASS",
+      "expected": "REVOKE ALL FROM authenticated present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-04",
+      "category": "Category C: Auth Security",
+      "name": "Pin search_path on confirm_auth_user",
+      "status": "PASS",
+      "expected": "search_path pinned to public, pg_temp",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-05",
+      "category": "Category C: Auth Security",
+      "name": "Drop Legacy confirm_auth_user(text) Overload",
+      "status": "PASS",
+      "expected": "DROP FUNCTION IF EXISTS confirm_auth_user(text)",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-06",
+      "category": "Category C: Auth Security",
+      "name": "Email Validation in confirm_auth_user",
+      "status": "PASS",
+      "expected": "Checks clean_email is non-empty and has @",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-07",
+      "category": "Category C: Auth Security",
+      "name": "Password Minimum Length Guard in confirm_auth_user",
+      "status": "PASS",
+      "expected": "Checks length(new_password) >= 6",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-08",
+      "category": "Category C: Auth Security",
+      "name": "Grant confirm_auth_user to service_role Only",
+      "status": "PASS",
+      "expected": "GRANT EXECUTE TO service_role",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-09",
+      "category": "Category C: Auth Security",
+      "name": "Bcrypt Salt Generation in confirm_auth_user",
+      "status": "PASS",
+      "expected": "Uses crypt(..., gen_salt('bf', 10))",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-10",
+      "category": "Category C: Auth Security",
+      "name": "Phase 1 Rollback Script Existence",
+      "status": "PASS",
+      "expected": "Rollback script exists on disk",
+      "actual": "Exists: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-11",
+      "category": "Category C: Auth Security",
+      "name": "Cryptographic Random OTP Generation",
+      "status": "PASS",
+      "expected": "Uses secure randomInt for 6-digit OTP",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-12",
+      "category": "Category C: Auth Security",
+      "name": "Strict 6-Digit OTP Length",
+      "status": "PASS",
+      "expected": "Generated OTP is exactly 6 numeric digits",
+      "actual": "Generated: 291832",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-13",
+      "category": "Category C: Auth Security",
+      "name": "Cryptographic Salt Entropy (>=16 bytes)",
+      "status": "PASS",
+      "expected": "Salt has at least 128 bits of entropy",
+      "actual": "Salt len: 32",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-14",
+      "category": "Category C: Auth Security",
+      "name": "SHA-256 Salted OTP Hash Computation",
+      "status": "PASS",
+      "expected": "SHA-256 output is 64 hex characters",
+      "actual": "Hash len: 64",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-15",
+      "category": "Category C: Auth Security",
+      "name": "Schema Enhancement: otp_hash & otp_salt Columns",
+      "status": "PASS",
+      "expected": "pending_registrations contains otp_hash and otp_salt",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-16",
+      "category": "Category C: Auth Security",
+      "name": "Timing-Safe OTP Hash Verification",
+      "status": "PASS",
+      "expected": "verify_otp_hash validates matching OTP",
+      "actual": "Valid: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-17",
+      "category": "Category C: Auth Security",
+      "name": "Salt Mismatch Detection & Denial",
+      "status": "PASS",
+      "expected": "Verification fails on mismatched salt",
+      "actual": "Verified: False",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-18",
+      "category": "Category C: Auth Security",
+      "name": "Single-Digit Tampering Detection",
+      "status": "PASS",
+      "expected": "Verification fails on altered digit",
+      "actual": "Verified: False",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-19",
+      "category": "Category C: Auth Security",
+      "name": "OTP Replay Prevention via Record Deletion",
+      "status": "PASS",
+      "expected": "Pending registration deleted upon consumption",
+      "actual": "Remaining: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-20",
+      "category": "Category C: Auth Security",
+      "name": "Empty OTP Rejection Guard",
+      "status": "PASS",
+      "expected": "Empty string OTP is rejected",
+      "actual": "Verified: False",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-21",
+      "category": "Category C: Auth Security",
+      "name": "Resend Cooldown Architecture Check (60s)",
+      "status": "PASS",
+      "expected": "route.ts enforces resend cooldown",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-22",
+      "category": "Category C: Auth Security",
+      "name": "Pending Registration Timestamp Tracking",
+      "status": "PASS",
+      "expected": "last_sent_at is tracked and updated",
+      "actual": "TS: 2026-11-15T13:29:59",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-23",
+      "category": "Category C: Auth Security",
+      "name": "First Failed Attempt Counter Increment",
+      "status": "PASS",
+      "expected": "attempts incremented to 1",
+      "actual": "Attempts: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-24",
+      "category": "Category C: Auth Security",
+      "name": "Consecutive Failed Attempt Tracking",
+      "status": "PASS",
+      "expected": "attempts incremented to 4",
+      "actual": "Attempts: 4",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-25",
+      "category": "Category C: Auth Security",
+      "name": "Max Attempts Threshold Reached (5/5)",
+      "status": "PASS",
+      "expected": "attempts equals or exceeds max_attempts",
+      "actual": "State: 5/5",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-26",
+      "category": "Category C: Auth Security",
+      "name": "Locked Registration Revocation Cleanup",
+      "status": "PASS",
+      "expected": "Registration revoked and deleted after lockout",
+      "actual": "Count: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-27",
+      "category": "Category C: Auth Security",
+      "name": "HTTP 429 Status on Rate Limit / Lockout",
+      "status": "PASS",
+      "expected": "Returns HTTP 429 status when limit exceeded",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-28",
+      "category": "Category C: Auth Security",
+      "name": "Safe Remaining Attempts User Guidance",
+      "status": "PASS",
+      "expected": "Displays remaining attempts without leaking OTP",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-29",
+      "category": "Category C: Auth Security",
+      "name": "15-Minute Registration Expiration Window",
+      "status": "PASS",
+      "expected": "Sets expires_at timestamp to 15 minutes",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-30",
+      "category": "Category C: Auth Security",
+      "name": "Active Unexpired Registration Acceptance",
+      "status": "PASS",
+      "expected": "Unexpired registration is valid for query",
+      "actual": "Found: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-31",
+      "category": "Category C: Auth Security",
+      "name": "Expired Registration Query Rejection",
+      "status": "PASS",
+      "expected": "Expired registration yields 0 active rows",
+      "actual": "Found: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-32",
+      "category": "Category C: Auth Security",
+      "name": "Route Layer Expiration Timestamp Validation",
+      "status": "PASS",
+      "expected": "route.ts validates expires_at against current time",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-33",
+      "category": "Category C: Auth Security",
+      "name": "Expired Records Purge Cleanup Execution",
+      "status": "PASS",
+      "expected": "Stale expired registration purged from table",
+      "actual": "Count: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-34",
+      "category": "Category C: Auth Security",
+      "name": "Password Reset Expiry Guard in Route",
+      "status": "PASS",
+      "expected": "Password reset requests validate token expiration",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-35",
+      "category": "Category C: Auth Security",
+      "name": "Expired Reset Token Denial Message",
+      "status": "PASS",
+      "expected": "Returns clear expired notice on stale reset tokens",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-36",
+      "category": "Category C: Auth Security",
+      "name": "Reset Token Invalidation Upon Use",
+      "status": "PASS",
+      "expected": "Deletes pending record upon password update",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-37",
+      "category": "Category C: Auth Security",
+      "name": "Authoritative Academic Record Verification",
+      "status": "PASS",
+      "expected": "Verifies roll against academic_records master table",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-38",
+      "category": "Category C: Auth Security",
+      "name": "Unrecognized Roll Number Denial",
+      "status": "PASS",
+      "expected": "Rejects rolls not in master academic records",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-39",
+      "category": "Category C: Auth Security",
+      "name": "Duplicate Account Registration Prevention",
+      "status": "PASS",
+      "expected": "Prevents re-registering existing active student",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-40",
+      "category": "Category C: Auth Security",
+      "name": "Academic Attributes Extraction (Dept, Batch, Year)",
+      "status": "PASS",
+      "expected": "Extracts official academic attributes from record",
+      "actual": "Extracted: ('CSE', '2025', 2)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-41",
+      "category": "Category C: Auth Security",
+      "name": "Official Institute Email Domain Enforcement",
+      "status": "PASS",
+      "expected": "Strictly requires @iiitdmj.ac.in domain",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-42",
+      "category": "Category C: Auth Security",
+      "name": "Anti-Enumeration in Password Reset",
+      "status": "PASS",
+      "expected": "Generic response avoids leaking user existence",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-43",
+      "category": "Category C: Auth Security",
+      "name": "Sanitized Error Responses in Route",
+      "status": "PASS",
+      "expected": "Uses structured errorResponse helper",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-44",
+      "category": "Category C: Auth Security",
+      "name": "Email Normalization (Trim & Lowercase)",
+      "status": "PASS",
+      "expected": "Normalizes casing to prevent duplicate bypasses",
+      "actual": "Normalized: 25bcs001@iiitdmj.ac.in",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-45",
+      "category": "Category C: Auth Security",
+      "name": "Enable RLS on academic_records",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-46",
+      "category": "Category C: Auth Security",
+      "name": "Force RLS on academic_records",
+      "status": "PASS",
+      "expected": "FORCE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-47",
+      "category": "Category C: Auth Security",
+      "name": "Own-Roll Read Policy on academic_records",
+      "status": "PASS",
+      "expected": "Students only read their own academic record",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-48",
+      "category": "Category C: Auth Security",
+      "name": "Revoke Write Grants on academic_records",
+      "status": "PASS",
+      "expected": "REVOKE ALL FROM PUBLIC, anon, authenticated",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-49",
+      "category": "Category C: Auth Security",
+      "name": "Enable and Force RLS on pending_registrations",
+      "status": "PASS",
+      "expected": "ENABLE and FORCE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-50",
+      "category": "Category C: Auth Security",
+      "name": "Service-Role Isolation on pending_registrations",
+      "status": "PASS",
+      "expected": "Strictly grants to service_role, revokes from all others",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-51",
+      "category": "Category C: Auth Security",
+      "name": "Enable and Force RLS on academic_imports",
+      "status": "PASS",
+      "expected": "ENABLE and FORCE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-C-52",
+      "category": "Category C: Auth Security",
+      "name": "Service-Role Isolation on academic_imports Audit Logs",
+      "status": "PASS",
+      "expected": "Audit trail locked down to service_role",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-01",
+      "category": "Category D: Profiles & Matching",
+      "name": "Immutable Field Guard: roll_number Mutation Blocked",
+      "status": "PASS",
+      "expected": "Trigger aborts roll_number alteration",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-02",
+      "category": "Category D: Profiles & Matching",
+      "name": "Immutable Field Guard: department Mutation Blocked",
+      "status": "PASS",
+      "expected": "Trigger aborts department alteration",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-03",
+      "category": "Category D: Profiles & Matching",
+      "name": "Immutable Field Guard: year_of_study Mutation Blocked",
+      "status": "PASS",
+      "expected": "Trigger aborts year_of_study alteration",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-04",
+      "category": "Category D: Profiles & Matching",
+      "name": "Immutable Field Guard: auth_user_id Mutation Blocked",
+      "status": "PASS",
+      "expected": "Trigger aborts auth_user_id alteration",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-05",
+      "category": "Category D: Profiles & Matching",
+      "name": "Initial Binding of auth_user_id Allowed",
+      "status": "PASS",
+      "expected": "Allows setting auth_user_id once when previously NULL",
+      "actual": "Bound: auth-fresh-1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-06",
+      "category": "Category D: Profiles & Matching",
+      "name": "Mutable Field Update: full_name Permitted",
+      "status": "PASS",
+      "expected": "full_name successfully updated",
+      "actual": "Name: Alice CSE (Updated)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-07",
+      "category": "Category D: Profiles & Matching",
+      "name": "Mutable Field Update: bio Permitted",
+      "status": "PASS",
+      "expected": "bio successfully updated",
+      "actual": "Bio: Peer tutor enthusiast",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-08",
+      "category": "Category D: Profiles & Matching",
+      "name": "Mutable Field Update: photo_url Permitted",
+      "status": "PASS",
+      "expected": "photo_url successfully updated",
+      "actual": "Photo: https://avatars.peerlearn.internal/alice.png",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-09",
+      "category": "Category D: Profiles & Matching",
+      "name": "Mutable Field Update: target_cgpa Permitted",
+      "status": "PASS",
+      "expected": "target_cgpa successfully updated",
+      "actual": "CGPA: 9.2",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-10",
+      "category": "Category D: Profiles & Matching",
+      "name": "Service-Role Admin Bypass in Immutability Trigger",
+      "status": "PASS",
+      "expected": "Allows service_role lifecycle account updates",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-11",
+      "category": "Category D: Profiles & Matching",
+      "name": "Public Student Discovery View Creation",
+      "status": "PASS",
+      "expected": "student_public_profiles view defined in migration",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-12",
+      "category": "Category D: Profiles & Matching",
+      "name": "View Security: personal_email Excluded",
+      "status": "PASS",
+      "expected": "personal_email omitted from public discovery view",
+      "actual": "Excluded: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-13",
+      "category": "Category D: Profiles & Matching",
+      "name": "View Security: phone Excluded",
+      "status": "PASS",
+      "expected": "phone omitted from public discovery view",
+      "actual": "Excluded: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-14",
+      "category": "Category D: Profiles & Matching",
+      "name": "View Security: auth_user_id Excluded",
+      "status": "PASS",
+      "expected": "auth_user_id omitted preventing credential mapping",
+      "actual": "Excluded: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-15",
+      "category": "Category D: Profiles & Matching",
+      "name": "View Security: target_cgpa Excluded",
+      "status": "PASS",
+      "expected": "target_cgpa omitted preventing student ranking leakage",
+      "actual": "Excluded: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-16",
+      "category": "Category D: Profiles & Matching",
+      "name": "View Grant: authenticated Access Only",
+      "status": "PASS",
+      "expected": "GRANT SELECT TO authenticated present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-17",
+      "category": "Category D: Profiles & Matching",
+      "name": "View Real-Time Reflection of Student Profile",
+      "status": "PASS",
+      "expected": "View accurately projects latest table state",
+      "actual": "Name: Alice CSE (Updated)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-18",
+      "category": "Category D: Profiles & Matching",
+      "name": "Direct Anonymous Access Revoked on students",
+      "status": "PASS",
+      "expected": "Anonymous PostgREST table access locked down",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-19",
+      "category": "Category D: Profiles & Matching",
+      "name": "Doubt Ownership Immutability Guard",
+      "status": "PASS",
+      "expected": "Trigger aborts altering doubt student_id",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-20",
+      "category": "Category D: Profiles & Matching",
+      "name": "Valid Doubt Transition: OPEN -> BOOKED",
+      "status": "PASS",
+      "expected": "Status updated to BOOKED",
+      "actual": "Status: BOOKED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-21",
+      "category": "Category D: Profiles & Matching",
+      "name": "Valid Doubt Transition: BOOKED -> SESSION_COMPLETED",
+      "status": "PASS",
+      "expected": "Status updated to SESSION_COMPLETED",
+      "actual": "Status: SESSION_COMPLETED_PENDING_CONFIRMATION",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-22",
+      "category": "Category D: Profiles & Matching",
+      "name": "Valid Doubt Transition: SESSION_COMPLETED -> SOLVED",
+      "status": "PASS",
+      "expected": "Status updated to SOLVED",
+      "actual": "Status: SOLVED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-23",
+      "category": "Category D: Profiles & Matching",
+      "name": "Terminal State Guard: SOLVED Doubts Locked",
+      "status": "PASS",
+      "expected": "Trigger blocks mutating SOLVED doubt",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-24",
+      "category": "Category D: Profiles & Matching",
+      "name": "Valid Doubt Transition: OPEN -> WITHDRAWN",
+      "status": "PASS",
+      "expected": "Status updated to WITHDRAWN",
+      "actual": "Status: WITHDRAWN",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-25",
+      "category": "Category D: Profiles & Matching",
+      "name": "Terminal State Guard: WITHDRAWN Doubts Locked",
+      "status": "PASS",
+      "expected": "Trigger blocks mutating WITHDRAWN doubt",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-26",
+      "category": "Category D: Profiles & Matching",
+      "name": "Valid Doubt Transition: OPEN -> EXPIRED",
+      "status": "PASS",
+      "expected": "Status updated to EXPIRED",
+      "actual": "Status: EXPIRED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-27",
+      "category": "Category D: Profiles & Matching",
+      "name": "Terminal State Guard: EXPIRED Doubts Locked",
+      "status": "PASS",
+      "expected": "Trigger blocks mutating EXPIRED doubt",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-28",
+      "category": "Category D: Profiles & Matching",
+      "name": "Invalid Doubt Transition Bypass Blocked",
+      "status": "PASS",
+      "expected": "Trigger blocks jumping directly from OPEN to SOLVED",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-29",
+      "category": "Category D: Profiles & Matching",
+      "name": "Revoke get_matching_doubts from anon",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM anon present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-30",
+      "category": "Category D: Profiles & Matching",
+      "name": "Revoke get_matching_doubts from authenticated",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM authenticated present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-31",
+      "category": "Category D: Profiles & Matching",
+      "name": "Revoke get_matching_doubts from PUBLIC",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM PUBLIC present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-32",
+      "category": "Category D: Profiles & Matching",
+      "name": "Pin search_path on get_matching_doubts",
+      "status": "PASS",
+      "expected": "search_path pinned to public, pg_temp",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-33",
+      "category": "Category D: Profiles & Matching",
+      "name": "Matching Query: Filter Doubts by Tutor Skills",
+      "status": "PASS",
+      "expected": "Matches doubts tagged with skills tutor possesses",
+      "actual": "Matches: [('d-match-dsa',)]",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-34",
+      "category": "Category D: Profiles & Matching",
+      "name": "Matching Query: Tutor Own Doubts Excluded",
+      "status": "PASS",
+      "expected": "Query logic cleanly isolates self-created doubts",
+      "actual": "Self doubts: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-35",
+      "category": "Category D: Profiles & Matching",
+      "name": "Matching Query: Exclude Inactive / Expired Doubts",
+      "status": "PASS",
+      "expected": "Non-OPEN doubts omitted from matching pool",
+      "actual": "Matches: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-36",
+      "category": "Category D: Profiles & Matching",
+      "name": "Tutor Availability & Rating Eligibility",
+      "status": "PASS",
+      "expected": "Tutors with is_tutor=1 eligible for matching",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-37",
+      "category": "Category D: Profiles & Matching",
+      "name": "Revoke close_expired_doubts from anon",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM anon present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-38",
+      "category": "Category D: Profiles & Matching",
+      "name": "Revoke close_expired_doubts from authenticated",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM authenticated present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-39",
+      "category": "Category D: Profiles & Matching",
+      "name": "Revoke close_expired_doubts from PUBLIC",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM PUBLIC present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-40",
+      "category": "Category D: Profiles & Matching",
+      "name": "Pin search_path on close_expired_doubts",
+      "status": "PASS",
+      "expected": "search_path pinned to public, pg_temp",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-41",
+      "category": "Category D: Profiles & Matching",
+      "name": "Batch Detection of Expired Doubts",
+      "status": "PASS",
+      "expected": "Correctly targets past due OPEN doubts",
+      "actual": "Due: [('d-batch-exp-1',)]",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-42",
+      "category": "Category D: Profiles & Matching",
+      "name": "Batch Status Transition to EXPIRED",
+      "status": "PASS",
+      "expected": "Status atomically set to EXPIRED",
+      "actual": "Status: EXPIRED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-43",
+      "category": "Category D: Profiles & Matching",
+      "name": "Enable RLS on tutor_score_snapshots",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-44",
+      "category": "Category D: Profiles & Matching",
+      "name": "RLS Policy on tutor_score_snapshots",
+      "status": "PASS",
+      "expected": "Policy defined on tutor_score_snapshots",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-45",
+      "category": "Category D: Profiles & Matching",
+      "name": "Tutor Score Audit Snapshot Insertion",
+      "status": "PASS",
+      "expected": "Snapshot record inserted with computed score",
+      "actual": "Score: 4.85",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-46",
+      "category": "Category D: Profiles & Matching",
+      "name": "Enable RLS on student_skills",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-47",
+      "category": "Category D: Profiles & Matching",
+      "name": "Student Own Skill Association",
+      "status": "PASS",
+      "expected": "Student links skill to their own profile",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-48",
+      "category": "Category D: Profiles & Matching",
+      "name": "Student Skill Duplication Prevention",
+      "status": "PASS",
+      "expected": "Unique constraint blocks duplicate skill mapping",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-49",
+      "category": "Category D: Profiles & Matching",
+      "name": "Student Skill Deletion",
+      "status": "PASS",
+      "expected": "Student successfully unlinks skill from profile",
+      "actual": "Count: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-50",
+      "category": "Category D: Profiles & Matching",
+      "name": "Enable RLS on tutor_pro_skills",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-51",
+      "category": "Category D: Profiles & Matching",
+      "name": "Enable RLS on skills Master Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-D-52",
+      "category": "Category D: Profiles & Matching",
+      "name": "Enable RLS on doubt_tags Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-01",
+      "category": "Category E: Sessions & Chat",
+      "name": "Revoke book_doubt_atomic from anon",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM anon present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-02",
+      "category": "Category E: Sessions & Chat",
+      "name": "Revoke book_doubt_atomic from authenticated",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM authenticated present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-03",
+      "category": "Category E: Sessions & Chat",
+      "name": "Revoke book_doubt_atomic from PUBLIC",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM PUBLIC present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-04",
+      "category": "Category E: Sessions & Chat",
+      "name": "Pin search_path on book_doubt_atomic",
+      "status": "PASS",
+      "expected": "search_path pinned to public, pg_temp",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-05",
+      "category": "Category E: Sessions & Chat",
+      "name": "Atomic Doubt Booking Execution",
+      "status": "PASS",
+      "expected": "Creates session and links to BOOKED doubt",
+      "actual": "Sess: sess-5ebdc538, Status: BOOKED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-06",
+      "category": "Category E: Sessions & Chat",
+      "name": "Double-Booking Prevention on Active Doubt",
+      "status": "PASS",
+      "expected": "RPC rejects second booking on already BOOKED doubt",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-07",
+      "category": "Category E: Sessions & Chat",
+      "name": "Tutor Schedule Conflict Prevention",
+      "status": "PASS",
+      "expected": "RPC rejects booking tutor during overlapping session",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-08",
+      "category": "Category E: Sessions & Chat",
+      "name": "Self-Booking Blocked (Student != Tutor)",
+      "status": "PASS",
+      "expected": "RPC rejects student booking their own doubt",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-09",
+      "category": "Category E: Sessions & Chat",
+      "name": "Created Session Status is SCHEDULED",
+      "status": "PASS",
+      "expected": "Session created in SCHEDULED state",
+      "actual": "Status: SCHEDULED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-10",
+      "category": "Category E: Sessions & Chat",
+      "name": "Doubt Booked Tutor Binding Verification",
+      "status": "PASS",
+      "expected": "Doubt records assigned booked_tutor_id",
+      "actual": "Tutor: st-bob",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-11",
+      "category": "Category E: Sessions & Chat",
+      "name": "Doubt Selected Session Pointer Binding",
+      "status": "PASS",
+      "expected": "selected_session_id matches created session",
+      "actual": "Session: sess-5ebdc538",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-12",
+      "category": "Category E: Sessions & Chat",
+      "name": "Atomic Rollback on Booking Failure",
+      "status": "PASS",
+      "expected": "Doubt status remains OPEN when booking aborts",
+      "actual": "Status: OPEN",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-13",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on sessions Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-14",
+      "category": "Category E: Sessions & Chat",
+      "name": "Participant Read Policy on sessions",
+      "status": "PASS",
+      "expected": "sessions_participant_read policy present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-15",
+      "category": "Category E: Sessions & Chat",
+      "name": "Participant Isolation Enforcement in Policy",
+      "status": "PASS",
+      "expected": "Restricts read to student_id or tutor_id",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-16",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on session_ratings Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-17",
+      "category": "Category E: Sessions & Chat",
+      "name": "Rating Permitted for COMPLETED Session",
+      "status": "PASS",
+      "expected": "Session with status=COMPLETED qualifies for rating",
+      "actual": "Qualifies: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-18",
+      "category": "Category E: Sessions & Chat",
+      "name": "Rating Blocked for Incomplete Session",
+      "status": "PASS",
+      "expected": "Session with status=SCHEDULED disallowed from rating",
+      "actual": "Qualifies: False",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-19",
+      "category": "Category E: Sessions & Chat",
+      "name": "Rating Value Domain Enforcement (1-5)",
+      "status": "PASS",
+      "expected": "Rating value 5 accepted and stored",
+      "actual": "Rating: 5",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-20",
+      "category": "Category E: Sessions & Chat",
+      "name": "Double-Rating Prevention on Single Session",
+      "status": "PASS",
+      "expected": "Unique constraint on session_id prevents multiple ratings",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-21",
+      "category": "Category E: Sessions & Chat",
+      "name": "Tutor Self-Rating Prevention Logic",
+      "status": "PASS",
+      "expected": "Only student_id != tutor_id permitted to rate",
+      "actual": "Valid: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-22",
+      "category": "Category E: Sessions & Chat",
+      "name": "Tutor Aggregate Score Recomputation Trigger",
+      "status": "PASS",
+      "expected": "Snapshot table records updated score",
+      "actual": "Snapshots: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-23",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on session_messages Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-24",
+      "category": "Category E: Sessions & Chat",
+      "name": "Participant Student Message Read Access",
+      "status": "PASS",
+      "expected": "Participant student reads session message",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-25",
+      "category": "Category E: Sessions & Chat",
+      "name": "Participant Tutor Message Read Access",
+      "status": "PASS",
+      "expected": "Participant tutor reads session message",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-26",
+      "category": "Category E: Sessions & Chat",
+      "name": "Non-Participant Message Read Isolation",
+      "status": "PASS",
+      "expected": "Non-participant query returns 0 rows",
+      "actual": "Rows: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-27",
+      "category": "Category E: Sessions & Chat",
+      "name": "Participant Message Insertion with Own sender_id",
+      "status": "PASS",
+      "expected": "Message successfully inserted with matching sender",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-28",
+      "category": "Category E: Sessions & Chat",
+      "name": "Sender ID Impersonation Guard in Policy",
+      "status": "PASS",
+      "expected": "RLS policy checks sender_id = auth.uid()",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-29",
+      "category": "Category E: Sessions & Chat",
+      "name": "Non-Participant Message Insert Denial",
+      "status": "PASS",
+      "expected": "Restricts message insertion to session participants",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-30",
+      "category": "Category E: Sessions & Chat",
+      "name": "Session Messages Mutation Denial (Audit Trail)",
+      "status": "PASS",
+      "expected": "No UPDATE policy exists on session_messages",
+      "actual": "Omitted: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-31",
+      "category": "Category E: Sessions & Chat",
+      "name": "Chat Timeline Index Acceleration",
+      "status": "PASS",
+      "expected": "idx_session_messages_session present for ordered fetch",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-32",
+      "category": "Category E: Sessions & Chat",
+      "name": "NULL Message Content Rejection Guard",
+      "status": "PASS",
+      "expected": "NOT NULL constraint rejects empty/null content",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-33",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on tasks Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-34",
+      "category": "Category E: Sessions & Chat",
+      "name": "Student Own Tasks Isolation (Read)",
+      "status": "PASS",
+      "expected": "Student reads their own planner tasks",
+      "actual": "Found: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-35",
+      "category": "Category E: Sessions & Chat",
+      "name": "Cross-Student Task Read Denial",
+      "status": "PASS",
+      "expected": "Query for other student's task yields 0 rows",
+      "actual": "Found: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-36",
+      "category": "Category E: Sessions & Chat",
+      "name": "Student Own Task Insertion",
+      "status": "PASS",
+      "expected": "Task inserted successfully for own student_id",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-37",
+      "category": "Category E: Sessions & Chat",
+      "name": "Task Owner Insert Policy Check",
+      "status": "PASS",
+      "expected": "RLS restricts task creation to owning student",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-38",
+      "category": "Category E: Sessions & Chat",
+      "name": "Student Own Task Update",
+      "status": "PASS",
+      "expected": "Title updated successfully",
+      "actual": "Title: Updated Title",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-39",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on task_subtasks Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-40",
+      "category": "Category E: Sessions & Chat",
+      "name": "Subtask Parent Task Owner Isolation",
+      "status": "PASS",
+      "expected": "Subtasks accessible via parent task ownership join",
+      "actual": "Found: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-41",
+      "category": "Category E: Sessions & Chat",
+      "name": "Task Deletion Cascade on Subtasks",
+      "status": "PASS",
+      "expected": "Subtasks deleted when parent task is deleted",
+      "actual": "Count: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-42",
+      "category": "Category E: Sessions & Chat",
+      "name": "Task Due Date Sorting Index",
+      "status": "PASS",
+      "expected": "idx_tasks_student_due present in schema",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-43",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on notifications Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-44",
+      "category": "Category E: Sessions & Chat",
+      "name": "User Own Notifications Isolation (Read)",
+      "status": "PASS",
+      "expected": "User reads their own notifications",
+      "actual": "Found: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-45",
+      "category": "Category E: Sessions & Chat",
+      "name": "Notification Read Status Update",
+      "status": "PASS",
+      "expected": "Notification successfully marked as read",
+      "actual": "is_read: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-46",
+      "category": "Category E: Sessions & Chat",
+      "name": "Notification User Isolation Policy Check",
+      "status": "PASS",
+      "expected": "RLS restricts notification update to owning user",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-47",
+      "category": "Category E: Sessions & Chat",
+      "name": "Unread Notifications Index Acceleration",
+      "status": "PASS",
+      "expected": "idx_notifications_user_read present in schema",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-48",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on suggestion_requests Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-49",
+      "category": "Category E: Sessions & Chat",
+      "name": "Student Suggestion Request Creation",
+      "status": "PASS",
+      "expected": "Suggestion request created for own task",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-50",
+      "category": "Category E: Sessions & Chat",
+      "name": "Enable RLS on suggestion_responses Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-51",
+      "category": "Category E: Sessions & Chat",
+      "name": "Tutor Suggestion Response Posting",
+      "status": "PASS",
+      "expected": "Tutor responds to open suggestion request",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-E-52",
+      "category": "Category E: Sessions & Chat",
+      "name": "Suggestion Response Participant Accessibility",
+      "status": "PASS",
+      "expected": "Requester can read posted tutor suggestion response",
+      "actual": "Found: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-01",
+      "category": "Category F: Resources & Proposals",
+      "name": "Revoke promote_approved_proposal from anon",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM anon present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-02",
+      "category": "Category F: Resources & Proposals",
+      "name": "Revoke promote_approved_proposal from authenticated",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM authenticated present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-03",
+      "category": "Category F: Resources & Proposals",
+      "name": "Revoke promote_approved_proposal from PUBLIC",
+      "status": "PASS",
+      "expected": "REVOKE EXECUTE FROM PUBLIC present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-04",
+      "category": "Category F: Resources & Proposals",
+      "name": "Pin search_path on promote_approved_proposal",
+      "status": "PASS",
+      "expected": "search_path pinned to public, pg_temp",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-05",
+      "category": "Category F: Resources & Proposals",
+      "name": "Row Locking (FOR UPDATE) in Promotion RPC",
+      "status": "PASS",
+      "expected": "FOR UPDATE row lock present in promotion function",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-06",
+      "category": "Category F: Resources & Proposals",
+      "name": "Atomic Promotion on >=3 Approvals",
+      "status": "PASS",
+      "expected": "Promotes proposal with >=3 approvals",
+      "actual": "Promoted: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-07",
+      "category": "Category F: Resources & Proposals",
+      "name": "Shared Resource Insertion Upon Promotion",
+      "status": "PASS",
+      "expected": "Resource inserted into shared_resources table",
+      "actual": "Row: ('Graph Algorithms', 'srb-all')",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-08",
+      "category": "Category F: Resources & Proposals",
+      "name": "Proposal Status Updated to APPROVED",
+      "status": "PASS",
+      "expected": "Status transitioned to APPROVED",
+      "actual": "Status: APPROVED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-09",
+      "category": "Category F: Resources & Proposals",
+      "name": "Promotion Idempotency Guard",
+      "status": "PASS",
+      "expected": "Repeat call returns already_approved without duplicating",
+      "actual": "Res: {'promoted': False, 'already_approved': True}",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-10",
+      "category": "Category F: Resources & Proposals",
+      "name": "Promotion Blocked on Under-Threshold Approvals (<3)",
+      "status": "PASS",
+      "expected": "Rejects promotion when approval count < 3",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-11",
+      "category": "Category F: Resources & Proposals",
+      "name": "Self-Voting Constraint Definition in Migration",
+      "status": "PASS",
+      "expected": "Self-voting prevention constraint present in migration",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-12",
+      "category": "Category F: Resources & Proposals",
+      "name": "Self-Voting Rejection on INSERT (Proposer)",
+      "status": "PASS",
+      "expected": "Trigger aborts proposer voting on own proposal",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-13",
+      "category": "Category F: Resources & Proposals",
+      "name": "Peer Student Vote Accepted",
+      "status": "PASS",
+      "expected": "Peer student vote successfully recorded",
+      "actual": "Count: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-14",
+      "category": "Category F: Resources & Proposals",
+      "name": "Self-Voting Rejection on UPDATE",
+      "status": "PASS",
+      "expected": "Trigger aborts mutating voter to proposer",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-15",
+      "category": "Category F: Resources & Proposals",
+      "name": "Double-Voting Prevention (UNIQUE proposal_id, voter_id)",
+      "status": "PASS",
+      "expected": "Unique constraint blocks multiple votes from same student",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-16",
+      "category": "Category F: Resources & Proposals",
+      "name": "Vote proposal_id Immutability Guard",
+      "status": "PASS",
+      "expected": "Trigger aborts changing vote proposal_id",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-17",
+      "category": "Category F: Resources & Proposals",
+      "name": "Vote voter_id Immutability Guard",
+      "status": "PASS",
+      "expected": "Trigger aborts changing voter_id",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-18",
+      "category": "Category F: Resources & Proposals",
+      "name": "Proposer Downvote Rejection Guard",
+      "status": "PASS",
+      "expected": "Trigger rejects self-downvoting as well",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-19",
+      "category": "Category F: Resources & Proposals",
+      "name": "Route Layer Self-Voting Check",
+      "status": "PASS",
+      "expected": "route.ts rejects caller voting on own proposal",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-20",
+      "category": "Category F: Resources & Proposals",
+      "name": "Vote Domain Validation (APPROVE / REJECT)",
+      "status": "PASS",
+      "expected": "CHECK constraint rejects invalid vote value",
+      "actual": "Caught: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-21",
+      "category": "Category F: Resources & Proposals",
+      "name": "Unrestricted Bucket Access (CSE, 2024)",
+      "status": "PASS",
+      "expected": "Permits access to campus-wide bucket",
+      "actual": "Allowed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-22",
+      "category": "Category F: Resources & Proposals",
+      "name": "Unrestricted Bucket Access (ECE, 2025)",
+      "status": "PASS",
+      "expected": "Permits access to campus-wide bucket",
+      "actual": "Allowed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-23",
+      "category": "Category F: Resources & Proposals",
+      "name": "Exact Academic Match Access (CSE, 2024)",
+      "status": "PASS",
+      "expected": "Permits access on exact match",
+      "actual": "Allowed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-24",
+      "category": "Category F: Resources & Proposals",
+      "name": "Batch Mismatch Access Denial",
+      "status": "PASS",
+      "expected": "Denies access on batch mismatch",
+      "actual": "Denied",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-25",
+      "category": "Category F: Resources & Proposals",
+      "name": "Department Mismatch Access Denial",
+      "status": "PASS",
+      "expected": "Denies access on department mismatch",
+      "actual": "Denied",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-26",
+      "category": "Category F: Resources & Proposals",
+      "name": "Dual Mismatch Access Denial (ME, 2023)",
+      "status": "PASS",
+      "expected": "Denies access on dual mismatch",
+      "actual": "Denied",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-27",
+      "category": "Category F: Resources & Proposals",
+      "name": "Dept=ALL Restricted Batch Access (2024)",
+      "status": "PASS",
+      "expected": "Permits access across departments for batch 2024",
+      "actual": "Allowed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-28",
+      "category": "Category F: Resources & Proposals",
+      "name": "Dept=ALL Restricted Batch Denial (2025)",
+      "status": "PASS",
+      "expected": "Denies access to 2025 student",
+      "actual": "Denied",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-29",
+      "category": "Category F: Resources & Proposals",
+      "name": "Restricted Dept with Batch=ALL Access",
+      "status": "PASS",
+      "expected": "Permits access across batches for CSE department",
+      "actual": "Allowed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-30",
+      "category": "Category F: Resources & Proposals",
+      "name": "Restricted Dept with Batch=ALL Denial (ECE)",
+      "status": "PASS",
+      "expected": "Denies access to non-CSE student",
+      "actual": "Denied",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-31",
+      "category": "Category F: Resources & Proposals",
+      "name": "Fail-Safe: NULL Department Inaccessible",
+      "status": "PASS",
+      "expected": "Denies access when bucket department is NULL",
+      "actual": "Denied",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-32",
+      "category": "Category F: Resources & Proposals",
+      "name": "Fail-Safe: NULL Batch Inaccessible",
+      "status": "PASS",
+      "expected": "Denies access when bucket batch is NULL",
+      "actual": "Denied",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-33",
+      "category": "Category F: Resources & Proposals",
+      "name": "Proposal Initial Status is PENDING",
+      "status": "PASS",
+      "expected": "Created proposal initializes in PENDING status",
+      "actual": "Status: PENDING",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-34",
+      "category": "Category F: Resources & Proposals",
+      "name": "Promotion Threshold Qualification (>=3 Approvals)",
+      "status": "PASS",
+      "expected": "Proposals with >=3 approvals qualify for shared promotion",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-35",
+      "category": "Category F: Resources & Proposals",
+      "name": "Under-Threshold Proposal Retains PENDING Status",
+      "status": "PASS",
+      "expected": "Proposals with <3 approvals remain in voting state",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-36",
+      "category": "Category F: Resources & Proposals",
+      "name": "Voting Blocked on REJECTED Proposals",
+      "status": "PASS",
+      "expected": "Rejected proposals sealed from further voting",
+      "actual": "Status: REJECTED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-37",
+      "category": "Category F: Resources & Proposals",
+      "name": "Voting Blocked on EXPIRED Proposals",
+      "status": "PASS",
+      "expected": "Expired proposals sealed from further voting",
+      "actual": "Status: EXPIRED",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-38",
+      "category": "Category F: Resources & Proposals",
+      "name": "Proposer Self-Approval Bypass Blocked",
+      "status": "PASS",
+      "expected": "Prevents author unilaterally approving own proposal",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-39",
+      "category": "Category F: Resources & Proposals",
+      "name": "Proposal Target Scope Authorization Check",
+      "status": "PASS",
+      "expected": "route.ts validates student matches target bucket scope",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-40",
+      "category": "Category F: Resources & Proposals",
+      "name": "Proposal Author Binding Persistence",
+      "status": "PASS",
+      "expected": "proposer_id accurately bound to creator",
+      "actual": "Author: st-alice",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-41",
+      "category": "Category F: Resources & Proposals",
+      "name": "Proposal Target Bucket Persistence",
+      "status": "PASS",
+      "expected": "bucket_id accurately bound to target",
+      "actual": "Bucket: srb-all",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-42",
+      "category": "Category F: Resources & Proposals",
+      "name": "Voter Privacy Protection in Vote Aggregation",
+      "status": "PASS",
+      "expected": "Calculates totals without revealing individual voter IDs",
+      "actual": "Approves=1, Rejects=1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-43",
+      "category": "Category F: Resources & Proposals",
+      "name": "Enable RLS on resource_buckets Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-44",
+      "category": "Category F: Resources & Proposals",
+      "name": "Private Bucket Owner Read Access",
+      "status": "PASS",
+      "expected": "Owner reads their own private resource bucket",
+      "actual": "Found: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-45",
+      "category": "Category F: Resources & Proposals",
+      "name": "Private Bucket Non-Owner Read Denial",
+      "status": "PASS",
+      "expected": "Non-owner query yields 0 rows",
+      "actual": "Found: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-46",
+      "category": "Category F: Resources & Proposals",
+      "name": "Enable RLS on resources Table",
+      "status": "PASS",
+      "expected": "ENABLE ROW LEVEL SECURITY present",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-47",
+      "category": "Category F: Resources & Proposals",
+      "name": "Private Resource Owner Read Access",
+      "status": "PASS",
+      "expected": "Owner reads their own private resource",
+      "actual": "Found: 1",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-48",
+      "category": "Category F: Resources & Proposals",
+      "name": "Dual-Key Check: Cross-Bucket Insert Denial",
+      "status": "PASS",
+      "expected": "Dual-key ownership check blocks foreign bucket insert",
+      "actual": "Allowed: False",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-49",
+      "category": "Category F: Resources & Proposals",
+      "name": "Private Resource Owner Update",
+      "status": "PASS",
+      "expected": "Owner successfully updates own resource title",
+      "actual": "Title: Lab 1 Notes (Revised)",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-50",
+      "category": "Category F: Resources & Proposals",
+      "name": "Private Resource Owner Deletion",
+      "status": "PASS",
+      "expected": "Owner successfully deletes private resource",
+      "actual": "Count: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-51",
+      "category": "Category F: Resources & Proposals",
+      "name": "Private Bucket Cascade Deletion on Resources",
+      "status": "PASS",
+      "expected": "Resources deleted when parent bucket is deleted",
+      "actual": "Count: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-F-52",
+      "category": "Category F: Resources & Proposals",
+      "name": "Resource URL Protocol Guard (http/https)",
+      "status": "PASS",
+      "expected": "Validates external_url restricts to http/https",
+      "actual": "Valid=True, InvalidBlocked=True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-01",
+      "category": "Category G: Backend API",
+      "name": "Missing Authorization Header Returns 401",
+      "status": "PASS",
+      "expected": "route.ts returns 401 when auth header is missing",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-02",
+      "category": "Category G: Backend API",
+      "name": "Malformed Bearer Token Rejection",
+      "status": "PASS",
+      "expected": "Rejects malformed Authorization header value",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-03",
+      "category": "Category G: Backend API",
+      "name": "Invalid JWT Token Signature Rejection",
+      "status": "PASS",
+      "expected": "Tokens with invalid signatures rejected with 401",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-04",
+      "category": "Category G: Backend API",
+      "name": "Expired JWT Token Rejection",
+      "status": "PASS",
+      "expected": "Expired tokens rejected with 401 Unauthorized",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-05",
+      "category": "Category G: Backend API",
+      "name": "Authenticated Student Identity Extraction",
+      "status": "PASS",
+      "expected": "Valid token correctly maps to authenticated student ID",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-06",
+      "category": "Category G: Backend API",
+      "name": "Public Authentication Endpoints Bypass Guard",
+      "status": "PASS",
+      "expected": "Auth endpoints configured for public consumption",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-07",
+      "category": "Category G: Backend API",
+      "name": "Protected Application Routes Enforce Guard",
+      "status": "PASS",
+      "expected": "Protected routes enforce caller authentication",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-08",
+      "category": "Category G: Backend API",
+      "name": "Administrative Route Service-Role Enforcement",
+      "status": "PASS",
+      "expected": "Admin capabilities locked to INSFORGE_API_KEY",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-09",
+      "category": "Category G: Backend API",
+      "name": "Service-Role Admin API Key Validation",
+      "status": "PASS",
+      "expected": "Requires valid INSFORGE_API_KEY for admin actions",
+      "actual": "Found: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-10",
+      "category": "Category G: Backend API",
+      "name": "Admin Role Header Spoofing Resistance",
+      "status": "PASS",
+      "expected": "User JWT cannot escalate to service_role via headers",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-11",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Valid Roll Number Pattern (25BCS001)",
+      "status": "PASS",
+      "expected": "Valid roll format passes validation",
+      "actual": "Passed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-12",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Invalid Roll Number Format Rejected",
+      "status": "PASS",
+      "expected": "Malformed roll rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-13",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Empty Roll Number Rejected",
+      "status": "PASS",
+      "expected": "Empty roll rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-14",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Valid 6-Digit Numeric OTP",
+      "status": "PASS",
+      "expected": "6-digit numeric OTP passes validation",
+      "actual": "Passed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-15",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Non-Numeric OTP Rejected",
+      "status": "PASS",
+      "expected": "Non-numeric characters rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-16",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Wrong Length OTP Rejected",
+      "status": "PASS",
+      "expected": "5-digit OTP rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-17",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Valid Email Format Accepted",
+      "status": "PASS",
+      "expected": "Valid email format passes validation",
+      "actual": "Passed",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-18",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Malformed Email Rejected",
+      "status": "PASS",
+      "expected": "Malformed email rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-19",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Empty / Short Password Rejected",
+      "status": "PASS",
+      "expected": "Password < 6 chars rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-20",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Empty Task Title Rejected",
+      "status": "PASS",
+      "expected": "Empty task title rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-21",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Rating Underflow (<1) Rejected",
+      "status": "PASS",
+      "expected": "Rating 0 rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-22",
+      "category": "Category G: Backend API",
+      "name": "DTO Validation: Rating Overflow (>5) Rejected",
+      "status": "PASS",
+      "expected": "Rating 6 rejected with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-23",
+      "category": "Category G: Backend API",
+      "name": "SQL Injection: Neutralized via Parameterization (OR 1=1)",
+      "status": "PASS",
+      "expected": "Parameterized query treats payload as literal string",
+      "actual": "Rows: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-24",
+      "category": "Category G: Backend API",
+      "name": "SQL Injection: DROP TABLE Payload Neutralized",
+      "status": "PASS",
+      "expected": "Table remains intact, payload treated as literal",
+      "actual": "Rows: 4",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-25",
+      "category": "Category G: Backend API",
+      "name": "SQL Injection: UNION SELECT Payload Neutralized",
+      "status": "PASS",
+      "expected": "Query builder parameterizes wildcard search",
+      "actual": "Rows: 0",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-26",
+      "category": "Category G: Backend API",
+      "name": "SQL Injection: Email Payload Blocked by DTO Validator",
+      "status": "PASS",
+      "expected": "DTO regex validator rejects SQL injection payload",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-27",
+      "category": "Category G: Backend API",
+      "name": "SQL Injection: Safe Parameterized Insertion",
+      "status": "PASS",
+      "expected": "Payload stored harmlessly as literal text",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-28",
+      "category": "Category G: Backend API",
+      "name": "UUID Parameter Tampering Guard",
+      "status": "PASS",
+      "expected": "Rejects malformed UUID identifiers with 400",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-29",
+      "category": "Category G: Backend API",
+      "name": "JSON Prototype Pollution Sanitization",
+      "status": "PASS",
+      "expected": "Strips malicious prototype keys",
+      "actual": "Keys: ['roll']",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-30",
+      "category": "Category G: Backend API",
+      "name": "Path Traversal Payload Rejection",
+      "status": "PASS",
+      "expected": "Rejects path traversal file references",
+      "actual": "Rejected",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-31",
+      "category": "Category G: Backend API",
+      "name": "XSS Payload Sanitization as Literal Text",
+      "status": "PASS",
+      "expected": "Script tags handled as literal string without browser execution",
+      "actual": "Verified: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-32",
+      "category": "Category G: Backend API",
+      "name": "Pagination Parameter Clamping (1 to 100)",
+      "status": "PASS",
+      "expected": "Clamps excessive page limits to safe bound",
+      "actual": "Clamped: 100",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-33",
+      "category": "Category G: Backend API",
+      "name": "Failed Login Anti-Enumeration (Non-Existent Email)",
+      "status": "PASS",
+      "expected": "Returns generic invalid credentials notice",
+      "actual": "Msg: Invalid email or password",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-34",
+      "category": "Category G: Backend API",
+      "name": "Failed Login Anti-Enumeration (Wrong Password)",
+      "status": "PASS",
+      "expected": "Returns identical generic invalid credentials notice",
+      "actual": "Msg: Invalid email or password",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-35",
+      "category": "Category G: Backend API",
+      "name": "Password Reset Anti-Enumeration (Non-Existent Email)",
+      "status": "PASS",
+      "expected": "Returns standard generic confirmation without leaking user existence",
+      "actual": "Generic ACK",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-36",
+      "category": "Category G: Backend API",
+      "name": "Password Reset Anti-Enumeration (Registered Email)",
+      "status": "PASS",
+      "expected": "Returns identical acknowledgement for registered emails",
+      "actual": "Generic ACK",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-37",
+      "category": "Category G: Backend API",
+      "name": "Internal Server Error Sanitization (No Schema Leaks)",
+      "status": "PASS",
+      "expected": "Suppresses internal PostgreSQL error details in API responses",
+      "actual": "Sanitized 500",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-38",
+      "category": "Category G: Backend API",
+      "name": "Constraint Error Query Suppression",
+      "status": "PASS",
+      "expected": "Raw SQL queries and table DDL omitted from error payloads",
+      "actual": "Sanitized",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-39",
+      "category": "Category G: Backend API",
+      "name": "Stack Trace Leakage Prevention",
+      "status": "PASS",
+      "expected": "Stack traces stripped from production API error responses",
+      "actual": "Excluded",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-40",
+      "category": "Category G: Backend API",
+      "name": "Standard 401 Unauthorized JSON Structure",
+      "status": "PASS",
+      "expected": "Returns { error: string, statusCode: 401 } format",
+      "actual": "Standard JSON",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-41",
+      "category": "Category G: Backend API",
+      "name": "Standard 403 Forbidden JSON Structure",
+      "status": "PASS",
+      "expected": "Returns { error: string, statusCode: 403 } format",
+      "actual": "Standard JSON",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-42",
+      "category": "Category G: Backend API",
+      "name": "Standard 404 Not Found JSON Structure",
+      "status": "PASS",
+      "expected": "Returns { error: string, statusCode: 404 } format",
+      "actual": "Standard JSON",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-43",
+      "category": "Category G: Backend API",
+      "name": "PostgREST Anonymous Lock: students RLS Enabled",
+      "status": "PASS",
+      "expected": "ALTER TABLE public.students ENABLE ROW LEVEL SECURITY present in migration",
+      "actual": "Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-44",
+      "category": "Category G: Backend API",
+      "name": "PostgREST Anonymous Lock: academic_records RLS Enabled",
+      "status": "PASS",
+      "expected": "ALTER TABLE public.academic_records ENABLE ROW LEVEL SECURITY present in migration",
+      "actual": "Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-45",
+      "category": "Category G: Backend API",
+      "name": "PostgREST Anonymous Lock: pending_registrations RLS Enabled",
+      "status": "PASS",
+      "expected": "ALTER TABLE public.pending_registrations ENABLE ROW LEVEL SECURITY present in migration",
+      "actual": "Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-46",
+      "category": "Category G: Backend API",
+      "name": "PostgREST Anonymous Lock: sessions RLS Enabled",
+      "status": "PASS",
+      "expected": "ALTER TABLE public.sessions ENABLE ROW LEVEL SECURITY present in migration",
+      "actual": "Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-47",
+      "category": "Category G: Backend API",
+      "name": "PostgREST Anonymous Lock: session_messages RLS Enabled",
+      "status": "PASS",
+      "expected": "ALTER TABLE public.session_messages ENABLE ROW LEVEL SECURITY present in migration",
+      "actual": "Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-48",
+      "category": "Category G: Backend API",
+      "name": "PostgREST Anonymous Lock: tasks RLS Enabled",
+      "status": "PASS",
+      "expected": "ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY present in migration",
+      "actual": "Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-49",
+      "category": "Category G: Backend API",
+      "name": "PostgREST Anonymous Lock: resources RLS Enabled",
+      "status": "PASS",
+      "expected": "ALTER TABLE public.resources ENABLE ROW LEVEL SECURITY present in migration",
+      "actual": "Present: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-50",
+      "category": "Category G: Backend API",
+      "name": "PostgREST RPC Lock: confirm_auth_user Revoked from anon",
+      "status": "PASS",
+      "expected": "confirm_auth_user direct execute revoked from anon",
+      "actual": "Revoked: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-51",
+      "category": "Category G: Backend API",
+      "name": "PostgREST RPC Lock: book_doubt_atomic Revoked from anon",
+      "status": "PASS",
+      "expected": "book_doubt_atomic direct execute revoked from anon",
+      "actual": "Revoked: True",
+      "details": ""
+    },
+    {
+      "id": "P5-CAT-G-52",
+      "category": "Category G: Backend API",
+      "name": "PostgREST RPC Lock: promote_approved_proposal Revoked from anon",
+      "status": "PASS",
+      "expected": "promote_approved_proposal direct execute revoked from anon",
+      "actual": "Revoked: True",
+      "details": ""
+    }
+  ]
+}

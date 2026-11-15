@@ -64,7 +64,7 @@ export async function authenticateRequest(req: Request) {
       user,
       student,
     };
-  } catch (err) {
+  } catch (_err) {
     return null;
   }
 }
