@@ -27,6 +27,6 @@ export class RegisterVerifyDto {
 
   @ApiProperty({ example: 'StrongPassword123!', description: 'Account Password' })
   @IsString()
-  @MinLength(6)
+  @MinLength(8)
   password: string;
 }

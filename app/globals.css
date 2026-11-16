@@ -3,6 +3,11 @@
 /* ── PeerLearn Design System ─────────────────────────────────────── */
 /* Fonts loaded via layout.tsx next/font                              */
 
+:root {
+  --font-newsreader: 'Newsreader', Georgia, Cambria, 'Times New Roman', serif;
+  --font-jakarta: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 @theme inline {
   /* Brand colours — Academic Quietude palette */
   --color-primary: #002724;

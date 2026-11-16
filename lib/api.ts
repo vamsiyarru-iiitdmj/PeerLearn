@@ -154,17 +154,25 @@ export async function apiRegisterVerify(payload: RegisterVerifyPayload) {
   const res = await request<{
     message: string;
     student: StudentProfile;
-    session: { accessToken: string; refreshToken?: string; user?: any };
+    session?: { accessToken: string; refreshToken?: string; user?: any };
+    accessToken?: string;
+    token?: string;
+    refreshToken?: string;
+    user?: any;
   }>("/api/v1/auth/register/verify", {
     method: "POST",
     body: JSON.stringify(payload),
   });
 
+  const accessToken = res.session?.accessToken || res.accessToken || res.token || (res as any).access_token;
+  const refreshToken = res.session?.refreshToken || res.refreshToken || (res as any).refresh_token;
+  const user = res.session?.user || res.user;
+
   return {
-    accessToken: res.session?.accessToken,
-    refreshToken: res.session?.refreshToken,
+    accessToken,
+    refreshToken,
     student: res.student,
-    user: res.session?.user,
+    user,
   } as AuthSession;
 }
 

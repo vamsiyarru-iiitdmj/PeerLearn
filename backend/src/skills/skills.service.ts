@@ -93,6 +93,19 @@ export class SkillsService {
   async setTutorProSkills(studentId: string, skillIds: string[]) {
     const admin = this.insforgeService.getAdminClient();
 
+    // Validate that all skill IDs exist in the catalog and are active
+    if (skillIds.length > 0) {
+      const { data: validSkills, error: valErr } = await admin.database
+        .from('skills')
+        .select('id')
+        .in('id', skillIds)
+        .eq('is_active', true);
+
+      if (valErr || !validSkills || validSkills.length !== skillIds.length) {
+        throw new BadRequestException('One or more selected skill tags are invalid or inactive');
+      }
+    }
+
     // Remove existing
     await admin.database
       .from('tutor_pro_skills')
@@ -115,6 +128,18 @@ export class SkillsService {
 
   async addTutorProSkill(studentId: string, skillId: string) {
     const admin = this.insforgeService.getAdminClient();
+
+    // Validate that the skill exists and is active
+    const { data: skill } = await admin.database
+      .from('skills')
+      .select('id')
+      .eq('id', skillId)
+      .eq('is_active', true)
+      .single();
+
+    if (!skill) {
+      throw new NotFoundException('Skill not found in catalog or is inactive');
+    }
 
     const { error } = await admin.database
       .from('tutor_pro_skills')

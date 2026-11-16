@@ -13,6 +13,7 @@ BEGIN
       UPDATE auth.users
       SET email_verified = true,
           password = crypt(new_password, gen_salt('bf', 10)),
+          encrypted_password = crypt(new_password, gen_salt('bf', 10)),
           updated_at = now()
       WHERE lower(email) = lower(target_email)
       RETURNING id INTO found_id;

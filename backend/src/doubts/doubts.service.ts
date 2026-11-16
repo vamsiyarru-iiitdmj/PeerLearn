@@ -37,14 +37,15 @@ export class DoubtsService {
       throw new BadRequestException('At least one skill tag is required to post a doubt');
     }
 
-    // Verify all skill IDs exist
+    // Verify all skill IDs exist and are active
     const { data: validSkills } = await admin.database
       .from('skills')
       .select('id, name')
-      .in('id', dto.tagIds);
+      .in('id', dto.tagIds)
+      .eq('is_active', true);
 
     if (!validSkills || validSkills.length !== dto.tagIds.length) {
-      throw new BadRequestException('One or more selected skill tags are invalid');
+      throw new BadRequestException('One or more selected skill tags are invalid or inactive');
     }
 
     const expiryHours = Math.min(

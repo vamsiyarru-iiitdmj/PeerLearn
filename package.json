@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@insforge/sdk": "^1.5.2",
+    "@types/nodemailer": "^8.0.2",
     "next": "16.4.2",
+    "nodemailer": "^10.5.0",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },

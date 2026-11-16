@@ -1,0 +1,372 @@
+{
+  "timestamp": "2026-11-15T22:03:37.412991",
+  "total": 52,
+  "passed": 52,
+  "failed": 0,
+  "results": [
+    {
+      "id": "P5-FK-01",
+      "category": "FK-Index-Audit",
+      "name": "public.shared_resources.bucket_id",
+      "status": "PASSED",
+      "details": "Index idx_shared_resources_bucket_id on bucket_id -> public.shared_resource_buckets(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-02",
+      "category": "FK-Index-Audit",
+      "name": "public.suggestion_responses.request_id",
+      "status": "PASSED",
+      "details": "Index idx_suggestion_responses_request_id on request_id -> public.suggestion_requests(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-03",
+      "category": "FK-Index-Audit",
+      "name": "public.session_messages.sender_id",
+      "status": "PASSED",
+      "details": "Index idx_session_messages_sender_id on sender_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-04",
+      "category": "FK-Index-Audit",
+      "name": "public.task_subtasks.task_id",
+      "status": "PASSED",
+      "details": "Index idx_task_subtasks_task_id on task_id -> public.tasks(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-05",
+      "category": "FK-Index-Audit",
+      "name": "public.sessions.doubt_id",
+      "status": "PASSED",
+      "details": "Index idx_sessions_doubt_id on doubt_id -> public.doubts(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-06",
+      "category": "FK-Index-Audit",
+      "name": "public.resource_proposals.proposer_id",
+      "status": "PASSED",
+      "details": "Index idx_resource_proposals_proposer_id on proposer_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-07",
+      "category": "FK-Index-Audit",
+      "name": "public.sessions.replacement_tutor_id",
+      "status": "PASSED",
+      "details": "Index idx_sessions_replacement_tutor_id on replacement_tutor_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-08",
+      "category": "FK-Index-Audit",
+      "name": "public.student_skills.skill_id",
+      "status": "PASSED",
+      "details": "Index idx_student_skills_skill_id on skill_id -> public.skills(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-09",
+      "category": "FK-Index-Audit",
+      "name": "public.resources.owner_id",
+      "status": "PASSED",
+      "details": "Index idx_resources_owner_id on owner_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-10",
+      "category": "FK-Index-Audit",
+      "name": "public.session_ratings.student_id",
+      "status": "PASSED",
+      "details": "Index idx_session_ratings_student_id on student_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-11",
+      "category": "FK-Index-Audit",
+      "name": "public.session_ratings.tutor_id",
+      "status": "PASSED",
+      "details": "Index idx_session_ratings_tutor_id on tutor_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-12",
+      "category": "FK-Index-Audit",
+      "name": "public.resources.bucket_id",
+      "status": "PASSED",
+      "details": "Index idx_resources_bucket_id on bucket_id -> public.resource_buckets(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-13",
+      "category": "FK-Index-Audit",
+      "name": "public.shared_resources.created_by",
+      "status": "PASSED",
+      "details": "Index idx_shared_resources_created_by on created_by -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-14",
+      "category": "FK-Index-Audit",
+      "name": "public.suggestion_responses.tutor_id",
+      "status": "PASSED",
+      "details": "Index idx_suggestion_responses_tutor_id on tutor_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-15",
+      "category": "FK-Index-Audit",
+      "name": "public.suggestion_requests.student_id",
+      "status": "PASSED",
+      "details": "Index idx_suggestion_requests_student_id on student_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-16",
+      "category": "FK-Index-Audit",
+      "name": "public.doubts.booked_tutor_id",
+      "status": "PASSED",
+      "details": "Index idx_doubts_booked_tutor_id on booked_tutor_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-17",
+      "category": "FK-Index-Audit",
+      "name": "public.doubts.selected_session_id",
+      "status": "PASSED",
+      "details": "Index idx_doubts_selected_session_id on selected_session_id -> public.sessions(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-18",
+      "category": "FK-Index-Audit",
+      "name": "public.resource_proposals.bucket_id",
+      "status": "PASSED",
+      "details": "Index idx_resource_proposals_bucket_id on bucket_id -> public.shared_resource_buckets(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-19",
+      "category": "FK-Index-Audit",
+      "name": "public.resource_buckets.owner_id",
+      "status": "PASSED",
+      "details": "Index idx_resource_buckets_owner_id on owner_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-20",
+      "category": "FK-Index-Audit",
+      "name": "public.suggestion_requests.task_id",
+      "status": "PASSED",
+      "details": "Index idx_suggestion_requests_task_id on task_id -> public.tasks(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-21",
+      "category": "FK-Index-Audit",
+      "name": "public.resource_votes.voter_id",
+      "status": "PASSED",
+      "details": "Index idx_resource_votes_voter_id on voter_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-FK-22",
+      "category": "FK-Index-Audit",
+      "name": "public.tutor_score_snapshots.tutor_id",
+      "status": "PASSED",
+      "details": "Index idx_tutor_score_snapshots_tutor_id on tutor_id -> public.students(id) defined with IF NOT EXISTS and rollback DROP verified"
+    },
+    {
+      "id": "P5-UNUSED-01",
+      "category": "Unused-Index-Review",
+      "name": "idx_sessions_student",
+      "status": "PASSED",
+      "details": "Table sessions(student_id, scheduled_start) -> Decision: KEEP. Reason: Essential for Student Dashboard 'My Sessions' chronological sorting. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-02",
+      "category": "Unused-Index-Review",
+      "name": "idx_doubt_tags_skill",
+      "status": "PASSED",
+      "details": "Table doubt_tags(skill_id, doubt_id) -> Decision: KEEP. Reason: Required for Tutor Doubt Matching engine reverse lookup. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-03",
+      "category": "Unused-Index-Review",
+      "name": "idx_academic_roll",
+      "status": "PASSED",
+      "details": "Table academic_records(roll_number) -> Decision: KEEP. Reason: Supports Student Verification during registration and roll lookup. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-04",
+      "category": "Unused-Index-Review",
+      "name": "idx_tutor_pro_skills_skill",
+      "status": "PASSED",
+      "details": "Table tutor_pro_skills(skill_id, student_id) -> Decision: KEEP. Reason: Tutor Matching filter by subject expertise. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-05",
+      "category": "Unused-Index-Review",
+      "name": "idx_tasks_student_due",
+      "status": "PASSED",
+      "details": "Table tasks(student_id, due_at) -> Decision: KEEP. Reason: Planner View deadline ordering avoiding filesort. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-06",
+      "category": "Unused-Index-Review",
+      "name": "idx_session_messages_session",
+      "status": "PASSED",
+      "details": "Table session_messages(session_id, created_at) -> Decision: KEEP. Reason: Live chat message timeline polling under scale. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-07",
+      "category": "Unused-Index-Review",
+      "name": "idx_students_auth",
+      "status": "PASSED",
+      "details": "Table students(auth_user_id) -> Decision: KEEP. Reason: Auth middleware lookup on every authenticated request. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-08",
+      "category": "Unused-Index-Review",
+      "name": "idx_sessions_tutor",
+      "status": "PASSED",
+      "details": "Table sessions(tutor_id, scheduled_start) -> Decision: KEEP. Reason: Tutor Dashboard upcoming schedule chronological view. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-09",
+      "category": "Unused-Index-Review",
+      "name": "idx_students_email",
+      "status": "PASSED",
+      "details": "Table students(institute_email) -> Decision: KEEP. Reason: Login and registration duplicate checks. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-10",
+      "category": "Unused-Index-Review",
+      "name": "idx_doubts_student_status",
+      "status": "PASSED",
+      "details": "Table doubts(student_id, status) -> Decision: KEEP. Reason: Student doubts tab filtered by active status. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-11",
+      "category": "Unused-Index-Review",
+      "name": "idx_notifications_user_read",
+      "status": "PASSED",
+      "details": "Table notifications(user_id, read_at, created_at) -> Decision: KEEP. Reason: Unread notification badge count and inbox pagination. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-12",
+      "category": "Unused-Index-Review",
+      "name": "idx_doubts_status_expires",
+      "status": "PASSED",
+      "details": "Table doubts(status, expires_at) -> Decision: KEEP. Reason: Scheduled background batch job close_expired_doubts(). Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-UNUSED-13",
+      "category": "Unused-Index-Review",
+      "name": "idx_students_roll",
+      "status": "PASSED",
+      "details": "Table students(roll_number) -> Decision: KEEP. Reason: Fast roll number resolution during onboarding. Cold statistics verified as staging false positive."
+    },
+    {
+      "id": "P5-RLS-01",
+      "category": "Missing-RLS-Index-Audit",
+      "name": "public.shared_resource_buckets.batch",
+      "status": "PASSED",
+      "details": "Optimized proposal: CREATE INDEX IF NOT EXISTS idx_shared_resource_buckets_dept_batch ON public.shared_resource_buckets (department, batch); resolves RLS scan on batch"
+    },
+    {
+      "id": "P5-RLS-02",
+      "category": "Missing-RLS-Index-Audit",
+      "name": "public.shared_resource_buckets.department",
+      "status": "PASSED",
+      "details": "Optimized proposal: CREATE INDEX IF NOT EXISTS idx_shared_resource_buckets_dept_batch ON public.shared_resource_buckets (department, batch); resolves RLS scan on department"
+    },
+    {
+      "id": "P5-RLS-03",
+      "category": "Missing-RLS-Index-Audit",
+      "name": "public.resource_proposals.batch",
+      "status": "PASSED",
+      "details": "Optimized proposal: CREATE INDEX IF NOT EXISTS idx_resource_proposals_status_dept_batch ON public.resource_proposals (status, department, batch); resolves RLS scan on batch"
+    },
+    {
+      "id": "P5-RLS-04",
+      "category": "Missing-RLS-Index-Audit",
+      "name": "public.resource_proposals.department",
+      "status": "PASSED",
+      "details": "Optimized proposal: CREATE INDEX IF NOT EXISTS idx_resource_proposals_status_dept_batch ON public.resource_proposals (status, department, batch); resolves RLS scan on department"
+    },
+    {
+      "id": "P5-RLS-05",
+      "category": "Missing-RLS-Index-Audit",
+      "name": "public.resource_proposals.status",
+      "status": "PASSED",
+      "details": "Optimized proposal: CREATE INDEX IF NOT EXISTS idx_resource_proposals_status_dept_batch ON public.resource_proposals (status, department, batch); resolves RLS scan on status"
+    },
+    {
+      "id": "P5-RLS-06",
+      "category": "Missing-RLS-Index-Audit",
+      "name": "public.suggestion_requests.status",
+      "status": "PASSED",
+      "details": "Optimized proposal: CREATE INDEX IF NOT EXISTS idx_suggestion_requests_status ON public.suggestion_requests (status); resolves RLS scan on status"
+    },
+    {
+      "id": "P5-RLS-07",
+      "category": "Missing-RLS-Index-Audit",
+      "name": "public.session_ratings.is_released",
+      "status": "PASSED",
+      "details": "Optimized proposal: CREATE INDEX IF NOT EXISTS idx_session_ratings_tutor_released ON public.session_ratings (tutor_id, is_released); resolves RLS scan on is_released"
+    },
+    {
+      "id": "P5-PERF-01",
+      "category": "Execution-Plan",
+      "name": "session_messages.sender_id scan without index",
+      "status": "PASSED",
+      "details": "Query plan before index confirms SCAN table: [(4, 0, 47, 'SEARCH students USING INDEX sqlite_autoindex_students_1 (id=?)'), (10, 0, 216, 'SCAN session_messages')]"
+    },
+    {
+      "id": "P5-PERF-02",
+      "category": "Execution-Plan",
+      "name": "session_messages.sender_id index scan with index",
+      "status": "PASSED",
+      "details": "Query plan after index confirms USING INDEX: [(5, 0, 47, 'SEARCH s USING INDEX sqlite_autoindex_students_1 (id=?)'), (11, 0, 62, 'SEARCH m USING INDEX idx_session_messages_sender_id (sender_id=?)')]"
+    },
+    {
+      "id": "P5-PERF-03",
+      "category": "Execution-Plan",
+      "name": "task_subtasks.task_id scan without index",
+      "status": "PASSED",
+      "details": "Plan before index shows full SCAN table: [(2, 0, 216, 'SCAN task_subtasks')]"
+    },
+    {
+      "id": "P5-PERF-04",
+      "category": "Execution-Plan",
+      "name": "task_subtasks.task_id index scan with index",
+      "status": "PASSED",
+      "details": "Plan after index shows USING INDEX: [(3, 0, 62, 'SEARCH task_subtasks USING INDEX idx_task_subtasks_task_id (task_id=?)')]"
+    },
+    {
+      "id": "P5-PERF-05",
+      "category": "Execution-Benchmark",
+      "name": "500 Joins Benchmark",
+      "status": "PASSED",
+      "details": "Indexed time: 0.0052s, Unindexed time: 0.0235s, Measured speedup: 4.51x"
+    },
+    {
+      "id": "P5-PERF-06",
+      "category": "Execution-Plan",
+      "name": "tasks(student_id, due_at) eliminates file sort",
+      "status": "PASSED",
+      "details": "Plan with composite index: [(4, 0, 62, 'SEARCH tasks USING INDEX idx_tasks_student_due (student_id=?)')]"
+    },
+    {
+      "id": "P5-PERF-07",
+      "category": "Cascade-Safety",
+      "name": "Delete subtasks on task cascade",
+      "status": "PASSED",
+      "details": "Remaining subtasks for task-1: 0"
+    },
+    {
+      "id": "P5-PERF-08",
+      "category": "Idempotency",
+      "name": "CREATE INDEX IF NOT EXISTS rerun",
+      "status": "PASSED",
+      "details": "Rerunning CREATE INDEX IF NOT EXISTS succeeded with 0 errors"
+    },
+    {
+      "id": "P5-PERF-09",
+      "category": "Idempotency",
+      "name": "DROP INDEX IF EXISTS rerun",
+      "status": "PASSED",
+      "details": "Rerunning DROP INDEX IF EXISTS succeeded safely"
+    },
+    {
+      "id": "P5-PERF-10",
+      "category": "Cost-Model",
+      "name": "PostgreSQL Cost Model Estimation",
+      "status": "PASSED",
+      "details": "Estimated Cost SeqScan: 110.0, IndexScan: 12.05 (89.0% cost reduction)"
+    }
+  ]
+}

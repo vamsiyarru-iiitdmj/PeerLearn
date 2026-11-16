@@ -1,0 +1,2712 @@
+{
+  "phase": "PHASE_6_FINAL_SYSTEM_VERIFICATION",
+  "executed_at": "2026-11-16T09:11:40.724507",
+  "summary": {
+    "total": 300,
+    "passed": 300,
+    "failed": 0,
+    "pass_rate_pct": 100.0
+  },
+  "results": [
+    {
+      "id": "P6-FE-01",
+      "category": "Frontend Quality",
+      "name": "Home Page Auth Redirect Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Redirects unauthenticated visitors to login immediately"
+    },
+    {
+      "id": "P6-FE-02",
+      "category": "Frontend Quality",
+      "name": "Home Page Loading Skeleton",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Displays accessible loading state before session resolution"
+    },
+    {
+      "id": "P6-FE-03",
+      "category": "Frontend Quality",
+      "name": "Mode Switcher in Auth Context",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Stateful student vs tutor mode switcher present in context"
+    },
+    {
+      "id": "P6-FE-04",
+      "category": "Frontend Quality",
+      "name": "Sidebar Student Mode Navigation Routes",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Student navigation includes Home, Doubts, Planner, Resources, Analytics, Profile"
+    },
+    {
+      "id": "P6-FE-05",
+      "category": "Frontend Quality",
+      "name": "Sidebar Tutor Mode Navigation Routes",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor navigation includes Matched Doubts, Booked Sessions, Leaderboard, Analytics"
+    },
+    {
+      "id": "P6-FE-06",
+      "category": "Frontend Quality",
+      "name": "Sidebar Active Route Highlighting",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Active path dynamically styled with primary container indicator"
+    },
+    {
+      "id": "P6-FE-07",
+      "category": "Frontend Quality",
+      "name": "Mobile Sidebar Overlay & Close Backdrop",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Backdrop prevents accidental background interaction when menu is open"
+    },
+    {
+      "id": "P6-FE-08",
+      "category": "Frontend Quality",
+      "name": "Header Mode Toggle Button",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Header allows one-click toggle between Student and Tutor interfaces"
+    },
+    {
+      "id": "P6-FE-09",
+      "category": "Frontend Quality",
+      "name": "Header Unread Notification Badge",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Real-time badge dynamically counts unread notifications"
+    },
+    {
+      "id": "P6-FE-10",
+      "category": "Frontend Quality",
+      "name": "Header Outside Click Dismissal",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Notification and user dropdown menus automatically close on outside click"
+    },
+    {
+      "id": "P6-FE-11",
+      "category": "Frontend Quality",
+      "name": "Login Form Email Input Normalization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Login email is trimmed and normalized before API dispatch"
+    },
+    {
+      "id": "P6-FE-12",
+      "category": "Frontend Quality",
+      "name": "Login Password Visibility Toggle",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "User can toggle password visibility on login form"
+    },
+    {
+      "id": "P6-FE-13",
+      "category": "Frontend Quality",
+      "name": "Registration Institute Email Domain Validation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "UI informs user that @iiitdmj.ac.in domain is required"
+    },
+    {
+      "id": "P6-FE-14",
+      "category": "Frontend Quality",
+      "name": "Registration Dev OTP Extraction & Banner",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Development verification code is presented and auto-filled"
+    },
+    {
+      "id": "P6-FE-15",
+      "category": "Frontend Quality",
+      "name": "Registration 60s Resend Cooldown Timer",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Registration resend button enforces 60-second countdown cooldown"
+    },
+    {
+      "id": "P6-FE-16",
+      "category": "Frontend Quality",
+      "name": "Registration 6-Digit Numeric OTP Formatting",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "OTP input styled with prominent centered letter-spacing and numeric limit"
+    },
+    {
+      "id": "P6-FE-17",
+      "category": "Frontend Quality",
+      "name": "Forgot Password Step Progression",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Forgot password progresses cleanly from email request to OTP verification"
+    },
+    {
+      "id": "P6-FE-18",
+      "category": "Frontend Quality",
+      "name": "Forgot Password Dev OTP Auto-Fill",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Forgot password captures development code for frictionless testing"
+    },
+    {
+      "id": "P6-FE-19",
+      "category": "Frontend Quality",
+      "name": "Password Reset Confirmation Validation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "UI checks password match before dispatching reset request"
+    },
+    {
+      "id": "P6-FE-20",
+      "category": "Frontend Quality",
+      "name": "Password Minimum Length Constraint (>=8)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "UI enforces 8-character minimum policy on new passwords"
+    },
+    {
+      "id": "P6-FE-21",
+      "category": "Frontend Quality",
+      "name": "Doubts Empty State & Call to Action",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Empty state rendered when student has no doubts in selected filter"
+    },
+    {
+      "id": "P6-FE-22",
+      "category": "Frontend Quality",
+      "name": "Doubts Status Tab Filtering (All/Unsolved/Solved)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tabs filter doubts between open, booked, and solved states"
+    },
+    {
+      "id": "P6-FE-23",
+      "category": "Frontend Quality",
+      "name": "Ask Doubt Modal Skill Selection Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Posting a doubt requires selecting at least one active skill tag"
+    },
+    {
+      "id": "P6-FE-24",
+      "category": "Frontend Quality",
+      "name": "Ask Doubt Expiry Dropdown Options",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Student can select expiration window (e.g. 12h, 24h, 48h)"
+    },
+    {
+      "id": "P6-FE-25",
+      "category": "Frontend Quality",
+      "name": "Doubt Withdrawal Confirmation Dialog",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Destructive doubt withdrawal action guarded by user confirmation"
+    },
+    {
+      "id": "P6-FE-26",
+      "category": "Frontend Quality",
+      "name": "Tutor Matched Doubts Card Rendering",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor dashboard presents doubts matching accredited pro skills"
+    },
+    {
+      "id": "P6-FE-27",
+      "category": "Frontend Quality",
+      "name": "Tutor Doubt Booking Modal & Date Selector",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor can select session time and online meeting URL to book doubt"
+    },
+    {
+      "id": "P6-FE-28",
+      "category": "Frontend Quality",
+      "name": "Booked Sessions Student & Tutor Distinction",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Sessions view dynamically queries student or tutor appointments"
+    },
+    {
+      "id": "P6-FE-29",
+      "category": "Frontend Quality",
+      "name": "Session Completion Action (Tutor Only)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor can mark session as completed to initiate student confirmation"
+    },
+    {
+      "id": "P6-FE-30",
+      "category": "Frontend Quality",
+      "name": "Session Confirmation & Rating Action (Student Only)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Student confirms meeting fulfillment and unlocks tutor points"
+    },
+    {
+      "id": "P6-FE-31",
+      "category": "Frontend Quality",
+      "name": "Planner Task Optimistic Completion Toggle",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Task completion state toggles optimistically with server rollback"
+    },
+    {
+      "id": "P6-FE-32",
+      "category": "Frontend Quality",
+      "name": "Planner Tough Subject Flagging",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Students can flag challenging tasks to request peer advice"
+    },
+    {
+      "id": "P6-FE-33",
+      "category": "Frontend Quality",
+      "name": "Planner Task Deletion Confirmation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Task deletion requires explicit user confirmation"
+    },
+    {
+      "id": "P6-FE-34",
+      "category": "Frontend Quality",
+      "name": "Ask Study Plan Suggestion Modal",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Students can request personalized study workflows from tutors"
+    },
+    {
+      "id": "P6-FE-35",
+      "category": "Frontend Quality",
+      "name": "Resources Tab Switching (Private vs Community)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Clear tab boundary between personal drive and peer-approved resources"
+    },
+    {
+      "id": "P6-FE-36",
+      "category": "Frontend Quality",
+      "name": "Private Resource Bucket Creation Modal",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Modal allows creating custom subject folders with description"
+    },
+    {
+      "id": "P6-FE-37",
+      "category": "Frontend Quality",
+      "name": "Resource File Upload Type Filtering",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Supports PDF documents, external links, photos, and markdown notes"
+    },
+    {
+      "id": "P6-FE-38",
+      "category": "Frontend Quality",
+      "name": "Community Proposal Submission Form",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Form permits proposing learning materials to department buckets"
+    },
+    {
+      "id": "P6-FE-39",
+      "category": "Frontend Quality",
+      "name": "Proposal Community Voting Interface",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Students can vote to approve peer-submitted learning materials"
+    },
+    {
+      "id": "P6-FE-40",
+      "category": "Frontend Quality",
+      "name": "Campus Analytics Live Metrics Display",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Analytics dashboard renders campus resolution rate and tutor counts"
+    },
+    {
+      "id": "P6-FE-41",
+      "category": "Frontend Quality",
+      "name": "Profile Suspense Boundary for Query Params",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Next.js useSearchParams wrapped in Suspense boundary for SSR safety"
+    },
+    {
+      "id": "P6-FE-42",
+      "category": "Frontend Quality",
+      "name": "Profile Target CGPA Inline Editor",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Student can set target CGPA and view required future semester CPI"
+    },
+    {
+      "id": "P6-FE-43",
+      "category": "Frontend Quality",
+      "name": "Tutor Pro Skills Catalog Modal & Search",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor can search skills catalog to select accredited subjects"
+    },
+    {
+      "id": "P6-FE-44",
+      "category": "Frontend Quality",
+      "name": "Phone & Contact Info Privacy Safeguards",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Contact information updates require authenticated student profile"
+    },
+    {
+      "id": "P6-FE-45",
+      "category": "Frontend Quality",
+      "name": "Design System CSS Variables Isolation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Academic Quietude palette strictly tokenized in globals.css"
+    },
+    {
+      "id": "P6-FE-46",
+      "category": "Frontend Quality",
+      "name": "Typography Token Definitions (Newsreader & Jakarta)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Serif display and sans-serif body typography variables defined"
+    },
+    {
+      "id": "P6-FE-47",
+      "category": "Frontend Quality",
+      "name": "Responsive Layout Offset for Desktop Sidebar",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Content dynamically offsets for fixed 256px sidebar on large displays"
+    },
+    {
+      "id": "P6-FE-48",
+      "category": "Frontend Quality",
+      "name": "Form Submit Spinner Animations",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Buttons show accessible animated spinner while requests are in flight"
+    },
+    {
+      "id": "P6-FE-49",
+      "category": "Frontend Quality",
+      "name": "Semantic HTML Navigation & Main Landmarks",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Document contains semantic nav, main, header, and aside landmarks"
+    },
+    {
+      "id": "P6-FE-50",
+      "category": "Frontend Quality",
+      "name": "Accessibility ARIA Attributes on Controls",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Buttons and backdrops contain aria-label and aria-hidden attributes"
+    },
+    {
+      "id": "P6-API-01",
+      "category": "Backend API",
+      "name": "CORS Preflight OPTIONS Handler",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "OPTIONS returns 204 with standard CORS preflight headers"
+    },
+    {
+      "id": "P6-API-02",
+      "category": "Backend API",
+      "name": "Health Check Endpoint (/health)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Public health endpoint returns timestamp and status"
+    },
+    {
+      "id": "P6-API-03",
+      "category": "Backend API",
+      "name": "Public Skills Catalog Endpoint (/skills)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns active catalog skills without requiring authentication"
+    },
+    {
+      "id": "P6-API-04",
+      "category": "Backend API",
+      "name": "Campus Analytics Overview (/analytics/overview)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Aggregates doubts and resolution stats anonymously"
+    },
+    {
+      "id": "P6-API-05",
+      "category": "Backend API",
+      "name": "Bearer Token Extraction in authenticateRequest",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Extracts Authorization Bearer token header case-insensitively"
+    },
+    {
+      "id": "P6-API-06",
+      "category": "Backend API",
+      "name": "Token Validation with BaaS getCurrentUser()",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Validates JWT signature, validity, and user identity via BaaS"
+    },
+    {
+      "id": "P6-API-07",
+      "category": "Backend API",
+      "name": "Student Profile Resolution in Auth Middleware",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Resolves student record matching authenticated auth_user_id"
+    },
+    {
+      "id": "P6-API-08",
+      "category": "Backend API",
+      "name": "Missing Token Rejection (HTTP 401)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Protected endpoints reject unauthenticated requests with HTTP 401"
+    },
+    {
+      "id": "P6-API-09",
+      "category": "Backend API",
+      "name": "Student Profile Endpoint (/me/profile)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Fetches authenticated student profile, GPA records, and skills"
+    },
+    {
+      "id": "P6-API-10",
+      "category": "Backend API",
+      "name": "Student Academics Endpoint (/me/academics)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Scopes academic record queries strictly to caller roll number"
+    },
+    {
+      "id": "P6-API-11",
+      "category": "Backend API",
+      "name": "Doubts Feed Endpoint (/doubts)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Fetches doubts feed with associated skill tags"
+    },
+    {
+      "id": "P6-API-12",
+      "category": "Backend API",
+      "name": "Tutor Matched Doubts RPC Execution (/tutor/doubts)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Invokes get_matching_doubts_for_tutor RPC via admin client"
+    },
+    {
+      "id": "P6-API-13",
+      "category": "Backend API",
+      "name": "Auto-Close Expired Doubts Trigger on Tutor Feed",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor feed checks and sweeps expired doubts before matching"
+    },
+    {
+      "id": "P6-API-14",
+      "category": "Backend API",
+      "name": "Planner Tasks Endpoint (/tasks)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Scopes planner task retrieval strictly to authenticated student"
+    },
+    {
+      "id": "P6-API-15",
+      "category": "Backend API",
+      "name": "Notifications Inbox Endpoint (/notifications)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Restricts notification inbox retrieval strictly to recipient"
+    },
+    {
+      "id": "P6-API-16",
+      "category": "Backend API",
+      "name": "Tutor Profile Stats Endpoint (/tutor/profile)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns tutor credentials, pro skills, and reputation metrics"
+    },
+    {
+      "id": "P6-API-17",
+      "category": "Backend API",
+      "name": "Tutor Leaderboard Endpoint (/tutor/leaderboard)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns campus tutor rankings and reputation scores"
+    },
+    {
+      "id": "P6-API-18",
+      "category": "Backend API",
+      "name": "Participant Sessions Query Filter",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Restricts sessions query to student, tutor, or replacement tutor"
+    },
+    {
+      "id": "P6-API-19",
+      "category": "Backend API",
+      "name": "Session Messages Participant Guard (IDOR Defense)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Blocks non-participants from reading session chat messages (HTTP 403)"
+    },
+    {
+      "id": "P6-API-20",
+      "category": "Backend API",
+      "name": "Single Session Details Participant Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Validates session existence and participant authorization before return"
+    },
+    {
+      "id": "P6-API-21",
+      "category": "Backend API",
+      "name": "Task Subtasks Ownership Verification",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Blocks non-owners from accessing task subtasks (HTTP 403)"
+    },
+    {
+      "id": "P6-API-22",
+      "category": "Backend API",
+      "name": "Private Resource Buckets Owner Scope",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Filters private resource buckets strictly to caller studentId"
+    },
+    {
+      "id": "P6-API-23",
+      "category": "Backend API",
+      "name": "Private Resources Owner & Bucket Dual-Key Scope",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Validates both bucket ownership and resource ownership"
+    },
+    {
+      "id": "P6-API-24",
+      "category": "Backend API",
+      "name": "Shared Buckets Independent Conjunction Filtering",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enforces independent conjunction (deptOk && batchOk) for shared buckets"
+    },
+    {
+      "id": "P6-API-25",
+      "category": "Backend API",
+      "name": "Shared Buckets NULL Attribute Denial",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "NULL department or batch is sealed from student visibility"
+    },
+    {
+      "id": "P6-API-26",
+      "category": "Backend API",
+      "name": "Shared Proposals Proposer Privacy & Voter Anonymity",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Aggregates vote counts without exposing individual voter identities"
+    },
+    {
+      "id": "P6-API-27",
+      "category": "Backend API",
+      "name": "Login Email & Password Validation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects empty login credentials with HTTP 400"
+    },
+    {
+      "id": "P6-API-28",
+      "category": "Backend API",
+      "name": "Login Anti-Enumeration Failure Response",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns generic error message to prevent account enumeration"
+    },
+    {
+      "id": "P6-API-29",
+      "category": "Backend API",
+      "name": "Register Start Roll Number Validation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Validates institutional roll number format"
+    },
+    {
+      "id": "P6-API-30",
+      "category": "Backend API",
+      "name": "Register Start Already Registered Check (HTTP 409)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Prevents duplicate registration attempts for existing students"
+    },
+    {
+      "id": "P6-API-31",
+      "category": "Backend API",
+      "name": "Register Start 60s Cooldown Enforcement",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enforces 60-second cooldown on registration code requests (HTTP 429)"
+    },
+    {
+      "id": "P6-API-32",
+      "category": "Backend API",
+      "name": "Register Verify 6-Digit Numeric OTP Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects non-numeric or non-6-digit OTP codes with HTTP 400"
+    },
+    {
+      "id": "P6-API-33",
+      "category": "Backend API",
+      "name": "Register Verify Password Strength Check",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enforces minimum 8-character password length constraint"
+    },
+    {
+      "id": "P6-API-34",
+      "category": "Backend API",
+      "name": "Register Verify Expiration Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects expired verification requests and purges pending record"
+    },
+    {
+      "id": "P6-API-35",
+      "category": "Backend API",
+      "name": "Register Verify 5-Attempt Lockout Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Locks out registration after 5 failed attempts (HTTP 429)"
+    },
+    {
+      "id": "P6-API-36",
+      "category": "Backend API",
+      "name": "Register Verify Timing-Safe Hash Comparison",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Compares salted OTP hash using timing-safe buffer comparison"
+    },
+    {
+      "id": "P6-API-37",
+      "category": "Backend API",
+      "name": "Forgot Password Anti-Enumeration Uniformity",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns identical generic response whether email exists or not"
+    },
+    {
+      "id": "P6-API-38",
+      "category": "Backend API",
+      "name": "Forgot Password 60s Cooldown Protection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enforces rate limiting on password reset requests (HTTP 429)"
+    },
+    {
+      "id": "P6-API-39",
+      "category": "Backend API",
+      "name": "Reset Password OTP Verification & Atomic Consume",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Atomically deletes pending reset token to prevent replay attacks"
+    },
+    {
+      "id": "P6-API-40",
+      "category": "Backend API",
+      "name": "Logout Endpoint Revocation (/auth/logout)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Handles user session sign-out and returns confirmation"
+    },
+    {
+      "id": "P6-API-41",
+      "category": "Backend API",
+      "name": "Create Doubt Validation (Description & Skills Required)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enforces non-empty description and valid skill tag selection"
+    },
+    {
+      "id": "P6-API-42",
+      "category": "Backend API",
+      "name": "Withdraw Doubt Ownership Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Prevents cross-student doubt withdrawal tampering (HTTP 403)"
+    },
+    {
+      "id": "P6-API-43",
+      "category": "Backend API",
+      "name": "Book Doubt Atomic RPC Call",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Calls book_doubt_atomic RPC via service role with row-level locks"
+    },
+    {
+      "id": "P6-API-44",
+      "category": "Backend API",
+      "name": "Complete Session Tutor Authorization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Restricts session completion exclusively to the assigned tutor"
+    },
+    {
+      "id": "P6-API-45",
+      "category": "Backend API",
+      "name": "Confirm Session Student Authorization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Restricts session confirmation exclusively to the student participant"
+    },
+    {
+      "id": "P6-API-46",
+      "category": "Backend API",
+      "name": "Confidential Session Rating Submission",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Validates 1-5 rating range and marks review confidential (is_released=false)"
+    },
+    {
+      "id": "P6-API-47",
+      "category": "Backend API",
+      "name": "Post Chat Message Participant Verification",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Blocks non-participants from injecting chat messages into sessions"
+    },
+    {
+      "id": "P6-API-48",
+      "category": "Backend API",
+      "name": "Create Task Input Validation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects blank task titles and assigns authenticated student_id"
+    },
+    {
+      "id": "P6-API-49",
+      "category": "Backend API",
+      "name": "Resource URL Protocol Whitelisting",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Prevents javascript: or file: protocol injection in external resource URLs"
+    },
+    {
+      "id": "P6-API-50",
+      "category": "Backend API",
+      "name": "Resource Proposal Self-Voting Denial",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Blocks proposal author from voting on their own proposal (HTTP 400)"
+    },
+    {
+      "id": "P6-DB-01",
+      "category": "Database Integrity",
+      "name": "Students Table Primary Key & Unique Constraints",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "students enforces id PRIMARY KEY and auth_user_id / roll_number UNIQUE"
+    },
+    {
+      "id": "P6-DB-02",
+      "category": "Database Integrity",
+      "name": "Doubts Status Check Constraint",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "doubts status restricted to valid lifecycle states"
+    },
+    {
+      "id": "P6-DB-03",
+      "category": "Database Integrity",
+      "name": "Doubts Invalid Status Rejection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Check constraint rejected INVALID_STATUS"
+    },
+    {
+      "id": "P6-DB-04",
+      "category": "Database Integrity",
+      "name": "Doubts Valid Insertion",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Successfully inserted doubt with status=OPEN"
+    },
+    {
+      "id": "P6-DB-05",
+      "category": "Database Integrity",
+      "name": "Sessions Foreign Key Referential Integrity",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Session references valid doubt_id, student_id, and tutor_id"
+    },
+    {
+      "id": "P6-DB-06",
+      "category": "Database Integrity",
+      "name": "Session Rating Lower Boundary (<1 Rejection)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Check constraint rejected rating 0"
+    },
+    {
+      "id": "P6-DB-07",
+      "category": "Database Integrity",
+      "name": "Session Rating Upper Boundary (>5 Rejection)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Check constraint rejected rating 6"
+    },
+    {
+      "id": "P6-DB-08",
+      "category": "Database Integrity",
+      "name": "Valid Session Rating Acceptance (1-5)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Accepted rating=5 within valid [1, 5] range"
+    },
+    {
+      "id": "P6-DB-09",
+      "category": "Database Integrity",
+      "name": "Duplicate Rating Prevention (session_id UNIQUE)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "UNIQUE(session_id) prevented duplicate rating submission"
+    },
+    {
+      "id": "P6-DB-10",
+      "category": "Database Integrity",
+      "name": "Self-Rating Prevention (student_id <> tutor_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Constraint student_id <> tutor_id rejected self-rating"
+    },
+    {
+      "id": "P6-DB-11",
+      "category": "Database Integrity",
+      "name": "Resource Vote Valid Insertion",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Accepted valid APPROVE vote for proposal p1"
+    },
+    {
+      "id": "P6-DB-12",
+      "category": "Database Integrity",
+      "name": "Duplicate Vote Prevention (proposal_id, voter_id UNIQUE)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "UNIQUE constraint prevented double voting by voter s2"
+    },
+    {
+      "id": "P6-DB-13",
+      "category": "Database Integrity",
+      "name": "Cascade Delete on Proposal Deletion",
+      "status": "PASS",
+      "expected": 0,
+      "actual": 0,
+      "details": "Deleting proposal cascaded and purged associated votes"
+    },
+    {
+      "id": "P6-DB-14",
+      "category": "Database Integrity",
+      "name": "Student Immutability Trigger Definition",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Migration creates trigger blocking student core field mutation"
+    },
+    {
+      "id": "P6-DB-15",
+      "category": "Database Integrity",
+      "name": "Doubt Status Transition Trigger Definition",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Migration creates trigger enforcing state machine on doubts"
+    },
+    {
+      "id": "P6-DB-16",
+      "category": "Database Integrity",
+      "name": "Session Immutability Trigger Definition",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Migration creates trigger protecting session participant immutability"
+    },
+    {
+      "id": "P6-DB-17",
+      "category": "Database Integrity",
+      "name": "Proposal Immutability Trigger Definition",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Trigger prevents student modification of proposal_id, bucket_id, and status"
+    },
+    {
+      "id": "P6-DB-18",
+      "category": "Database Integrity",
+      "name": "Vote Immutability Trigger Definition",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Trigger prevents mutation of proposal_id, voter_id, and self-voting"
+    },
+    {
+      "id": "P6-DB-19",
+      "category": "Database Integrity",
+      "name": "confirm_auth_user Function search_path Pinning",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RPC pinned to public, pg_temp preventing search_path hijacking"
+    },
+    {
+      "id": "P6-DB-20",
+      "category": "Database Integrity",
+      "name": "confirm_auth_user Revocation from PUBLIC & anon",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Direct RPC execute privileges revoked from unauthenticated roles"
+    },
+    {
+      "id": "P6-DB-21",
+      "category": "Database Integrity",
+      "name": "get_matching_doubts_for_tutor search_path Pinning",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor matching RPC search_path pinned to public, pg_temp"
+    },
+    {
+      "id": "P6-DB-22",
+      "category": "Database Integrity",
+      "name": "close_expired_doubts search_path Pinning",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Sweeper RPC search_path pinned to public, pg_temp"
+    },
+    {
+      "id": "P6-DB-23",
+      "category": "Database Integrity",
+      "name": "book_doubt_atomic FOR UPDATE Row Lock",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Atomic booking RPC acquires exclusive row lock preventing race conditions"
+    },
+    {
+      "id": "P6-DB-24",
+      "category": "Database Integrity",
+      "name": "promote_approved_proposal_atomic FOR UPDATE Row Lock",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Proposal promotion RPC locks proposal row during state transition"
+    },
+    {
+      "id": "P6-DB-25",
+      "category": "Database Integrity",
+      "name": "Row Level Security on academic_records",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on institutional academic records"
+    },
+    {
+      "id": "P6-DB-26",
+      "category": "Database Integrity",
+      "name": "Row Level Security on pending_registrations",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled and sealed on pending registration credentials"
+    },
+    {
+      "id": "P6-DB-27",
+      "category": "Database Integrity",
+      "name": "Row Level Security on academic_imports",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on administrative academic import audit logs"
+    },
+    {
+      "id": "P6-DB-28",
+      "category": "Database Integrity",
+      "name": "Row Level Security on students",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on students profile table"
+    },
+    {
+      "id": "P6-DB-29",
+      "category": "Database Integrity",
+      "name": "Row Level Security on doubts & doubt_tags",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on doubts and doubt skill tags"
+    },
+    {
+      "id": "P6-DB-30",
+      "category": "Database Integrity",
+      "name": "Row Level Security on sessions & chat messages",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on sessions and session chat messages"
+    },
+    {
+      "id": "P6-DB-31",
+      "category": "Database Integrity",
+      "name": "Row Level Security on session_ratings",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on session ratings"
+    },
+    {
+      "id": "P6-DB-32",
+      "category": "Database Integrity",
+      "name": "Row Level Security on tasks & task_subtasks",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on study planner tasks and subtasks"
+    },
+    {
+      "id": "P6-DB-33",
+      "category": "Database Integrity",
+      "name": "Row Level Security on resource_buckets & resources",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on private resource buckets and uploaded files"
+    },
+    {
+      "id": "P6-DB-34",
+      "category": "Database Integrity",
+      "name": "Row Level Security on shared_resource_buckets",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on departmental community resource folders"
+    },
+    {
+      "id": "P6-DB-35",
+      "category": "Database Integrity",
+      "name": "Row Level Security on resource_proposals & votes",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "RLS enabled on community proposals and peer votes"
+    },
+    {
+      "id": "P6-DB-36",
+      "category": "Database Integrity",
+      "name": "Phase 1 Migration BEGIN/COMMIT Wrapper",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 1 migration encapsulated within atomic transaction"
+    },
+    {
+      "id": "P6-DB-37",
+      "category": "Database Integrity",
+      "name": "Phase 2 Migration BEGIN/COMMIT Wrapper",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 2 migration encapsulated within atomic transaction"
+    },
+    {
+      "id": "P6-DB-38",
+      "category": "Database Integrity",
+      "name": "Phase 3 Migration BEGIN/COMMIT Wrapper",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 3 migration encapsulated within atomic transaction"
+    },
+    {
+      "id": "P6-DB-39",
+      "category": "Database Integrity",
+      "name": "Phase 4 Migration BEGIN/COMMIT Wrapper",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 4 migration encapsulated within atomic transaction"
+    },
+    {
+      "id": "P6-DB-40",
+      "category": "Database Integrity",
+      "name": "Phase 5 Migration BEGIN/COMMIT Wrapper",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 5 performance migration encapsulated within atomic transaction"
+    },
+    {
+      "id": "P6-DB-41",
+      "category": "Database Integrity",
+      "name": "Phase 1 Rollback Script Existence & Content",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 1 rollback script present and non-empty"
+    },
+    {
+      "id": "P6-DB-42",
+      "category": "Database Integrity",
+      "name": "Phase 2 Rollback Script Existence & Content",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 2 rollback script present and non-empty"
+    },
+    {
+      "id": "P6-DB-43",
+      "category": "Database Integrity",
+      "name": "Phase 3 Rollback Script Existence & Content",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 3 rollback script present and non-empty"
+    },
+    {
+      "id": "P6-DB-44",
+      "category": "Database Integrity",
+      "name": "Phase 4 Rollback Script Existence & Content",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 4 rollback script present and non-empty"
+    },
+    {
+      "id": "P6-DB-45",
+      "category": "Database Integrity",
+      "name": "Phase 5 Rollback Script Existence & Content",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Phase 5 rollback script present and non-empty"
+    },
+    {
+      "id": "P6-DB-46",
+      "category": "Database Integrity",
+      "name": "Drop Policy Idempotency Guards in Phase 1",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Uses DROP POLICY IF EXISTS before creating policies"
+    },
+    {
+      "id": "P6-DB-47",
+      "category": "Database Integrity",
+      "name": "Drop Policy Idempotency Guards in Phase 2",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Uses DROP POLICY IF EXISTS before creating policies"
+    },
+    {
+      "id": "P6-DB-48",
+      "category": "Database Integrity",
+      "name": "Drop Policy Idempotency Guards in Phase 3",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Uses DROP POLICY IF EXISTS before creating policies"
+    },
+    {
+      "id": "P6-DB-49",
+      "category": "Database Integrity",
+      "name": "Drop Policy Idempotency Guards in Phase 4",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Uses DROP POLICY IF EXISTS before creating policies"
+    },
+    {
+      "id": "P6-DB-50",
+      "category": "Database Integrity",
+      "name": "Create Index Idempotency Guards in Phase 5",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "All 22 FK indexes use CREATE INDEX IF NOT EXISTS"
+    },
+    {
+      "id": "P6-AUTH-01",
+      "category": "Auth & Email",
+      "name": "Cryptographic OTP Range & Numeric Pattern",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "All 50 generated OTPs strictly conform to [100000, 999999]"
+    },
+    {
+      "id": "P6-AUTH-02",
+      "category": "Auth & Email",
+      "name": "OTP High-Entropy Randomness Sample",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "High entropy: 50/50 unique samples in batch"
+    },
+    {
+      "id": "P6-AUTH-03",
+      "category": "Auth & Email",
+      "name": "16-Byte Cryptographic Salt Generator",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "All 50 salts are 32-character hex (16 bytes secure entropy)"
+    },
+    {
+      "id": "P6-AUTH-04",
+      "category": "Auth & Email",
+      "name": "Deterministic Hash Computation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Hashing is deterministic given identical OTP and salt"
+    },
+    {
+      "id": "P6-AUTH-05",
+      "category": "Auth & Email",
+      "name": "Salt Disambiguation Isolation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Identical OTP produces different hash with different salt"
+    },
+    {
+      "id": "P6-AUTH-06",
+      "category": "Auth & Email",
+      "name": "Timing-Safe Comparison Verification",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Constant-time comparison verifies match and rejects tampered hash"
+    },
+    {
+      "id": "P6-AUTH-07",
+      "category": "Auth & Email",
+      "name": "Email Service Multi-Transport Waterfall",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Dispatches through SMTP, Resend, SendGrid, InsForge, or Dev Outbox"
+    },
+    {
+      "id": "P6-AUTH-08",
+      "category": "Auth & Email",
+      "name": "SMTP Nodemailer Transporter Cached Initialization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Initializes and reuses cached Nodemailer SMTP transporter"
+    },
+    {
+      "id": "P6-AUTH-09",
+      "category": "Auth & Email",
+      "name": "SMTP SSL Port 465 Secure Flag",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Configures secure SSL transport for port 465 (Gmail SMTP)"
+    },
+    {
+      "id": "P6-AUTH-10",
+      "category": "Auth & Email",
+      "name": "Development Outbox Persistence Path",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Persists development emails to .email_outbox.json for test inspection"
+    },
+    {
+      "id": "P6-AUTH-11",
+      "category": "Auth & Email",
+      "name": "Development Outbox Rolling FIFO Limit",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Limits outbox file size to recent 100 entries preventing unbounded growth"
+    },
+    {
+      "id": "P6-AUTH-12",
+      "category": "Auth & Email",
+      "name": "InsForge Free Tier 403 Graceful Handling",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Gracefully intercepts 403 on InsForge Free Tier without crashing"
+    },
+    {
+      "id": "P6-AUTH-13",
+      "category": "Auth & Email",
+      "name": "InsForge Native Auth Reset Password Sync",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Auxiliary trigger invokes InsForge native reset password mailer"
+    },
+    {
+      "id": "P6-AUTH-14",
+      "category": "Auth & Email",
+      "name": "InsForge Native Auth Verification Sync",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Auxiliary trigger invokes InsForge native email verification mailer"
+    },
+    {
+      "id": "P6-AUTH-15",
+      "category": "Auth & Email",
+      "name": "Production Missing SMTP Credentials Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns actionable diagnostic error in production if SMTP is missing"
+    },
+    {
+      "id": "P6-AUTH-16",
+      "category": "Auth & Email",
+      "name": "Registration Email Branded HTML Header",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Registration template includes official institutional header branding"
+    },
+    {
+      "id": "P6-AUTH-17",
+      "category": "Auth & Email",
+      "name": "Registration Email Plaintext Accessible Fallback",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Generates accessible plaintext fallback for non-HTML mail clients"
+    },
+    {
+      "id": "P6-AUTH-18",
+      "category": "Auth & Email",
+      "name": "Password Reset Branded HTML Header",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Password reset template includes security advisory branding"
+    },
+    {
+      "id": "P6-AUTH-19",
+      "category": "Auth & Email",
+      "name": "Password Reset Plaintext Fallback",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Generates accessible plaintext fallback for password reset"
+    },
+    {
+      "id": "P6-AUTH-20",
+      "category": "Auth & Email",
+      "name": "Subject Line Verification Code Inclusion",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Email subject contains verification code for quick notification preview"
+    },
+    {
+      "id": "P6-AUTH-21",
+      "category": "Auth & Email",
+      "name": "Register Start Creates PENDING Record",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Inserts pending registration row with initial PENDING state"
+    },
+    {
+      "id": "P6-AUTH-22",
+      "category": "Auth & Email",
+      "name": "Register Start Purges Prior Pending Attempt",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Purges prior pending registration attempts on new request"
+    },
+    {
+      "id": "P6-AUTH-23",
+      "category": "Auth & Email",
+      "name": "Register Start 15-Minute Expiry Window",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Sets verification code expiration to exactly 15 minutes"
+    },
+    {
+      "id": "P6-AUTH-24",
+      "category": "Auth & Email",
+      "name": "Register Start Auto-Derives Academic Email",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Derives official institute email directly from validated roll number"
+    },
+    {
+      "id": "P6-AUTH-25",
+      "category": "Auth & Email",
+      "name": "Register Start Dev Mode OTP Response",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Supplies devOtpCode in non-production environment for local testing"
+    },
+    {
+      "id": "P6-AUTH-26",
+      "category": "Auth & Email",
+      "name": "Register Verify Decrements Remaining Attempts",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Increments failure attempt counter upon incorrect code entry"
+    },
+    {
+      "id": "P6-AUTH-27",
+      "category": "Auth & Email",
+      "name": "Register Verify Max Attempts Lockout (5 Attempts)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Revokes pending registration when failed attempts reach threshold"
+    },
+    {
+      "id": "P6-AUTH-28",
+      "category": "Auth & Email",
+      "name": "Register Verify Syncs BaaS Auth User Identity",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Ensures auth user account exists in BaaS auth subsystem"
+    },
+    {
+      "id": "P6-AUTH-29",
+      "category": "Auth & Email",
+      "name": "Register Verify Invokes confirm_auth_user RPC",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Invokes confirm_auth_user RPC via service role to activate user"
+    },
+    {
+      "id": "P6-AUTH-30",
+      "category": "Auth & Email",
+      "name": "Register Verify Creates Verified Student Profile",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Creates verified student record linked to real auth_user_id"
+    },
+    {
+      "id": "P6-AUTH-31",
+      "category": "Auth & Email",
+      "name": "Register Verify Atomically Purges Pending Record",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Deletes pending registration row preventing token replay"
+    },
+    {
+      "id": "P6-AUTH-32",
+      "category": "Auth & Email",
+      "name": "Register Verify Auto-Login Session Generation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Signs in newly confirmed student to return authentic session token"
+    },
+    {
+      "id": "P6-AUTH-33",
+      "category": "Auth & Email",
+      "name": "Register Verify Returns 201 Created Response",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Returns HTTP 201 with session and student profile object"
+    },
+    {
+      "id": "P6-AUTH-34",
+      "category": "Auth & Email",
+      "name": "Register Verify Replay of Consumed Code Denied",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Consuming a verification code prevents any subsequent replay"
+    },
+    {
+      "id": "P6-AUTH-35",
+      "category": "Auth & Email",
+      "name": "Register Verify Expired Code Rejection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects verification if current time exceeds expiration timestamp"
+    },
+    {
+      "id": "P6-AUTH-36",
+      "category": "Auth & Email",
+      "name": "Forgot Password Email Case-Insensitive Normalization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Trims and lowercases input email before student lookup"
+    },
+    {
+      "id": "P6-AUTH-37",
+      "category": "Auth & Email",
+      "name": "Forgot Password Non-Existent Email Safe ACK",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Suppresses user enumeration by returning identical confirmation"
+    },
+    {
+      "id": "P6-AUTH-38",
+      "category": "Auth & Email",
+      "name": "Forgot Password Student Existence Check",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Verifies registered student identity before generating reset token"
+    },
+    {
+      "id": "P6-AUTH-39",
+      "category": "Auth & Email",
+      "name": "Forgot Password Purpose Partitioning",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Partitions reset tokens from registration verification tokens"
+    },
+    {
+      "id": "P6-AUTH-40",
+      "category": "Auth & Email",
+      "name": "Forgot Password Salted Hash Storage",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Stores password reset token as salted SHA-256 hash digest"
+    },
+    {
+      "id": "P6-AUTH-41",
+      "category": "Auth & Email",
+      "name": "Forgot Password 15-Minute Expiry",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Password reset OTP expires after 15 minutes"
+    },
+    {
+      "id": "P6-AUTH-42",
+      "category": "Auth & Email",
+      "name": "Forgot Password Dev OTP Payload Inclusion",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Exposes devOtpCode in development mode for automated testing"
+    },
+    {
+      "id": "P6-AUTH-43",
+      "category": "Auth & Email",
+      "name": "Reset Password Input Parameter Validation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Validates presence of email, verification code, and new password"
+    },
+    {
+      "id": "P6-AUTH-44",
+      "category": "Auth & Email",
+      "name": "Reset Password 6-Digit Format Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enforces 6-digit numeric pattern on reset code input"
+    },
+    {
+      "id": "P6-AUTH-45",
+      "category": "Auth & Email",
+      "name": "Reset Password 8-Character Password Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects passwords with fewer than 8 characters (HTTP 400)"
+    },
+    {
+      "id": "P6-AUTH-46",
+      "category": "Auth & Email",
+      "name": "Reset Password Expiry Timestamp Verification",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rejects expired reset attempts and purges stale token"
+    },
+    {
+      "id": "P6-AUTH-47",
+      "category": "Auth & Email",
+      "name": "Reset Password Attempt Counter Increment",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Increments failure attempt counter upon wrong reset code"
+    },
+    {
+      "id": "P6-AUTH-48",
+      "category": "Auth & Email",
+      "name": "Reset Password 5-Attempt Lockout Defense",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Enforces lockout threshold and purges token on brute-force attempts"
+    },
+    {
+      "id": "P6-AUTH-49",
+      "category": "Auth & Email",
+      "name": "Reset Password Invokes confirm_auth_user RPC",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Updates hashed password in auth.users via secure service RPC"
+    },
+    {
+      "id": "P6-AUTH-50",
+      "category": "Auth & Email",
+      "name": "Reset Password Atomic Purge & Anti-Replay",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Atomically deletes reset token preventing reuse of consumed code"
+    },
+    {
+      "id": "P6-REL-01",
+      "category": "Reliability",
+      "name": "Database Error Sanitization (errorResponse helper)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "errorResponse helper sanitizes error structures and status codes"
+    },
+    {
+      "id": "P6-REL-02",
+      "category": "Reliability",
+      "name": "Internal Schema Details Excluded from Client Responses",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Database internals and raw query text stripped from error response"
+    },
+    {
+      "id": "P6-REL-03",
+      "category": "Reliability",
+      "name": "Database Unavailable 500 Sanitization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "HTTP 500 errors translated to clean user-facing advisory message"
+    },
+    {
+      "id": "P6-REL-04",
+      "category": "Reliability",
+      "name": "HTTP 401 Unauthorized Standard JSON Structure",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Unauthenticated requests receive structured 401 JSON"
+    },
+    {
+      "id": "P6-REL-05",
+      "category": "Reliability",
+      "name": "HTTP 403 Forbidden Access Denied Structure",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Authorization failures receive standardized 403 JSON"
+    },
+    {
+      "id": "P6-REL-06",
+      "category": "Reliability",
+      "name": "HTTP 404 Resource Not Found Structure",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Missing resources return explicit 404 with descriptive entity message"
+    },
+    {
+      "id": "P6-REL-07",
+      "category": "Reliability",
+      "name": "HTTP 429 Rate Limit Cooldown Structure",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rate-limited operations return HTTP 429 with remaining cooldown"
+    },
+    {
+      "id": "P6-REL-08",
+      "category": "Reliability",
+      "name": "Malformed JSON Request Body Catch Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Malformed or empty JSON request bodies caught without unhandled crashes"
+    },
+    {
+      "id": "P6-REL-09",
+      "category": "Reliability",
+      "name": "URL Decoding & Parameter Path Traversal Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Route segments joined cleanly from Next.js path array preventing traversal"
+    },
+    {
+      "id": "P6-REL-10",
+      "category": "Reliability",
+      "name": "Sensitive Keys Isolation (No Secret Leakage in Client)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Master service API keys are never exposed in client bundle"
+    },
+    {
+      "id": "P6-REL-11",
+      "category": "Reliability",
+      "name": "Atomic Doubt Booking Concurrency Lock",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Doubt booking locks row preventing concurrent double-booking"
+    },
+    {
+      "id": "P6-REL-12",
+      "category": "Reliability",
+      "name": "Doubt Booking Status Verification Before Lock",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Aborts booking if doubt was already claimed by another tutor"
+    },
+    {
+      "id": "P6-REL-13",
+      "category": "Reliability",
+      "name": "Doubt Booking Self-Booking Prevention in RPC",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Database RPC rejects students booking their own doubts"
+    },
+    {
+      "id": "P6-REL-14",
+      "category": "Reliability",
+      "name": "Doubt Booking Atomically Creates Session Record",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Atomically creates session row in same transaction as doubt status update"
+    },
+    {
+      "id": "P6-REL-15",
+      "category": "Reliability",
+      "name": "Doubt Booking Updates Doubt Status to BOOKED",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Transitions doubt status atomically to BOOKED"
+    },
+    {
+      "id": "P6-REL-16",
+      "category": "Reliability",
+      "name": "Doubt Booking Creates Student Notification",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Atomically queues notification for student alerting of booking"
+    },
+    {
+      "id": "P6-REL-17",
+      "category": "Reliability",
+      "name": "Proposal Promotion Atomic RPC Transaction",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Proposal promotion acquires exclusive lock during threshold promotion"
+    },
+    {
+      "id": "P6-REL-18",
+      "category": "Reliability",
+      "name": "Proposal Auto-Promotion Threshold Verification (>=3)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Promotes proposals to shared resources upon reaching consensus threshold"
+    },
+    {
+      "id": "P6-REL-19",
+      "category": "Reliability",
+      "name": "Proposal Status Transitions to APPROVED Atomically",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Transitions proposal status atomically upon promotion"
+    },
+    {
+      "id": "P6-REL-20",
+      "category": "Reliability",
+      "name": "Shared Resource Row Inserted on Promotion",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Creates shared resource entry linked to target bucket on promotion"
+    },
+    {
+      "id": "P6-REL-21",
+      "category": "Reliability",
+      "name": "Weekly Release Flagging on Session Ratings",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Protects tutor review confidentiality until scheduled release batch"
+    },
+    {
+      "id": "P6-REL-22",
+      "category": "Reliability",
+      "name": "Single Rating per Student per Session Constraint",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Unique index prevents duplicate reviews for identical session"
+    },
+    {
+      "id": "P6-REL-23",
+      "category": "Reliability",
+      "name": "Self-Rating Denial at Schema Level",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Database constraint enforces student_id <> tutor_id on ratings"
+    },
+    {
+      "id": "P6-REL-24",
+      "category": "Reliability",
+      "name": "Session Cancellation State Integrity",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Schema accounts for session cancellation and tutor replacement"
+    },
+    {
+      "id": "P6-REL-25",
+      "category": "Reliability",
+      "name": "Session Completion State Integrity",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Schema enforces tutor completion followed by student confirmation"
+    },
+    {
+      "id": "P6-REL-26",
+      "category": "Reliability",
+      "name": "Client-Side Token Expiry Graceful Logout",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Automatically clears invalid or expired tokens on client boot"
+    },
+    {
+      "id": "P6-REL-27",
+      "category": "Reliability",
+      "name": "Optimistic State Rollback on Task Error",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Restores original task completion state if toggle API request fails"
+    },
+    {
+      "id": "P6-REL-28",
+      "category": "Reliability",
+      "name": "Optimistic State Rollback on Tough Task Toggle",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Restores original tough flag if server toggle API fails"
+    },
+    {
+      "id": "P6-REL-29",
+      "category": "Reliability",
+      "name": "Doubts Feed Graceful Error Banner",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Displays readable error banner if doubts feed fails to load"
+    },
+    {
+      "id": "P6-REL-30",
+      "category": "Reliability",
+      "name": "Booked Sessions Error State Display",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Displays readable error banner if sessions request encounters error"
+    },
+    {
+      "id": "P6-REL-31",
+      "category": "Reliability",
+      "name": "Community Resources Error State Fallback",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Community tab catches failure and resets loading state cleanly"
+    },
+    {
+      "id": "P6-REL-32",
+      "category": "Reliability",
+      "name": "Tutor Analytics Leaderboard Empty Fallback",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Analytics catches leaderboard error and returns safe empty list"
+    },
+    {
+      "id": "P6-REL-33",
+      "category": "Reliability",
+      "name": "Form Submit Double-Click Prevention",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Submit buttons disabled while mutation request is in flight"
+    },
+    {
+      "id": "P6-REL-34",
+      "category": "Reliability",
+      "name": "Login Form Button Disable While Loading",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Login button disabled while authentication request is in flight"
+    },
+    {
+      "id": "P6-REL-35",
+      "category": "Reliability",
+      "name": "Session Complete Action Button Loading Lock",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Session completion button shows progress spinner and locks clicks"
+    },
+    {
+      "id": "P6-REL-36",
+      "category": "Reliability",
+      "name": "Environment Variable Fallback for BaaS URL",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Falls back to public BaaS endpoint if server env is missing"
+    },
+    {
+      "id": "P6-REL-37",
+      "category": "Reliability",
+      "name": "Environment Variable Fallback for Anon Key",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Falls back to public anon key if server env is missing"
+    },
+    {
+      "id": "P6-REL-38",
+      "category": "Reliability",
+      "name": "Admin Client Scoped to BaaS URL & API Key",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Initializes admin client with configured BaaS URL and API key"
+    },
+    {
+      "id": "P6-REL-39",
+      "category": "Reliability",
+      "name": "Anon Client Scoped to BaaS URL & Anon Key",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Initializes public anonymous client with configured BaaS URL"
+    },
+    {
+      "id": "P6-REL-40",
+      "category": "Reliability",
+      "name": "User Client Scoped with Access Token",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Scoping user client to caller access token enforces user identity"
+    },
+    {
+      "id": "P6-REL-41",
+      "category": "Reliability",
+      "name": "Email Outbox File Directory Resolution",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Resolves outbox file path relative to process working directory"
+    },
+    {
+      "id": "P6-REL-42",
+      "category": "Reliability",
+      "name": "Email Outbox Safe JSON Parse Guard",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Guards outbox file read with JSON parse error handler"
+    },
+    {
+      "id": "P6-REL-43",
+      "category": "Reliability",
+      "name": "Email Outbox Safe Write Synchronization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Writes formatted JSON array to outbox synchronously"
+    },
+    {
+      "id": "P6-REL-44",
+      "category": "Reliability",
+      "name": "In-Memory Outbox Array Fallback",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Maintains in-memory outbox list for fast testing assertions"
+    },
+    {
+      "id": "P6-REL-45",
+      "category": "Reliability",
+      "name": "SMTP Connection Timeout Configuration (10s)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Configures 10-second connection timeout on SMTP sockets"
+    },
+    {
+      "id": "P6-REL-46",
+      "category": "Reliability",
+      "name": "SMTP Socket Timeout Configuration (15s)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Configures 15-second socket timeout preventing hung connections"
+    },
+    {
+      "id": "P6-REL-47",
+      "category": "Reliability",
+      "name": "SMTP Greeting Timeout Configuration (10s)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Configures 10-second greeting timeout for initial SMTP handshake"
+    },
+    {
+      "id": "P6-REL-48",
+      "category": "Reliability",
+      "name": "CORS Allowed Origins Header Configuration",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Route responses include permissive CORS headers for local/staging proxy"
+    },
+    {
+      "id": "P6-REL-49",
+      "category": "Reliability",
+      "name": "CORS Allowed Methods Specification",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Specifies all supported HTTP REST methods in preflight"
+    },
+    {
+      "id": "P6-REL-50",
+      "category": "Reliability",
+      "name": "Route Handler Force Dynamic Pragma",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Next.js dynamic pragma ensures real-time query execution without caching"
+    },
+    {
+      "id": "P6-PERF-01",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_shared_resources_bucket_id on shared_resources(bucket_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key bucket_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-02",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_suggestion_responses_request_id on suggestion_responses(request_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key request_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-03",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_session_messages_sender_id on session_messages(sender_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key sender_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-04",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_task_subtasks_task_id on task_subtasks(task_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key task_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-05",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_sessions_doubt_id on sessions(doubt_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key doubt_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-06",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_resource_proposals_proposer_id on resource_proposals(proposer_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key proposer_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-07",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_sessions_replacement_tutor_id on sessions(replacement_tutor_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key replacement_tutor_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-08",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_student_skills_skill_id on student_skills(skill_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key skill_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-09",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_resources_owner_id on resources(owner_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key owner_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-10",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_session_ratings_student_id on session_ratings(student_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key student_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-11",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_session_ratings_tutor_id on session_ratings(tutor_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key tutor_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-12",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_resources_bucket_id on resources(bucket_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key bucket_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-13",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_shared_resources_created_by on shared_resources(created_by)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key created_by prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-14",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_suggestion_responses_tutor_id on suggestion_responses(tutor_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key tutor_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-15",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_suggestion_requests_student_id on suggestion_requests(student_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key student_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-16",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_doubts_booked_tutor_id on doubts(booked_tutor_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key booked_tutor_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-17",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_doubts_selected_session_id on doubts(selected_session_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key selected_session_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-18",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_resource_proposals_bucket_id on resource_proposals(bucket_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key bucket_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-19",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_resource_buckets_owner_id on resource_buckets(owner_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key owner_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-20",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_suggestion_requests_task_id on suggestion_requests(task_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key task_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-21",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_resource_votes_voter_id on resource_votes(voter_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key voter_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-22",
+      "category": "Performance & FK",
+      "name": "FK Index: idx_tutor_score_snapshots_tutor_id on tutor_score_snapshots(tutor_id)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Index on foreign key tutor_id prevents sequential table scans"
+    },
+    {
+      "id": "P6-PERF-23",
+      "category": "Performance RLS",
+      "name": "RLS Filter Index: idx_shared_resource_buckets_dept_batch on shared_resource_buckets(department, batch)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Optimizes high-frequency RLS and query filter performance"
+    },
+    {
+      "id": "P6-PERF-24",
+      "category": "Performance RLS",
+      "name": "RLS Filter Index: idx_resource_proposals_status_dept_batch on resource_proposals(status, department, batch)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Optimizes high-frequency RLS and query filter performance"
+    },
+    {
+      "id": "P6-PERF-25",
+      "category": "Performance RLS",
+      "name": "RLS Filter Index: idx_suggestion_requests_status on suggestion_requests(status)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Optimizes high-frequency RLS and query filter performance"
+    },
+    {
+      "id": "P6-PERF-26",
+      "category": "Performance RLS",
+      "name": "RLS Filter Index: idx_session_ratings_tutor_released on session_ratings(tutor_id, is_released)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Optimizes high-frequency RLS and query filter performance"
+    },
+    {
+      "id": "P6-PERF-27",
+      "category": "Performance RLS",
+      "name": "RLS Filter Index: idx_doubts_status_expires on doubts(status, expires_at)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Optimizes high-frequency RLS and query filter performance"
+    },
+    {
+      "id": "P6-PERF-28",
+      "category": "Performance RLS",
+      "name": "RLS Filter Index: idx_notifications_user_read on notifications(user_id, read_at, created_at)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Optimizes high-frequency RLS and query filter performance"
+    },
+    {
+      "id": "P6-PERF-29",
+      "category": "Performance RLS",
+      "name": "RLS Filter Index: idx_pending_reg_roll_purpose on pending_registrations(roll_number, purpose)",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Optimizes high-frequency RLS and query filter performance"
+    },
+    {
+      "id": "P6-PERF-30",
+      "category": "Query Execution",
+      "name": "Unindexed Query Plan Shows Full Table Scan",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Confirms unindexed foreign key incurs full table scan"
+    },
+    {
+      "id": "P6-PERF-31",
+      "category": "Query Execution",
+      "name": "Indexed Query Plan Uses Index Scan",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Plan switched from full table scan to USING INDEX scan"
+    },
+    {
+      "id": "P6-PERF-32",
+      "category": "Performance Benchmark",
+      "name": "50 Indexed Query Iterations Execution Speed",
+      "status": "PASS",
+      "expected": true,
+      "actual": "0.0003s",
+      "details": "50 index joins completed in under 100ms"
+    },
+    {
+      "id": "P6-PERF-33",
+      "category": "Query Execution",
+      "name": "Composite Index Eliminates Sort Operation",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Composite index satisfies WHERE and ORDER BY without temp B-Tree sort"
+    },
+    {
+      "id": "P6-PERF-34",
+      "category": "Index Idempotency",
+      "name": "CREATE INDEX IF NOT EXISTS Rerun Idempotency",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rerunning CREATE INDEX IF NOT EXISTS produces 0 errors"
+    },
+    {
+      "id": "P6-PERF-35",
+      "category": "Index Idempotency",
+      "name": "DROP INDEX IF EXISTS Rollback Safety",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Rerunning DROP INDEX IF EXISTS completes safely"
+    },
+    {
+      "id": "P6-PERF-36",
+      "category": "Regression Invariant",
+      "name": "Phase 1: confirm_auth_user search_path Security",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Security invoker path isolation preserved across migrations"
+    },
+    {
+      "id": "P6-PERF-37",
+      "category": "Regression Invariant",
+      "name": "Phase 1: academic_records RLS Protection",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Own-record student policy preserved on academic records"
+    },
+    {
+      "id": "P6-PERF-38",
+      "category": "Regression Invariant",
+      "name": "Phase 1: pending_registrations Salted OTP Schema",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Cryptographic schema upgrade preserved on pending registrations"
+    },
+    {
+      "id": "P6-PERF-39",
+      "category": "Regression Invariant",
+      "name": "Phase 2: get_matching_doubts_for_tutor RPC Hardening",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Tutor matching RPC sealed from unauthorized public execution"
+    },
+    {
+      "id": "P6-PERF-40",
+      "category": "Regression Invariant",
+      "name": "Phase 2: close_expired_doubts RPC Hardening",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Sweeper RPC sealed from public execution"
+    },
+    {
+      "id": "P6-PERF-41",
+      "category": "Regression Invariant",
+      "name": "Phase 2: student_public_profiles View Sanitization",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Public profiles view conceals personal email and phone"
+    },
+    {
+      "id": "P6-PERF-42",
+      "category": "Regression Invariant",
+      "name": "Phase 2: Student Immutability Trigger Intact",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Core student fields immutable against update tampering"
+    },
+    {
+      "id": "P6-PERF-43",
+      "category": "Regression Invariant",
+      "name": "Phase 3: book_doubt_atomic Concurrency Safety",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Atomic doubt booking concurrency lock preserved"
+    },
+    {
+      "id": "P6-PERF-44",
+      "category": "Regression Invariant",
+      "name": "Phase 3: Session Immutability Trigger Intact",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Session participant and doubt binding immutable against tampering"
+    },
+    {
+      "id": "P6-PERF-45",
+      "category": "Regression Invariant",
+      "name": "Phase 3: Session Ratings Release Confidentiality",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Reviews kept confidential until scheduled batch release"
+    },
+    {
+      "id": "P6-PERF-46",
+      "category": "Regression Invariant",
+      "name": "Phase 4: Shared Buckets Academic Conjunction",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Department and batch scoping independently evaluated with exact matching"
+    },
+    {
+      "id": "P6-PERF-47",
+      "category": "Regression Invariant",
+      "name": "Phase 4: Shared Buckets NULL Denial",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "NULL department or batch sealed from student discovery"
+    },
+    {
+      "id": "P6-PERF-48",
+      "category": "Regression Invariant",
+      "name": "Phase 4: Proposal Author Immutability Trigger",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Proposer and target bucket immutable against client tampering"
+    },
+    {
+      "id": "P6-PERF-49",
+      "category": "Regression Invariant",
+      "name": "Phase 4: Resource Vote Anti-Self-Voting Trigger",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "Proposer self-voting blocked on both INSERT and UPDATE"
+    },
+    {
+      "id": "P6-PERF-50",
+      "category": "Regression Invariant",
+      "name": "Phase 5: All 22 FK Indexes Deployed Live",
+      "status": "PASS",
+      "expected": true,
+      "actual": true,
+      "details": "All 22 foreign key indexes deployed and maintained without regression"
+    }
+  ]
+}

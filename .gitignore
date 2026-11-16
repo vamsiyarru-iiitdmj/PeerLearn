@@ -57,3 +57,5 @@ next-env.d.ts
 testsprite_tests/tmp/
 testsprite_tests/tmp/config.json
 scratch/
+.email_outbox.json
+
